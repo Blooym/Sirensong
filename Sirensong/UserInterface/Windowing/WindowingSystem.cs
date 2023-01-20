@@ -216,7 +216,6 @@ namespace Sirensong.UserInterface.Windowing
             {
                 return;
             }
-
             this.ConfigWindow.IsOpen = !this.ConfigWindow.IsOpen;
         }
     }

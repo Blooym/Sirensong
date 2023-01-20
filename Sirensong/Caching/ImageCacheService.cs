@@ -155,8 +155,6 @@ namespace Sirensong.Caching
 
             this.imageTexCache[path] = null!;
             this.LoadImage(path);
-
-            SirenLog.IVerbose($"Loading image at {path}");
             return this.imageTexCache[path];
         }
 

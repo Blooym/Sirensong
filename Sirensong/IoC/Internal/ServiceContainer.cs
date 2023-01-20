@@ -32,7 +32,6 @@ namespace Sirensong.IoC.Internal
         /// <exception cref="InvalidOperationException">Thrown if the caller is not the Sirensong assembly.</exception>
         public void Dispose()
         {
-            // If called from outside of the executing assembly, throw an exception.
             if (!Assembly.GetCallingAssembly().IsExecutingAssembly())
             {
                 throw new InvalidOperationException("The service container can only be disposed of by the Sirensong assembly.");

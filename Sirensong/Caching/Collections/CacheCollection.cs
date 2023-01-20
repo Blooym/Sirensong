@@ -145,6 +145,7 @@ namespace Sirensong.Caching.Collections
                         this.cache.TryRemove(key, out _);
                         this.accessTimes.TryRemove(key, out _);
                         this.options.OnExpiry?.Invoke(key, value!);
+                        SirenLog.IVerbose($"Cache key {key} expired due to absolute expiry.");
                         return true;
                     }
                     else if (this.options.SlidingExpiry.HasValue && expiryInfo.LastAccessTime + this.options.SlidingExpiry.Value < DateTimeOffset.Now)
@@ -152,6 +153,7 @@ namespace Sirensong.Caching.Collections
                         this.cache.TryRemove(key, out _);
                         this.accessTimes.TryRemove(key, out _);
                         this.options.OnExpiry?.Invoke(key, value!);
+                        SirenLog.IVerbose($"Cache key {key} expired due to sliding expiry.");
                         return true;
                     }
                 }

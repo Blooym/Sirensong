@@ -49,10 +49,11 @@ namespace Sirensong.Game
                 var foundExamine = SharedServices.SigScanner.TryScanText(Signatures.RequestCharacterInfo, out var rciData);
                 if (!foundExamine || rciData == IntPtr.Zero)
                 {
-                    SirenLog.IWarning("Could not find signature for RequestCharacterInfo, examine functions will be disabled.");
+                    SirenLog.IWarning($"Could not find signature for RequestCharacterInfo at {Signatures.RequestCharacterInfo}, Examine functions will be disabled.");
                     Disabled = true;
                 }
                 invoke = Marshal.GetDelegateForFunctionPointer<RequestCharInfoDelegate>(rciData);
+                SirenLog.IVerbose($"Initialized Examine functions at {Signatures.RequestCharacterInfo}");
                 return true;
             }
             catch (Exception e)

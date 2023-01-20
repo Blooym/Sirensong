@@ -33,11 +33,7 @@ namespace Sirensong.Caching
             AbsoluteExpiry = null,
             ExpireInterval = TimeSpan.FromMinutes(1),
             UseBuiltInExpire = true,
-            OnExpiry = (key, value) =>
-            {
-                value.Dispose();
-                SirenLog.IVerbose($"Disposed of texture for icon {key}");
-            }
+            OnExpiry = (key, value) => value.Dispose()
         });
 
         /// <summary>
@@ -123,7 +119,6 @@ namespace Sirensong.Caching
 
             this.iconTexCache[iconId] = null!;
             this.LoadIconTexture(iconId);
-
             return this.iconTexCache[iconId];
         }
 
