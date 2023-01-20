@@ -10,7 +10,7 @@ namespace Sirensong.UserInterface.Components
     /// <summary>
     ///     A collection of UI components for Sirensong.
     /// </summary>
-    public static partial class SirensongUIComponents
+    public static partial class SiUIComponents
     {
         /// <summary>
         ///     A search bar for enumerables.
