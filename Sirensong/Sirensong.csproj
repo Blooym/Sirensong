@@ -9,20 +9,20 @@
     <PackageProjectUrl>https://github.com/BitsOfAByte/Sirensong</PackageProjectUrl>
     <Description> A collection of commonly used methods for Dalamud Plugins.</Description>
     <PackageLicenseExpression>AGPL-3.0-only</PackageLicenseExpression>
+    <Copyright>AGPL-3.0-only</Copyright>
   </PropertyGroup>
 
   <!-- Build Configuration -->
   <PropertyGroup>
     <TargetFramework>net7.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <PlatformTarget>x64</PlatformTarget>
-    <DebugType>full</DebugType>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <Deterministic>true</Deterministic>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <Deterministic>true</Deterministic>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>Nullable</WarningsAsErrors>
   </PropertyGroup>
 
   <!-- Dalamud Paths -->
