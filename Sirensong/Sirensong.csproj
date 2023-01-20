@@ -22,7 +22,7 @@
     <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <Optimize>true</Optimize>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
 
   <!-- Dalamud Paths -->
