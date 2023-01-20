@@ -5,9 +5,9 @@ using Dalamud.Logging;
 namespace Sirensong
 {
     /// <summary>
-    ///     Logging utility wrapping <see cref="PluginLog"/> for internal Sirensong messages.
+    ///     Logging utility wrapping <see cref="PluginLog"/> with a nicer format.
     /// </summary>
-    internal static class SirenLog
+    public static class SirenLog
     {
         /// <summary>
         ///     Formats a message for logging internal messages.
