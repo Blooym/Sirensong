@@ -6,7 +6,7 @@ namespace Sirensong.Game.UI
     /// <summary>
     ///     Methods to show in-game toast notifications.
     /// </summary>
-    public static class Toasts
+    public static class GameToasts
     {
         /// <summary>
         ///     Wrapper for <see cref="ToastGui.ShowQuest(string, QuestToastOptions)"/>.
@@ -31,7 +31,6 @@ namespace Sirensong.Game.UI
         public static void ShowNormalToast(string message, ToastOptions options, SoundEffect? sfx = null)
         {
             SharedServices.ToastGui.ShowNormal(message, options);
-
             if (sfx != null)
             {
                 PlaySound.Invoke(sfx.Value, 0, 0);
@@ -47,7 +46,6 @@ namespace Sirensong.Game.UI
         public static void ShowNormalToast(Dalamud.Game.Text.SeStringHandling.SeString message, ToastOptions options, SoundEffect? sfx = null)
         {
             SharedServices.ToastGui.ShowNormal(message, options);
-
             if (sfx != null)
             {
                 PlaySound.Invoke(sfx.Value, 0, 0);

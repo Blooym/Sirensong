@@ -6,7 +6,7 @@ namespace Sirensong.Game.UI
     /// <summary>
     ///     Methods to format and show in-game chat messages.
     /// </summary>
-    public static class Chat
+    public static class GameChat
     {
         /// <summary>
         ///     Creates a base <see cref="SeStringBuilder"/> with the plugin name prepended.
