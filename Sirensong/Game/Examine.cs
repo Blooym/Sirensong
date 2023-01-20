@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using Dalamud.Game.ClientState.Objects.Types;
+using Sirensong.Logging;
 using Framework = FFXIVClientStructs.FFXIV.Client.System.Framework.Framework;
 
 // From XivCommon, licensed under the MIT license

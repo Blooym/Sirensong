@@ -4,6 +4,7 @@ using System.Linq;
 using Dalamud.Interface;
 using Dalamud.Interface.Windowing;
 using Sirensong.IoC.Internal;
+using Sirensong.Logging;
 using Sirensong.UserInterface.Services;
 
 namespace Sirensong.UserInterface.Windowing
