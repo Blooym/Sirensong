@@ -1,0 +1,9 @@
+# CSharp outputs
+**/*/obj
+**/*/bin
+
+# MacOS
+.DS_Store
+
+# Secrets
+*.env
