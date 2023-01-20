@@ -22,9 +22,7 @@
     <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Optimize>true</Optimize>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <!-- Dalamud Paths -->
