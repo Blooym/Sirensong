@@ -1,6 +1,7 @@
 using System;
 using ImGuiNET;
 using Sirensong.IoC.Internal;
+using Sirensong.Logging;
 
 namespace Sirensong.UserInterface.Services
 {
