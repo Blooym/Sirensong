@@ -8,16 +8,14 @@ namespace Sirensong.UserInterface
     public static partial class SiUI
     {
         /// <summary>
-        ///     Adds a tooltip to the last item.
+        ///     Adds a tooltip to the last item when hovered.
         /// </summary>
-        /// <param name="text">The text to display in the tooltip.</param>
-        public static void TooltipLast(string text)
+        /// <param name="tooltip">The tooltip text.</param>
+        public static void TooltipLast(string tooltip)
         {
             if (ImGui.IsItemHovered())
             {
-                ImGui.BeginTooltip();
-                ImGui.TextUnformatted(text);
-                ImGui.EndTooltip();
+                ImGui.SetTooltip(tooltip);
             }
         }
     }
