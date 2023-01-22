@@ -22,7 +22,7 @@ namespace Sirensong.UserInterface.Services
         /// <remarks>
         ///     Default value: 1000ms
         /// </remarks>
-        public int Timeout { get; set; } = 1000;
+        public int Timeout { get; set; } = 1250;
 
         /// <summary>
         ///     The last time the clipboard was copied using the <see cref="Copy"/> method.
