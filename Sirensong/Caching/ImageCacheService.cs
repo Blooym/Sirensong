@@ -42,7 +42,7 @@ namespace Sirensong.Caching
         /// </summary>
         public void Dispose()
         {
-            this.ClearCache();
+            this.imageTexCache.Dispose();
             this.httpClient.Dispose();
             GC.SuppressFinalize(this);
         }

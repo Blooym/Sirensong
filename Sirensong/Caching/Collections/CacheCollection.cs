@@ -96,12 +96,8 @@ namespace Sirensong.Caching.Collections
                 return;
             }
 
-            if (this.cacheCleanTimer != null)
-            {
-                this.cacheCleanTimer.Stop();
-                this.cacheCleanTimer.Dispose();
-            }
-
+            this.cacheCleanTimer?.Stop();
+            this.cacheCleanTimer?.Dispose();
             this.cacheCleanTimer = new Timer(this.options.ExpireInterval.HasValue ? this.options.ExpireInterval.Value.TotalMilliseconds : 5000);
 
             this.cacheCleanTimer.Elapsed += (sender, args) => this.HandleExpired();
@@ -113,7 +109,6 @@ namespace Sirensong.Caching.Collections
         /// </summary>
         public void Dispose()
         {
-            // Dispose of the timer.
             if (this.cacheCleanTimer != null)
             {
                 this.cacheCleanTimer.Stop();
@@ -123,7 +118,6 @@ namespace Sirensong.Caching.Collections
 
             // Dispose of the keys and values.
             this.RemoveAllKV();
-
             GC.SuppressFinalize(this);
         }
 
