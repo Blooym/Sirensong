@@ -8,9 +8,9 @@ namespace Sirensong.UserInterface
         /// <summary>
         ///     Draws coloured text that wraps.
         /// </summary>
-        /// <param name="text"></param>
         /// <param name="colour"></param>
-        public static void TextWrappedColoured(string text, Vector4 colour)
+        /// <param name="text"></param>
+        public static void TextWrappedColoured(Vector4 colour, string text)
         {
             ImGui.PushStyleColor(ImGuiCol.Text, colour);
             ImGui.TextWrapped(text);
