@@ -50,18 +50,5 @@ namespace Sirensong.DataStructures
         ///     Returns the string for the current Dalamud UI language or English if not found.
         /// </summary>
         [JsonIgnore] public string UICurrent => this[SharedServices.PluginInterface.UiLanguage];
-
-
-        /// <summary>
-        ///     Whether the string is null or empty.
-        /// </summary>
-        /// <returns>True if the string is null or empty, false otherwise.</returns>
-        public bool IsNullOrEmpty() => string.IsNullOrEmpty(this.EN);
-
-        /// <summary>
-        ///     Whether the string is null or whitespace.
-        /// </summary>
-        /// <returns>True if the string is null or whitespace, false otherwise.</returns>
-        public bool IsNullOrWhiteSpace() => string.IsNullOrWhiteSpace(this.EN);
     }
 }

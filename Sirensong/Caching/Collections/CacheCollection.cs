@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
 using Sirensong.Caching.Internal.Interfaces;
-using Sirensong.Logging;
 
 namespace Sirensong.Caching.Collections
 {

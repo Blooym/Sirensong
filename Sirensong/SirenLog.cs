@@ -2,7 +2,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using Dalamud.Logging;
 
-namespace Sirensong.Logging
+namespace Sirensong
 {
     /// <summary>
     ///     Logging utility wrapping <see cref="PluginLog"/> with a nicer format, for use internally by Sirensong itself.

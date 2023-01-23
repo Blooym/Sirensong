@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Sirensong.Extensions;
-using Sirensong.Logging;
 
 namespace Sirensong.IoC.Internal
 {

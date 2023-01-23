@@ -2,7 +2,6 @@ using System;
 using System.Reflection;
 using Dalamud.Plugin;
 using Sirensong.IoC.Internal;
-using Sirensong.Logging;
 
 namespace Sirensong
 {

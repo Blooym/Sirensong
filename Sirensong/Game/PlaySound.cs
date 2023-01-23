@@ -1,7 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
 using Sirensong.Game.Enums;
-using Sirensong.Logging;
 
 // From GatherBuddy, licensed under the apache 2.0 license.
 // https://github.com/Ottermandias/GatherBuddy/blob/main/LICENSE
