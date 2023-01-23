@@ -33,7 +33,7 @@ namespace Sirensong.UserInterface
         /// <param name="debounced">Whether or not the input should be debounced.</param>
         /// <param name="flags">The <see cref="ImGuiInputTextFlags"/> to use.</param>
         /// <returns>True when either the input is typed into or when it is deactivated after being edited if debounced.</returns>
-        public static bool InputTextHint(string label, ref string hint, string value, uint maxLength, bool debounced = false, ImGuiInputTextFlags flags = default)
+        public static bool InputTextHint(string label, string hint, ref string value, uint maxLength, bool debounced = false, ImGuiInputTextFlags flags = default)
         {
             var inputBool = ImGui.InputTextWithHint(label, hint, ref value, maxLength, flags);
             return debounced ? ImGui.IsItemDeactivatedAfterEdit() : inputBool;
