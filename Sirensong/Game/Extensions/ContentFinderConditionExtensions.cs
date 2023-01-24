@@ -28,7 +28,7 @@ namespace Sirensong.Game.Extensions
         /// <summary>
         ///     Gets the <see cref="ContentType" /> from the given <see cref="ContentFinderCondition" />
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="cfCond">The <see cref="ContentFinderCondition" /> sheet to use.</param>
         /// <param name="splitRaids">Whether the check should split <see cref="ContentType.Raids" /> and <see cref="ContentType.AllianceRaids" /> apart.
         /// <returns>The <see cref="ContentType" />, or null if unable to find it </returns>
         public static Enums.ContentType? GetContentType(this ContentFinderCondition cfCond, bool splitRaids = false)
