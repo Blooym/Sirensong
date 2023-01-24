@@ -38,7 +38,9 @@ namespace Sirensong.Game.Extensions
             if (splitRaids && typeRow == (int)Enums.ContentType.Raids)
             {
                 // Unknown8 = number of parties in the instance.
-                if (cfCond.AllianceRoulette || cfCond.ContentMemberType.Value?.Unknown8 == 3 || cfCond.ContentMemberType.Value?.TanksPerParty > 1)
+                if (cfCond.AllianceRoulette ||
+                    cfCond.TerritoryType.Value?.TerritoryIntendedUse == (byte)TerritoryIntendedUses.AllianceRaid ||
+                    cfCond.ContentMemberType.Value?.Unknown8 == 3)
                 {
                     return Enums.ContentType.AllianceRaid;
                 }
