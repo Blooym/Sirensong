@@ -90,14 +90,7 @@ namespace Sirensong.Game.Extensions
         /// </summary>
         /// <param name="pc"></param>
         /// <exception cref="InvalidOperationException">Thrown if unable to create a <see cref="Dalamud.Game.ClientState.Objects.Types.GameObject"/> from the <see cref="PlayerCharacter"/> address.</exception>
-        public static unsafe void OpenExamine(this PlayerCharacter pc)
-        {
-            var obj = pc.ToDalamudGameObject();
-            if (obj == null)
-            {
-                throw new InvalidOperationException("Unable to create a GameObject from the PlayerCharacter address.");
-            }
-            Examine.OpenExamineWindow(obj);
-        }
+        public static unsafe void OpenExamine(this PlayerCharacter pc) => AgentInspect.Instance()->ExamineCharacter(pc.ObjectId);
+
     }
 }
