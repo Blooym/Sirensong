@@ -10,11 +10,11 @@ namespace Sirensong.Game.Extensions
     public static class ContentFinderConditionExtensions
     {
         /// <summary>
-        ///     Gets the <see cref="ContentDifficulty"/> from the given duty. Only works for the English sheet!
+        ///     Gets the <see cref="ContentDifficulty"/> from the <see cref="ContentFinderCondition" /> name. Only works for the English sheet!
         /// </summary>
-        /// <param name="cfCond">The English ContentFinderCondition sheet to use.</param>
-        /// <returns>The <see cref="ContentDifficulty"/> of the duty.</returns>
-        public static ContentDifficulty GetDutyDifficulty(this ContentFinderCondition cfCond) => (string)cfCond.Name switch
+        /// <param name="cfCond">The English <see cref="ContentFinderCondition" /> sheet to use.</param>
+        /// <returns>The <see cref="ContentDifficulty"/> </returns>
+        public static ContentDifficulty GetContentDifficulty(this ContentFinderCondition cfCond) => (string)cfCond.Name switch
         {
             string s when s.Contains("(Hard)", StringComparison.OrdinalIgnoreCase) => ContentDifficulty.Hard,
             string s when s.Contains("(Extreme)", StringComparison.OrdinalIgnoreCase) => ContentDifficulty.Extreme,
@@ -26,12 +26,12 @@ namespace Sirensong.Game.Extensions
         };
 
         /// <summary>
-        ///     Gets the <see cref="ContentType"/> from the given duty.
+        ///     Gets the <see cref="ContentType" /> from the given <see cref="ContentFinderCondition" />
         /// </summary>
         /// <param name="id"></param>
         /// <param name="splitRaids">Whether the check should split <see cref="ContentType.Raids" /> and <see cref="ContentType.AllianceRaids" /> apart.
-        /// <returns></returns>
-        public static Enums.ContentType? GetDutyType(ContentFinderCondition cfCond, bool splitRaids = false)
+        /// <returns>The <see cref="ContentType" />, or null if unable to find it </returns>
+        public static Enums.ContentType? GetContentType(ContentFinderCondition cfCond, bool splitRaids = false)
         {
             var typeRow = cfCond.ContentType.Value?.RowId;
 
