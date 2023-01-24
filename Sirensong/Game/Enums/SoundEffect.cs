@@ -1,5 +1,3 @@
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-
 // From SelfCare, licensed under the MIT license.
 // https://github.com/chirpxiv/SelfCare/blob/main/LICENSE
 // https://github.com/chirpxiv/SelfCare/blob/main/SelfCare/Alerts/SoundEffect.cs

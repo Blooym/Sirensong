@@ -2,7 +2,6 @@ using Dalamud.Interface.Colors;
 using FFXIVClientStructs.FFXIV.Common.Math;
 using Lumina.Excel.GeneratedSheets;
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 namespace Sirensong.Game.Enums
 {
     /// <summary>
