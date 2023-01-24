@@ -31,7 +31,7 @@ namespace Sirensong.Game.Extensions
         /// <param name="id"></param>
         /// <param name="splitRaids">Whether the check should split <see cref="ContentType.Raids" /> and <see cref="ContentType.AllianceRaids" /> apart.
         /// <returns>The <see cref="ContentType" />, or null if unable to find it </returns>
-        public static Enums.ContentType? GetContentType(ContentFinderCondition cfCond, bool splitRaids = false)
+        public static Enums.ContentType? GetContentType(this ContentFinderCondition cfCond, bool splitRaids = false)
         {
             var typeRow = cfCond.ContentType.Value?.RowId;
 
