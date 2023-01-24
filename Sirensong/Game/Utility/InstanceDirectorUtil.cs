@@ -12,9 +12,15 @@ namespace Sirensong.Game.Utility
         ///     This is a wrapper around <see cref="EventFramework.Instance()"/> -> <see cref="InstanceContentDirector"/> -> <see cref="ContentDirector"/> -> <see cref="Director"/> -> <see cref="ContentFlags"/>.
         /// </remarks>
         /// <returns>The ContentFlag of the current instance.</returns>
-        public static unsafe ContentFlag GetInstanceContentFlag()
+        public static unsafe ContentFlag? GetInstanceContentFlag()
         {
-            var contentFlags = EventFramework.Instance()->GetInstanceContentDirector()->ContentDirector.Director.ContentFlags;
+            var instanceCD = EventFramework.Instance()->GetInstanceContentDirector();
+            if (instanceCD == null)
+            {
+                return null;
+            }
+
+            var contentFlags = instanceCD->ContentDirector.Director.ContentFlags;
             return (ContentFlag)contentFlags;
         }
     }
