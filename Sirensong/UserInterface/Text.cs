@@ -4,7 +4,7 @@ using Sirensong.Extensions;
 
 namespace Sirensong.UserInterface
 {
-    public static partial class SiUI
+    public static partial class SiGui
     {
         /// <summary>
         ///     Draws coloured text that wraps.
@@ -30,6 +30,20 @@ namespace Sirensong.UserInterface
             ImGui.TextUnformatted(text);
             ImGui.PopStyleColor();
             ImGui.Separator();
+        }
+
+        /// <summary>
+        ///     Draws a text footer.
+        /// </summary>
+        /// <param name="text"></param>
+        public static unsafe void TextFooter(string text)
+        {
+            var textDisabled = *(Vector4*)ImGui.GetStyleColorVec4(ImGuiCol.TextDisabled);
+
+            ImGui.Separator();
+            ImGui.PushStyleColor(ImGuiCol.Text, textDisabled.ToUint());
+            ImGui.TextUnformatted(text);
+            ImGui.PopStyleColor();
         }
     }
 }

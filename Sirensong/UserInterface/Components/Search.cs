@@ -10,7 +10,7 @@ namespace Sirensong.UserInterface.Components
     /// <summary>
     ///     A collection of UI components for Sirensong.
     /// </summary>
-    public static partial class SiUIComponents
+    public static partial class SiGuiComponent
     {
         /// <summary>
         ///     A search bar for enumerables.
@@ -35,10 +35,10 @@ namespace Sirensong.UserInterface.Components
             }
 
             // Draw UI Elements
-            SiUI.InputText(label, ref search, 60, true);
+            SiGui.InputText(label, ref search, 60, true);
             ImGui.SameLine();
             ImGuiComponents.IconButton(FontAwesomeIcon.Question);
-            SiUI.TooltipLast("Search syntax:\n! - does not contain\n^ - starts with\n$ - ends with\n= - equals\n\nDefault - contains");
+            SiGui.TooltipLast("Search syntax:\n! - does not contain\n^ - starts with\n$ - ends with\n= - equals\n\nDefault - contains");
             ImGui.EndGroup();
 
             return Process(search, enumerable, searchSelector, caseSensitive);

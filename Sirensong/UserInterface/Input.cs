@@ -6,7 +6,7 @@ namespace Sirensong.UserInterface
     /// <summary>
     ///     A collection of UI elements for ImGui.
     /// </summary>
-    public static partial class SiUI
+    public static partial class SiGui
     {
         /// <summary>
         ///     Draws a text input field with a label.
