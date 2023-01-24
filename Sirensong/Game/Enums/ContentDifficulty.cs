@@ -5,7 +5,6 @@ namespace Sirensong.Game.Enums
     /// </summary>
     public enum ContentDifficulty
     {
-        None,
         Normal,
         Hard,
         Extreme,
