@@ -1,4 +1,3 @@
-using FFXIVClientStructs.FFXIV.Common.Math;
 using ImGuiNET;
 
 namespace Sirensong.UserInterface
@@ -9,6 +8,6 @@ namespace Sirensong.UserInterface
         ///     Centers the next ImGui item
         /// </summary>
         /// <param name="itemSize"></param>
-        public static void CenterNext(Vector4 itemSize) => ImGui.SetCursorPosX((ImGui.GetWindowWidth() - itemSize.X) / 2);
+        public static void CenterNext(float itemSize) => ImGui.SetCursorPosX((ImGui.GetWindowWidth() - itemSize) / 2);
     }
 }
