@@ -7,7 +7,7 @@ namespace Sirensong.DataStructures
     /// <summary>
     ///     Represents a translatable <see cref="SeString" />
     /// </summary>
-    public record struct TranslatableSeString
+    public readonly record struct TranslatableSeString
     {
         public required SeString EN { get; init; } // Default language
         public SeString DE { get; init; }

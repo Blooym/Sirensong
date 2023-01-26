@@ -6,7 +6,7 @@ namespace Sirensong.DataStructures
     /// <summary>
     ///     Represents a translatable string.
     /// </summary>
-    public record struct TranslatableString
+    public readonly record struct TranslatableString
     {
         public required string EN { get; init; } // Default language
         public string DE { get; init; }
