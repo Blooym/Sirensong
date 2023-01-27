@@ -45,11 +45,5 @@ namespace Sirensong.UserInterface
             ImGui.TextUnformatted(text);
             ImGui.PopStyleColor();
         }
-
-        public static unsafe void TextCentered(string text)
-        {
-            CenterNext(ImGui.CalcTextSize(text).X);
-            ImGui.TextUnformatted(text);
-        }
     }
 }

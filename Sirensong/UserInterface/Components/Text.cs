@@ -1,4 +1,5 @@
 using System;
+using Dalamud.Interface;
 using ImGuiNET;
 
 namespace Sirensong.UserInterface.Components
@@ -16,9 +17,7 @@ namespace Sirensong.UserInterface.Components
         public static void VersionInfo(Version version, string? commitHash = null)
         {
             var text = $"v{version}{(commitHash != null ? $" (#{commitHash})" : string.Empty)}";
-            var textSize = ImGui.CalcTextSize(text);
-
-            ImGui.SetCursorPosX((ImGui.GetWindowSize().X / 2) - (textSize.X / 2));
+            ImGuiHelpers.CenterCursorForText(text);
             ImGui.TextDisabled(text);
         }
     }
