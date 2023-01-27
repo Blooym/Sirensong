@@ -114,7 +114,11 @@ namespace Sirensong.UserInterface.Windowing
         /// </summary>
         /// <typeparam name="T">The type of window to get.</typeparam>
         /// <param name="windowOut">The window with the specified type, or null if it does not exist.</param>
-        public bool TryGetWindow<T>(out Window? windowOut) where T : Window => (windowOut = this.GetWindow<T>()) != null;
+        public bool TryGetWindow<T>(out Window windowOut) where T : Window
+        {
+            windowOut = this.GetWindow<T>()!;
+            return windowOut != null;
+        }
 
         /// <summary>
         ///     Adds a window to the windowing system.

@@ -12,7 +12,7 @@ namespace Sirensong.Caching
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [SirenServiceClass]
-    public class LuminaCacheService<T> : IDisposable, ICache where T : ExcelRow
+    public sealed class LuminaCacheService<T> : IDisposable, ICache where T : ExcelRow
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="LuminaCacheService{T}"/> class.
