@@ -6,9 +6,6 @@ using Sirensong.Caching;
 
 namespace Sirensong.UserInterface
 {
-    /// <summary>
-    ///     A collection of UI elements for ImGui.
-    /// </summary>
     public static partial class SiGui
     {
         /// <inheritdoc cref="ImageCache"/>
