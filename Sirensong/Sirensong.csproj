@@ -23,7 +23,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>Nullable</WarningsAsErrors>
-    <DebugType>embedded</DebugType>
   </PropertyGroup>
 
   <!-- Dalamud Paths -->
