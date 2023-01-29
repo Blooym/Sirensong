@@ -1,6 +1,6 @@
 using FFXIVClientStructs.FFXIV.Common.Math;
 using ImGuiNET;
-using Sirensong.Extensions;
+using Sirensong.UserInterface.Style;
 
 namespace Sirensong.UserInterface
 {
@@ -22,14 +22,11 @@ namespace Sirensong.UserInterface
         ///     Draws a text heading.
         /// </summary>
         /// <param name="text"></param>
-        public static unsafe void TextHeading(string text)
+        public static void TextHeading(string text)
         {
-            var textDisabled = *(Vector4*)ImGui.GetStyleColorVec4(ImGuiCol.TextDisabled);
-
-            ImGui.PushStyleColor(ImGuiCol.Text, textDisabled.ToUint());
-            ImGui.TextUnformatted(text);
-            ImGui.PopStyleColor();
+            ImGui.TextWrapped(text);
             ImGui.Separator();
+            ImGui.Dummy(Spacing.HeaderSpacing);
         }
 
         /// <summary>
@@ -38,12 +35,9 @@ namespace Sirensong.UserInterface
         /// <param name="text"></param>
         public static unsafe void TextFooter(string text)
         {
-            var textDisabled = *(Vector4*)ImGui.GetStyleColorVec4(ImGuiCol.TextDisabled);
-
+            ImGui.Dummy(Spacing.FooterSpacing);
             ImGui.Separator();
-            ImGui.PushStyleColor(ImGuiCol.Text, textDisabled.ToUint());
-            ImGui.TextUnformatted(text);
-            ImGui.PopStyleColor();
+            ImGui.TextDisabled(text);
         }
     }
 }
