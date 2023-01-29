@@ -15,7 +15,6 @@ namespace Sirensong.Game.Enums
         RangedDPS = 3,
         Healer = 4,
     }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
     /// <summary>
     ///     Extensions for <see cref="ClassJobRole" />
@@ -23,7 +22,7 @@ namespace Sirensong.Game.Enums
     public static class ClassJobRoleExtensions
     {
         /// <summary>
-        ///     Gets the Dalamud colour for the given role.
+        ///  Gets the Dalamud colour for the given role.
         /// </summary>
         /// <param name="roleID"></param>
         /// <returns>A Vector4 colour from the current dalamud style </returns>

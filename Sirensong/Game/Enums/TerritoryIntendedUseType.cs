@@ -5,7 +5,7 @@ namespace Sirensong.Game.Enums
     /// <summary>
     ///     A mapping of <see cref="TerritoryType.TerritoryIntendedUse"/> IDs to their names.
     /// </summary>
-    public enum TerritoryIntendedUses : byte
+    public enum TerritoryIntendedUseType : byte
     {
         City = 0,
         OpenWorld = 1,

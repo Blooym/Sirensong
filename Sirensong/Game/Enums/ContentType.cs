@@ -1,5 +1,3 @@
-using Sirensong.Game.Extensions;
-
 namespace Sirensong.Game.Enums
 {
     /// <summary>
@@ -7,6 +5,16 @@ namespace Sirensong.Game.Enums
     /// </summary>
     public enum ContentType
     {
+        /// <remarks>
+        /// This isn't a ContentType from the game, but is useful to split <see cref="Raids" /> apart from alliance raids.
+        /// </remarks>
+        AllianceRaid = -1,
+
+        /// <summary>
+        /// This isn't a ContentType from the game, but is used when unable to determine the ContentType.
+        /// </summary>
+        Unknown = -2,
+
         Roulette = 1,
         Dungeons = 2,
         Guildhests = 3,
@@ -36,11 +44,5 @@ namespace Sirensong.Game.Enums
         Unknown4 = 27,
         SouthernFront = 29,
         VariantCriteonDungeon = 30,
-
-        /// <remarks>
-        ///     This isn't a ContentType from the game, but its used in <see cref="ContentFinderConditionExtensions.GetDutyType(Lumina.Excel.GeneratedSheets.ContentFinderCondition)" /> 
-        ///     to determine <see cref="Raids" /> apart from alliance raid.
-        /// </remarks>
-        AllianceRaid = -1,
     }
 }

@@ -39,7 +39,7 @@ namespace Sirensong.Game.Extensions
             {
                 // Unknown8 = number of parties in the instance.
                 if (cfCond.AllianceRoulette ||
-                    cfCond.TerritoryType.Value?.TerritoryIntendedUse == (byte)TerritoryIntendedUses.AllianceRaid ||
+                    cfCond.TerritoryType.Value?.TerritoryIntendedUse == (byte)TerritoryIntendedUseType.AllianceRaid ||
                     cfCond.ContentMemberType.Value?.Unknown8 == 3)
                 {
                     return Enums.ContentType.AllianceRaid;

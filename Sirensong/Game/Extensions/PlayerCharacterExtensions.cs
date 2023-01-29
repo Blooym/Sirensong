@@ -3,6 +3,7 @@ using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Sirensong.Game.Enums;
+using Sirensong.Game.State;
 
 namespace Sirensong.Game.Extensions
 {
@@ -31,25 +32,25 @@ namespace Sirensong.Game.Extensions
         ///     Set the player as the <see cref="ClientState.LocalPlayer"/>'s target.
         /// </summary>
         /// <param name="pc"></param>
-        public static unsafe void SetAsLPTarget(this PlayerCharacter pc) => SharedServices.TargetManager.SetTarget(pc.ToDalamudGameObject());
+        public static unsafe void Target(this PlayerCharacter pc) => SharedServices.TargetManager.SetTarget(pc.ToDalamudGameObject());
 
         /// <summary>
         ///     Set the player as the <see cref="ClientState.LocalPlayer"/>'s reticle target.
         /// </summary>
         /// <param name="pc"></param>
-        public static unsafe void SetAsLPSoftTarget(this PlayerCharacter pc) => SharedServices.TargetManager.SetSoftTarget(pc.ToDalamudGameObject());
+        public static unsafe void SoftTarget(this PlayerCharacter pc) => SharedServices.TargetManager.SetSoftTarget(pc.ToDalamudGameObject());
 
         /// <summary>
         ///     Set the player as the <see cref="ClientState.LocalPlayer"/>'s focus target.
         /// </summary>
         /// <param name="pc"></param>
-        public static unsafe void SetAsLPFocusTarget(this PlayerCharacter pc) => SharedServices.TargetManager.SetFocusTarget(pc.ToDalamudGameObject());
+        public static unsafe void FocusTarget(this PlayerCharacter pc) => SharedServices.TargetManager.SetFocusTarget(pc.ToDalamudGameObject());
 
         /// <summary>
         ///     Set the player as the <see cref="ClientState.LocalPlayer"/>'s mouseover target.
         /// </summary>
         /// <param name="pc"></param>
-        public static unsafe void SetAsLPMouseOverTarget(this PlayerCharacter pc) => SharedServices.TargetManager.SetMouseOverTarget(pc.ToDalamudGameObject());
+        public static unsafe void MOTarget(this PlayerCharacter pc) => SharedServices.TargetManager.SetMouseOverTarget(pc.ToDalamudGameObject());
 
         /// <summary>
         ///     Gets a boolean value indicating whether the player is from the current world.
@@ -66,22 +67,8 @@ namespace Sirensong.Game.Extensions
         public static bool IsFromCurrentDatacenter(this PlayerCharacter pc) => pc.CurrentWorld.GameData?.DataCenter == pc.HomeWorld.GameData?.DataCenter;
 
         /// <summary>
-        ///     Gets a boolean value indicating whether the player has the specified online status.
-        /// </summary>
-        /// <param name="pc"></param>
-        /// <param name="status">The status to check for.</param>
-        /// <returns></returns>
-        public static bool HasOnlineStatus(this PlayerCharacter pc, OnlineStatuses status) => pc.OnlineStatus.Id == (uint)status;
-
-        /// <inheritdoc cref="HasOnlineStatus(PlayerCharacter, OnlineStatuses)"/>
-        public static bool HasOnlineStatus(this PlayerCharacter pc, uint status) => pc.OnlineStatus.Id == status;
-
-        /// <summary>
         ///     Opens the player's adventurer plate.
         /// </summary>
-        /// <remarks>
-        ///     This is a shortcut for <see cref="AgentCharaCard.OpenCharaCard(FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)"/>.
-        /// </remarks>
         /// <param name="pc"></param>
         public static unsafe void OpenCharaCard(this PlayerCharacter pc) => AgentCharaCard.Instance()->OpenCharaCard(pc.ToCSGameObject());
 
@@ -92,5 +79,15 @@ namespace Sirensong.Game.Extensions
         /// <exception cref="InvalidOperationException">Thrown if unable to create a <see cref="Dalamud.Game.ClientState.Objects.Types.GameObject"/> from the <see cref="PlayerCharacter"/> address.</exception>
         public static unsafe void OpenExamine(this PlayerCharacter pc) => AgentInspect.Instance()->ExamineCharacter(pc.ObjectId);
 
+        /// <summary>
+        ///     Gets a boolean value indicating whether the player has the specified online status.
+        /// </summary>
+        /// <param name="pc"></param>
+        /// <param name="status">The status to check for.</param>
+        /// <returns></returns>
+        public static bool HasOnlineStatus(this PlayerCharacter pc, OnlineStatusType status) => OnlineStatus.HasStatus(pc, status);
+
+        /// <inheritdoc cref="HasOnlineStatus(PlayerCharacter, OnlineStatusType)"/>
+        public static bool HasOnlineStatus(this PlayerCharacter pc, uint status) => OnlineStatus.HasStatus(pc, status);
     }
 }

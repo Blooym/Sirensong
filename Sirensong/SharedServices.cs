@@ -2,6 +2,7 @@ using System.Reflection;
 using Dalamud.Data;
 using Dalamud.Game;
 using Dalamud.Game.ClientState;
+using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects;
 using Dalamud.Game.Gui;
 using Dalamud.Game.Gui.Toast;
@@ -24,6 +25,7 @@ namespace Sirensong
         [PluginService] internal static ChatGui ChatGui { get; private set; } = GetDalamudService<ChatGui>();
         [PluginService] internal static TargetManager TargetManager { get; private set; } = GetDalamudService<TargetManager>();
         [PluginService] internal static ObjectTable ObjectTable { get; private set; } = GetDalamudService<ObjectTable>();
+        [PluginService] internal static Condition Condition { get; private set; } = GetDalamudService<Condition>();
         [PluginService] internal static DalamudPluginInterface PluginInterface { get; private set; } = null!;
 
         // Dalamud service shortcuts

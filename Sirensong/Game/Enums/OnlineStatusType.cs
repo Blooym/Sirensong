@@ -5,7 +5,7 @@ namespace Sirensong.Game.Enums
     /// <summary>
     ///     A mapping of <see cref="OnlineStatus"/> IDs to their names.
     /// </summary>
-    public enum OnlineStatuses : uint
+    public enum OnlineStatusType : uint
     {
         GameQA = 1,
         GameMaster = 2,
