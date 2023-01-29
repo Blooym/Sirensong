@@ -9,7 +9,7 @@ namespace Sirensong.Game.State
         ///  Gets the ContentFlag of the current instance if available.
         /// </summary>
         /// <returns>The ContentFlag of the current instance, or null if not available.</returns>
-        private static unsafe ContentFlag? GetInstanceContentFlag()
+        public static unsafe ContentFlag? GetInstanceContentFlag()
         {
             var instanceCD = EventFramework.Instance()->GetInstanceContentDirector();
             if (instanceCD == null)
