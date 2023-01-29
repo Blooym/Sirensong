@@ -11,21 +11,21 @@ namespace Sirensong.UserInterface.Style
         /// <summary>
         /// Colour for errors.
         /// </summary>
-        internal static Vector4 Error => ImGuiColors.DalamudRed;
+        public static Vector4 Error => ImGuiColors.DalamudRed;
 
         /// <summary>
         /// Colour for warnings.
         /// </summary>
-        internal static Vector4 Warning => ImGuiColors.DalamudOrange;
+        public static Vector4 Warning => ImGuiColors.DalamudOrange;
 
         /// <summary>
         /// Colour for success.
         /// </summary>
-        internal static Vector4 Success => ImGuiColors.ParsedGreen;
+        public static Vector4 Success => ImGuiColors.ParsedGreen;
 
         /// <summary>
         /// Colour for important information.
         /// </summary>
-        internal static Vector4 Important => ImGuiColors.DalamudViolet;
+        public static Vector4 Important => ImGuiColors.DalamudViolet;
     }
 }
