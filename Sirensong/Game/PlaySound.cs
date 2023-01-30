@@ -9,7 +9,7 @@ using Sirensong.Game.Enums;
 namespace Sirensong.Game
 {
     /// <summary>
-    ///     Methods to play in-game sound effects.
+    /// Methods to play in-game sound effects.
     /// </summary>
     public static class PlaySound
     {
@@ -19,7 +19,7 @@ namespace Sirensong.Game
         }
 
         /// <summary>
-        ///     If this is true, the PlaySound functions have been disabled.
+        /// If this is true, the PlaySound functions have been disabled.
         /// </summary>
         public static bool Disabled { get; private set; }
 
@@ -28,7 +28,7 @@ namespace Sirensong.Game
         private static PlaySoundDelegate invoke = null!;
 
         /// <summary>
-        ///     Initializes the PlaySound delegate.
+        /// Initializes the PlaySound delegate.
         /// </summary>
         /// <returns>True if the delegate was initialized successfully, false otherwise</returns>
         private static bool Initialize()
@@ -64,7 +64,7 @@ namespace Sirensong.Game
         }
 
         /// <summary>
-        ///     Invokes the PlaySound delegate with the given parameters to play a sound effect.
+        /// Invokes the PlaySound delegate with the given parameters to play a sound effect.
         /// </summary>
         public static void Invoke(SoundEffect id, IntPtr a2 = 0, IntPtr a3 = 0)
         {

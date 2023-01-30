@@ -3,7 +3,7 @@ using Lumina.Excel.GeneratedSheets;
 namespace Sirensong.Game.Enums
 {
     /// <summary>
-    ///     A mapping of <see cref="OnlineStatus"/> IDs to their names.
+    /// A mapping of <see cref="OnlineStatus"/> IDs to their names.
     /// </summary>
     public enum OnlineStatusType : uint
     {

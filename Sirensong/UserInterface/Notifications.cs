@@ -8,7 +8,7 @@ namespace Sirensong.UserInterface
     public static partial class SiGui
     {
         /// <summary>
-        ///     Shows a toast notification, wrapper for <see cref="UiBuilder.AddNotification(string, string?, NotificationType, uint)"/>
+        /// Shows a toast notification, wrapper for <see cref="UiBuilder.AddNotification(string, string?, NotificationType, uint)"/>
         /// </summary>
         /// <param name="message">The message to display.</param>
         /// <param name="type">The type of notification.</param>

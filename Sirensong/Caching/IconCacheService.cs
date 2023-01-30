@@ -9,23 +9,23 @@ using Sirensong.IoC.Internal;
 namespace Sirensong.Caching
 {
     /// <summary>
-    ///     Provides a way to load and cache icon textures.
+    /// Provides a way to load and cache icon textures.
     /// </summary>
     [SirenServiceClass]
     public sealed class IconCacheService : IDisposable, ICache
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="IconCacheService" /> class.
+        /// Initializes a new instance of the <see cref="IconCacheService" /> class.
         /// </summary>
         internal IconCacheService() { }
 
         /// <summary>
-        ///     The path to the icon textures.
+        /// The path to the icon textures.
         /// </summary>
         private const string IconFilePath = "ui/icon/{0:D3}000/{1:D6}_hr1.tex";
 
         /// <summary>
-        ///     The dictionary of icon textures.
+        /// The dictionary of icon textures.
         /// </summary>
         private readonly CacheCollection<uint, TextureWrap> iconTexCache = new(new CacheOptions<uint, TextureWrap>()
         {
@@ -37,7 +37,7 @@ namespace Sirensong.Caching
         });
 
         /// <summary>
-        ///     Disposes of the icon provider.
+        /// Disposes of the icon provider.
         /// </summary>
         public void Dispose()
         {
@@ -52,7 +52,7 @@ namespace Sirensong.Caching
         public void HandleExpired() => this.iconTexCache.HandleExpired();
 
         /// <summary>
-        ///     Uses a task to load the icon texture for the given icon ID.
+        /// Uses a task to load the icon texture for the given icon ID.
         /// </summary>
         /// <param name="iconId">The icon ID to load the texture for.</param>
         private void LoadIconTexture(uint iconId)
@@ -82,14 +82,14 @@ namespace Sirensong.Caching
             });
 
         /// <summary>
-        ///     Gets the path to the icon texture for the given icon ID.
+        /// Gets the path to the icon texture for the given icon ID.
         /// </summary>
         /// <param name="iconId"></param>
         /// <returns></returns>
         private static string GetIconPath(uint iconId) => IconFilePath.Format(iconId / 1000, iconId);
 
         /// <summary>
-        ///     Disposes of the icon at the given path.
+        /// Disposes of the icon at the given path.
         /// </summary>
         /// <param name="iconId">The icon ID to dispose of.</param>
         /// <param name="remove">If true, the image will be removed from the cache.</param>
@@ -106,7 +106,7 @@ namespace Sirensong.Caching
         }
 
         /// <summary>
-        ///     Gets the icon texture for the given icon ID.
+        /// Gets the icon texture for the given icon ID.
         /// </summary>
         /// <param name="iconId">The icon ID to get the texture for.</param>
         /// <returns>The icon texture, or null if it could not be loaded.</returns>
@@ -123,7 +123,7 @@ namespace Sirensong.Caching
         }
 
         /// <summary>
-        ///     Clears the icon cache.
+        /// Clears the icon cache.
         /// </summary>
         public void ClearCache()
         {
@@ -134,7 +134,7 @@ namespace Sirensong.Caching
         }
 
         /// <summary>
-        ///     Clears the given iconId from the cache.
+        /// Clears the given iconId from the cache.
         /// </summary>
         /// <param name="iconId">The icon ID to clear from the cache.</param>
         public void ClearFromCache(int iconId)

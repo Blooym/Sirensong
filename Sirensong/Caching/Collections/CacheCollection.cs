@@ -9,77 +9,77 @@ using Sirensong.Caching.Internal.Interfaces;
 namespace Sirensong.Caching.Collections
 {
     /// <summary>
-    ///     Provides a cache for a given Key, Value pair, built ontop of a <see cref="ConcurrentDictionary{TKey,TValue}"/>, implements an automatic cache cleaner system for expiring items.
+    /// Provides a cache for a given Key, Value pair, built ontop of a <see cref="ConcurrentDictionary{TKey,TValue}"/>, implements an automatic cache cleaner system for expiring items.
     /// </summary>
     /// <remarks>
-    ///     <para>
-    ///         When an item is accessed its access time is updated, and it will be removed from the cache when the SlidingExpiry is reached.
-    ///     </para>
-    ///     <para>
-    ///         When an item is created or updated its update time is updated, and it will be removed from the cache when the AbsoluteExpiry is reached.
-    ///     </para>
-    ///     <para>
-    ///         If both <see cref="CacheOptions{TKey, TValue}.SlidingExpiry"/> and <see cref="CacheOptions{TKey, TValue}.AbsoluteExpiry"/> are set, the item will be removed from the cache when either is reached.
-    ///     </para>
+    /// <para>
+    ///     When an item is accessed its access time is updated, and it will be removed from the cache when the SlidingExpiry is reached.
+    /// </para>
+    /// <para>
+    ///     When an item is created or updated its update time is updated, and it will be removed from the cache when the AbsoluteExpiry is reached.
+    /// </para>
+    /// <para>
+    ///     If both <see cref="CacheOptions{TKey, TValue}.SlidingExpiry"/> and <see cref="CacheOptions{TKey, TValue}.AbsoluteExpiry"/> are set, the item will be removed from the cache when either is reached.
+    /// </para>
     /// </remarks>
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TValue"></typeparam>
     public class CacheCollection<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>, ICache, IDisposable where TKey : notnull where TValue : notnull
     {
         /// <summary>
-        ///     The dictionary of values for the cache.
+        /// The dictionary of values for the cache.
         /// </summary>
         private readonly ConcurrentDictionary<TKey, TValue> cache = new();
 
         /// <summary>
-        ///     The dictionary of Keys to <see cref="KeyExpiryInfo"/>.
+        /// The dictionary of Keys to <see cref="KeyExpiryInfo"/>.
         /// </summary>
         private readonly ConcurrentDictionary<TKey, KeyExpiryInfo> accessTimes = new();
 
         /// <summary>
-        ///     The timer for cleaning the cache.
+        /// The timer for cleaning the cache.
         /// </summary>
         private Timer? cacheCleanTimer;
 
         /// <summary>
-        ///     The lock object for the cache.
+        /// The lock object for the cache.
         /// </summary>
         private readonly object lockObject = new();
 
         /// <summary>
-        ///     The <see cref="CacheOptions{TKey, TValue}"/> for this cache.
+        /// The <see cref="CacheOptions{TKey, TValue}"/> for this cache.
         /// </summary>
         private readonly CacheOptions<TKey, TValue> options;
 
         /// <summary>
-        ///     All the keys in the cache.
+        /// All the keys in the cache.
         /// </summary>
         public IReadOnlyCollection<TKey> Keys => this.cache.Keys.ToList().AsReadOnly();
 
         /// <summary>
-        ///     All the values in the cache.
+        /// All the values in the cache.
         /// </summary>
         public IReadOnlyCollection<TValue> Values => this.cache.Values.ToList().AsReadOnly();
 
         /// <summary>
-        ///     Gets the enumerator for the cache.
+        /// Gets the enumerator for the cache.
         /// </summary>
         /// <returns></returns>
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => this.cache.GetEnumerator();
 
         /// <summary>
-        ///     Gets the enumerator for the cache.
+        /// Gets the enumerator for the cache.
         /// </summary>
         /// <returns></returns>
         IEnumerator IEnumerable.GetEnumerator() => this.cache.GetEnumerator();
 
         /// <summary>
-        ///     Creates a new <see cref="CacheCollection{TKey,TValue}" /> with default options.
+        /// Creates a new <see cref="CacheCollection{TKey,TValue}" /> with default options.
         /// </summary>
         public CacheCollection() : this(new CacheOptions<TKey, TValue>()) => this.SetupTimer();
 
         /// <summary>
-        ///     Creates a new <see cref="CacheCollection{TKey,TValue}" /> with the specified options.
+        /// Creates a new <see cref="CacheCollection{TKey,TValue}" /> with the specified options.
         /// </summary>
         /// <param name="options">The <see cref="CacheOptions{TKey, TValue}"/> for this cache.</param>
         public CacheCollection(CacheOptions<TKey, TValue> options)
@@ -104,7 +104,7 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        ///     Disposes of the cache and all its keys and values if they implement <see cref="IDisposable"/>.
+        /// Disposes of the cache and all its keys and values if they implement <see cref="IDisposable"/>.
         /// </summary>
         public void Dispose()
         {
@@ -121,7 +121,7 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        ///     Checks if the given key is expired and removes it if it is.
+        /// Checks if the given key is expired and removes it if it is.
         /// </summary>
         /// <param name="key">The key to check.</param>
         /// <returns>True if the key is expired (and was removed from the cache), false otherwise.</returns>
@@ -156,7 +156,7 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        ///     Removes of all keys and values in the cache and disposes if they implement <see cref="IDisposable"/>.
+        /// Removes of all keys and values in the cache and disposes if they implement <see cref="IDisposable"/>.
         /// </summary>
         private void RemoveAllKV()
         {
@@ -181,7 +181,7 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        ///     Updates the access time for the given key.
+        /// Updates the access time for the given key.
         /// </summary>
         /// <param name="key">The key to update.</param>
         private void UpdateAccessedTime(TKey key)
@@ -199,7 +199,7 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        ///     Updates the update time for the given key.
+        /// Updates the update time for the given key.
         /// </summary>
         /// <param name="key">The key to update.</param>
         private void UpdateUpdatedTime(TKey key)
@@ -217,7 +217,7 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        ///     Gets or sets the value for the given key.
+        /// Gets or sets the value for the given key.
         /// </summary>
         /// <param name="key">The key to get or set.</param>
         /// <returns>The value for the given key or null if the key is not found.</returns>
@@ -247,7 +247,7 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        ///     Gets the value for the given sealedkey.
+        /// Gets the value for the given sealedkey.
         /// </summary>
         /// <param name="key">The key to get.</param>
         /// <param name="value">The value for the given key.</param>
@@ -268,7 +268,7 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        ///     Gets or creates the value for the given key.
+        /// Gets or creates the value for the given key.
         /// </summary>
         /// <param name="key">The key to get or create.</param>
         /// <param name="valueFactory">The factory to create the value if it doesn't exist.</param>
@@ -288,7 +288,7 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        ///     Gets or creates the value for the given key.
+        /// Gets or creates the value for the given key.
         /// </summary>
         /// <param name="key">The key to get or create.</param>
         /// <param name="value">The value to create if it doesn't exist.</param>
@@ -308,7 +308,7 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        ///     Adds or updates the value for the given key.
+        /// Adds or updates the value for the given key.
         /// </summary>
         /// <param name="key">The key to add or update.</param>
         /// <param name="value">The value to add or update.</param>
@@ -322,7 +322,7 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        ///    Adds or updates the value for the given key.
+        ///Adds or updates the value for the given key.
         /// </summary>
         /// <param name="key">The key to add or update.</param>
         /// <param name="value">The value to add or update.</param>
@@ -337,7 +337,7 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        ///     Attempts to remove the key and value from the cache.
+        /// Attempts to remove the key and value from the cache.
         /// </summary>
         /// <param name="key">The key to remove.</param>
         /// <param name="value"></param>
@@ -352,7 +352,7 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        ///     Attempts to remove the key and value from the cache.
+        /// Attempts to remove the key and value from the cache.
         /// </summary>
         /// <param name="key">The key to remove.</param>
         /// <param name="value"></param>
@@ -367,7 +367,7 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        ///     Checks if the given key exists.
+        /// Checks if the given key exists.
         /// </summary>
         /// <param name="key">The key to check.</param>
         /// <returns>True if the key exists, false otherwise.</returns>
@@ -399,34 +399,34 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        ///     Clears the cache.
+        /// Clears the cache.
         /// </summary>
         public void Clear() => this.RemoveAllKV();
 
         /// <summary>
-        ///     Represents expiry information for a key.
+        /// Represents expiry information for a key.
         /// </summary>
         private struct KeyExpiryInfo
         {
             /// <summary>
-            ///     The last time the key was accessed.
+            /// The last time the key was accessed.
             /// </summary>
             public DateTime LastAccessTime { get; private set; } = DateTime.Now;
 
             /// <summary>
-            ///     The last time the key was updated.
+            /// The last time the key was updated.
             /// </summary>
             public DateTime LastUpdateTime { get; private set; } = DateTime.Now;
 
             /// <summary>
-            ///     Creates a new instance of <see cref="KeyExpiryInfo"/> with the current time.
+            /// Creates a new instance of <see cref="KeyExpiryInfo"/> with the current time.
             /// </summary>
             public KeyExpiryInfo()
             {
             }
 
             /// <summary>
-            ///     Creates a new instance of <see cref="KeyExpiryInfo"/> with the given times.
+            /// Creates a new instance of <see cref="KeyExpiryInfo"/> with the given times.
             /// </summary>
             /// <param name="lastAccessTime"></param>
             /// <param name="lastUpdateTime"></param>
@@ -437,12 +437,12 @@ namespace Sirensong.Caching.Collections
             }
 
             /// <summary>
-            ///     Updates the last access time to the current time.
+            /// Updates the last access time to the current time.
             /// </summary>
             public void Accessed() => this.LastAccessTime = DateTime.Now;
 
             /// <summary>
-            ///     Updates the last update time to the current time.
+            /// Updates the last update time to the current time.
             /// </summary>
             public void Updated()
             {
@@ -453,43 +453,43 @@ namespace Sirensong.Caching.Collections
     }
 
     /// <summary>
-    ///     Represents options for a timed cache.
+    /// Represents options for a timed cache.
     /// </summary>
     public struct CacheOptions<TKey, TValue>
     {
         /// <summary>
-        ///     The sliding expiry time for the cache. Items in the cache will expire after this amount of time since they were last accessed.
-        ///     Default: null.
+        /// The sliding expiry time for the cache. Items in the cache will expire after this amount of time since they were last accessed.
+        /// Default: null.
         /// </summary>
         public TimeSpan? SlidingExpiry { get; set; } = null;
 
         /// <summary>
-        ///     The absolute expiry time for the cache. Items in the cache will expire after this amount of time since they were last updated.
-        ///     Default: 1 hour.
+        /// The absolute expiry time for the cache. Items in the cache will expire after this amount of time since they were last updated.
+        /// Default: 1 hour.
         /// </summary>
         public TimeSpan? AbsoluteExpiry { get; set; } = TimeSpan.FromHours(1);
 
         /// <summary>
-        ///    Called when an item is expired from the cache.
-        ///    Default: null.
+        ///Called when an item is expired from the cache.
+        ///Default: null.
         /// </summary>
         public Action<TKey, TValue>? OnExpiry { get; set; }
 
         /// <summary>
-        ///     If true, the cache will use the built in expiry system to expire items automatically.
-        ///     If false, the cache will not expire items automatically, and items will be expired on access or when <see cref="CacheCollection{TKey, TValue}.HandleExpired()"/> is called.
-        ///     Default: true.
+        /// If true, the cache will use the built in expiry system to expire items automatically.
+        /// If false, the cache will not expire items automatically, and items will be expired on access or when <see cref="CacheCollection{TKey, TValue}.HandleExpired()"/> is called.
+        /// Default: true.
         /// </summary>
         public bool UseBuiltInExpire { get; set; } = true;
 
         /// <summary>
-        ///     The interval to check for expired items, only used if <see cref="UseBuiltInExpire"/> is true.
-        ///     Defaults to 1 minute.
+        /// The interval to check for expired items, only used if <see cref="UseBuiltInExpire"/> is true.
+        /// Defaults to 1 minute.
         /// </summary>
         public TimeSpan? ExpireInterval { get; set; } = TimeSpan.FromMinutes(1);
 
         /// <summary>
-        ///     Creates a new instance of <see cref="CacheOptions{TKey, TValue}"/>.
+        /// Creates a new instance of <see cref="CacheOptions{TKey, TValue}"/>.
         /// </summary>
         public CacheOptions() { }
     }

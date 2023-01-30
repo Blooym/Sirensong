@@ -3,12 +3,12 @@ using System;
 namespace Sirensong.Utility
 {
     /// <summary>
-    ///     A collection of common utility methods.
+    /// A collection of common utility methods.
     /// </summary>
     public static class Common
     {
         /// <summary>
-        ///     Returns the operating system of the executing system or "Wine" if in a WINEPREFIX.
+        /// Returns the operating system of the executing system or "Wine" if in a WINEPREFIX.
         /// </summary>
         public static string GetOS()
         {

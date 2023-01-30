@@ -4,12 +4,12 @@ using Sirensong.Game.Enums;
 namespace Sirensong.Game.UI
 {
     /// <summary>
-    ///     Methods to format and show in-game chat messages.
+    /// Methods to format and show in-game chat messages.
     /// </summary>
     public static class GameChat
     {
         /// <summary>
-        ///     Creates a base <see cref="SeStringBuilder"/> with the plugin name prepended.
+        /// Creates a base <see cref="SeStringBuilder"/> with the plugin name prepended.
         /// </summary>
         /// <param name="pluginName">The name of the plugin.</param>
         /// <param name="pluginTagColour">The colour of the plugin name.</param>
@@ -22,7 +22,7 @@ namespace Sirensong.Game.UI
                 .AddText(" ");
 
         /// <summary>
-        ///     Prints a message to the chat log with the plugin name prepended.
+        /// Prints a message to the chat log with the plugin name prepended.
         /// </summary>
         /// <param name="message">The message to print.</param>
         /// <param name="pluginTagColour">The colour of the plugin name tag.</param>
@@ -34,7 +34,7 @@ namespace Sirensong.Game.UI
             );
 
         /// <summary>
-        ///     Prints an error message to the chat log with the plugin name prepended.
+        /// Prints an error message to the chat log with the plugin name prepended.
         /// </summary>
         /// <param name="message"></param>
         /// <param name="pluginTagColour"></param>
@@ -46,7 +46,7 @@ namespace Sirensong.Game.UI
             );
 
         /// <summary>
-        ///     Prints a message to the chat log with the plugin name prepended.
+        /// Prints a message to the chat log with the plugin name prepended.
         /// </summary>
         /// <param name="message">The message to print.</param>
         /// <param name="pluginTagColour"></param>
@@ -58,7 +58,7 @@ namespace Sirensong.Game.UI
             );
 
         /// <summary>
-        ///     Prints an error message to the chat log with the plugin name prepended.
+        /// Prints an error message to the chat log with the plugin name prepended.
         /// </summary>
         /// <param name="message">The message to print.</param>
         /// <param name="pluginTagColour"></param>

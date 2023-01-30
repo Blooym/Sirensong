@@ -6,7 +6,7 @@ namespace Sirensong.UserInterface
     public static partial class SiGui
     {
         /// <summary>
-        ///     Draws a text input field with a label.
+        /// Draws a text input field with a label.
         /// </summary>
         /// <param name="label">The label to display.</param>
         /// <param name="value">The reference to the string value.</param>
@@ -21,7 +21,7 @@ namespace Sirensong.UserInterface
         }
 
         /// <summary>
-        ///     Draws a text input field with a label and a hint.
+        /// Draws a text input field with a label and a hint.
         /// </summary>
         /// <param name="label">The label to display.</param>
         /// <param name="hint">The hint to display.</param>
@@ -37,7 +37,7 @@ namespace Sirensong.UserInterface
         }
 
         /// <summary>
-        ///     Draws a text input field with a label and a hint.
+        /// Draws a text input field with a label and a hint.
         /// </summary>
         /// <param name="label">The label to display.</param>
         /// <param name="value">The reference to the string value.</param>
@@ -53,7 +53,7 @@ namespace Sirensong.UserInterface
         }
 
         /// <summary>
-        ///     Draws a integer input field with a label.
+        /// Draws a integer input field with a label.
         /// </summary>
         /// <param name="label">The label to display.</param>
         /// <param name="value">The reference to the integer value.</param>
@@ -69,7 +69,7 @@ namespace Sirensong.UserInterface
         }
 
         /// <summary>
-        ///     Draws a float input field with a label.
+        /// Draws a float input field with a label.
         /// </summary>
         /// <param name="label">The label to display.</param>
         /// <param name="value">The reference to the integer value.</param>

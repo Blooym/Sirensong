@@ -6,12 +6,12 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 namespace Sirensong.Game.Extensions
 {
     /// <summary>
-    ///     Extensions for <see cref="ObjectTable"/>.
+    /// Extensions for <see cref="ObjectTable"/>.
     /// </summary>
     public static class ObjectTableExtensions
     {
         /// <summary>
-        ///     Gets all <see cref="PlayerCharacter"/>s in the <see cref="ObjectTable"/>.
+        /// Gets all <see cref="PlayerCharacter"/>s in the <see cref="ObjectTable"/>.
         /// </summary>
         /// <param name="objectTable"></param>
         /// <param name="includeSelf">Whether or not to include the local player.</param>

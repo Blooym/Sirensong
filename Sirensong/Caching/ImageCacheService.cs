@@ -9,18 +9,18 @@ using Sirensong.IoC.Internal;
 namespace Sirensong.Caching
 {
     /// <summary>
-    ///     Provides a way to load and cache images.
+    /// Provides a way to load and cache images.
     /// </summary>
     [SirenServiceClass]
     public sealed class ImageCacheService : IDisposable, ICache
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ImageCacheService" /> class.
+        /// Initializes a new instance of the <see cref="ImageCacheService" /> class.
         /// </summary>
         internal ImageCacheService() { }
 
         /// <summary>
-        ///     The dictionary of cached images and their last access time.
+        /// The dictionary of cached images and their last access time.
         /// </summary>
         private readonly CacheCollection<string, TextureWrap> imageTexCache = new(new CacheOptions<string, TextureWrap>()
         {
@@ -32,12 +32,12 @@ namespace Sirensong.Caching
         });
 
         /// <summary>
-        ///     HTTP Client instance.
+        /// HTTP Client instance.
         /// </summary>
         private readonly HttpClient httpClient = new();
 
         /// <summary>
-        ///     Disposes of the image provider.
+        /// Disposes of the image provider.
         /// </summary>
         public void Dispose()
         {
@@ -53,7 +53,7 @@ namespace Sirensong.Caching
         public void HandleExpired() => this.imageTexCache.HandleExpired();
 
         /// <summary>
-        ///     Loads the image at the given path or URL in a Task.
+        /// Loads the image at the given path or URL in a Task.
         /// </summary>
         /// <param name="path"></param>
         private void LoadImage(string path) =>
@@ -112,7 +112,7 @@ namespace Sirensong.Caching
             });
 
         /// <summary>
-        ///     Loads an image from a HTTP or HTTPS URL.
+        /// Loads an image from a HTTP or HTTPS URL.
         /// </summary>
         /// <param name="url">The URL to load the image from.</param>
         /// <returns>The image texture.</returns>
@@ -123,7 +123,7 @@ namespace Sirensong.Caching
         }
 
         /// <summary>
-        ///     Disposes of the image at the given path.
+        /// Disposes of the image at the given path.
         /// </summary>
         /// <param name="path">The path or URL to the image.</param>
         /// <param name="remove">If true, the image will be removed from the cache.</param>
@@ -141,7 +141,7 @@ namespace Sirensong.Caching
         }
 
         /// <summary>
-        ///     Gets the image at the given path.
+        /// Gets the image at the given path.
         /// </summary>
         /// <param name="path">The path or URL to the image.</param>
         /// <returns></returns>
@@ -159,10 +159,10 @@ namespace Sirensong.Caching
         }
 
         /// <summary>
-        ///     Clears the image cache.
+        /// Clears the image cache.
         /// </summary>
         /// <remarks>
-        ///     Should not be called when any images are in use within ImGui or when any images are being loaded.
+        /// Should not be called when any images are in use within ImGui or when any images are being loaded.
         /// </remarks>
         public void ClearCache()
         {
@@ -173,10 +173,10 @@ namespace Sirensong.Caching
         }
 
         /// <summary>
-        ///     Clears the image at the given path from the cache.
+        /// Clears the image at the given path from the cache.
         /// </summary>
         /// <remarks>
-        ///     Should not be called when the image is in use within ImGui or when the image is being loaded.
+        /// Should not be called when the image is in use within ImGui or when the image is being loaded.
         /// </remarks>
         /// <param name="path"></param>
         public void ClearFromCache(string path)

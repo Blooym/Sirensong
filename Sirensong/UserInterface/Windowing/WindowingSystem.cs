@@ -9,23 +9,23 @@ using Sirensong.UserInterface.Services;
 namespace Sirensong.UserInterface.Windowing
 {
     /// <summary>
-    ///     Wrapper for <see cref="WindowSystem" /> that adds some additional functionality.
+    /// Wrapper for <see cref="WindowSystem" /> that adds some additional functionality.
     /// </summary>
     [SirenServiceClass]
     public sealed class WindowingSystem : IDisposable
     {
         /// <summary>
-        ///     The linked Dalamud <see cref="WindowSystem" />
+        /// The linked Dalamud <see cref="WindowSystem" />
         /// </summary>
         private readonly WindowSystem windowSystem;
 
         /// <summary>
-        ///     The namespace of the plugin that owns this <see cref="WindowingSystem"/>.
+        /// The namespace of the plugin that owns this <see cref="WindowingSystem"/>.
         /// </summary>
         private readonly string uiNamespace;
 
         /// <summary>
-        ///     The config window to use for <see cref="UiBuilder.OpenConfigUi"/>.
+        /// The config window to use for <see cref="UiBuilder.OpenConfigUi"/>.
         /// </summary>
         public Window? ConfigWindow { get; private set; }
 
@@ -33,7 +33,7 @@ namespace Sirensong.UserInterface.Windowing
         private ClipboardService Clipboard { get; } = SirenCore.IoC.GetOrCreateService<ClipboardService>();
 
         /// <summary>
-        ///    Constructs a new <see cref="WindowingSystem"/>.
+        ///Constructs a new <see cref="WindowingSystem"/>.
         /// </summary>
         internal WindowingSystem()
         {
@@ -43,7 +43,7 @@ namespace Sirensong.UserInterface.Windowing
         }
 
         /// <summary>
-        ///     Disposes of the windowing manager and all windows that are bound to it.
+        /// Disposes of the windowing manager and all windows that are bound to it.
         /// </summary>
         public void Dispose()
         {
@@ -58,7 +58,7 @@ namespace Sirensong.UserInterface.Windowing
         }
 
         /// <summary>
-        ///     Draws all windows in the windowing system, with Sirens added providers.
+        /// Draws all windows in the windowing system, with Sirens added providers.
         /// </summary>
         private void Draw()
         {
@@ -72,7 +72,7 @@ namespace Sirensong.UserInterface.Windowing
         }
 
         /// <summary>
-        ///     Sets the config window to use for <see cref="UiBuilder.OpenConfigUi"/>.
+        /// Sets the config window to use for <see cref="UiBuilder.OpenConfigUi"/>.
         /// </summary>
         /// <param name="window">The window to use as the config window.</param>
         public void SetConfigWindow(Window window)
@@ -85,7 +85,7 @@ namespace Sirensong.UserInterface.Windowing
         }
 
         /// <summary>
-        ///     Unset the config window for <see cref="UiBuilder.OpenConfigUi"/>.
+        /// Unset the config window for <see cref="UiBuilder.OpenConfigUi"/>.
         /// </summary>
         public void UnsetConfigWindow()
         {
@@ -97,20 +97,20 @@ namespace Sirensong.UserInterface.Windowing
         }
 
         /// <summary>
-        ///    Gets all windows in the windowing system.
+        ///Gets all windows in the windowing system.
         /// </summary>
         /// <returns>An array of all windows in the windowing system.</returns>
         public IReadOnlyList<Window> Windows => this.windowSystem.Windows;
 
         /// <summary>
-        ///     Gets a window by type.
+        /// Gets a window by type.
         /// </summary>
         /// <typeparam name="T">The type of window to get.</typeparam>
         /// <returns>The first window with the specified type in the windowing system, or null if it does not exist.</returns>
         public Window? GetWindow<T>() where T : Window => this.Windows.FirstOrDefault(window => window is T);
 
         /// <summary>
-        ///     Tries to get a window by type.
+        /// Tries to get a window by type.
         /// </summary>
         /// <typeparam name="T">The type of window to get.</typeparam>
         /// <param name="windowOut">The window with the specified type, or null if it does not exist.</param>
@@ -121,10 +121,10 @@ namespace Sirensong.UserInterface.Windowing
         }
 
         /// <summary>
-        ///     Adds a window to the windowing system.
+        /// Adds a window to the windowing system.
         /// </summary>
         /// <remarks>
-        ///     If multiple windows are added as config windows, the last one added will be used.
+        /// If multiple windows are added as config windows, the last one added will be used.
         /// </remarks>
         /// <param name="window">The window to add.</param>
         /// <param name="isConfigWindow">Whether or not the window is the config window.</param>
@@ -141,10 +141,10 @@ namespace Sirensong.UserInterface.Windowing
         }
 
         /// <summary>
-        ///     Adds all passed windows to the windowing system.
+        /// Adds all passed windows to the windowing system.
         /// </summary>
         /// <remarks>
-        ///    If multiple windows are added as config windows, the last one added will be used.
+        ///If multiple windows are added as config windows, the last one added will be used.
         /// </remarks>
         /// <params name="windows">The windows to add.</params>
         public void AddWindows(Dictionary<Window, bool> windows)
@@ -156,7 +156,7 @@ namespace Sirensong.UserInterface.Windowing
         }
 
         /// <summary>
-        ///     Removes a window from the windowing system and disposes of it if it implements <see cref="IDisposable"/>.
+        /// Removes a window from the windowing system and disposes of it if it implements <see cref="IDisposable"/>.
         /// </summary>
         /// <param name="window">The window to remove.</param>
         public void RemoveWindow(Window window)
@@ -177,7 +177,7 @@ namespace Sirensong.UserInterface.Windowing
         }
 
         /// <summary>
-        ///    Checks to see if any windows are open.
+        ///Checks to see if any windows are open.
         /// </summary>
         /// <returns>True if any windows are open, false otherwise.</returns>
         internal bool AnyWindowsOpen()
@@ -194,7 +194,7 @@ namespace Sirensong.UserInterface.Windowing
         }
 
         /// <summary>
-        ///     Toggles the open state of the configuration window.
+        /// Toggles the open state of the configuration window.
         /// </summary>
         internal void ToggleConfigWindow()
         {

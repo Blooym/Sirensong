@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace Sirensong.DataStructures
 {
     /// <summary>
-    ///     Represents a translatable string.
+    /// Represents a translatable string.
     /// </summary>
     public readonly record struct TranslatableString
     {
@@ -14,7 +14,7 @@ namespace Sirensong.DataStructures
         public string JA { get; init; }
 
         /// <summary>
-        ///     Gets the string for given ClientLanguage.
+        /// Gets the string for given ClientLanguage.
         /// </summary>
         /// <param name="language">The ClientLanguage to get the string for.</param>
         /// <returns>The string for the specified ClientLanguage, or the English string if the ClientLanguage is not supported or missing in the data.</returns>
@@ -28,7 +28,7 @@ namespace Sirensong.DataStructures
         };
 
         /// <summary>
-        ///     Gets the string for given ISO code.
+        /// Gets the string for given ISO code.
         /// </summary>
         /// <param name="isoCode">The ISO code to get the string for.</param>
         /// <returns>The string for the specified ISO code, or the English string if the ISO code is not supported or missing in the data.</returns>
@@ -42,12 +42,12 @@ namespace Sirensong.DataStructures
         };
 
         /// <summary>
-        ///     Gets the string for the current game language or English if not found.
+        /// Gets the string for the current game language or English if not found.
         /// </summary>
         [JsonIgnore] public string GameCurrent => this[SharedServices.ClientState.ClientLanguage];
 
         /// <summary>
-        ///     Returns the string for the current Dalamud UI language or English if not found.
+        /// Returns the string for the current Dalamud UI language or English if not found.
         /// </summary>
         [JsonIgnore] public string UICurrent => this[SharedServices.PluginInterface.UiLanguage];
     }

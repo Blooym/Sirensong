@@ -3,7 +3,7 @@ using Lumina.Excel.GeneratedSheets;
 namespace Sirensong.Game.Enums
 {
     /// <summary>
-    ///     A mapping of <see cref="TerritoryType.TerritoryIntendedUse"/> IDs to their names.
+    /// A mapping of <see cref="TerritoryType.TerritoryIntendedUse"/> IDs to their names.
     /// </summary>
     public enum TerritoryIntendedUseType : byte
     {

@@ -5,12 +5,12 @@ using Sirensong.Game.Enums;
 namespace Sirensong.Game.Extensions
 {
     /// <summary>
-    ///     Extensions for <see cref="ContentFinderCondition" />
+    /// Extensions for <see cref="ContentFinderCondition" />
     /// </summary>
     public static class ContentFinderConditionExtensions
     {
         /// <summary>
-        ///     Gets the <see cref="ContentDifficulty"/> from the <see cref="ContentFinderCondition" /> name. Only works for the English sheet!
+        /// Gets the <see cref="ContentDifficulty"/> from the <see cref="ContentFinderCondition" /> name. Only works for the English sheet!
         /// </summary>
         /// <param name="cfCond">The English <see cref="ContentFinderCondition" /> sheet to use.</param>
         /// <returns>The <see cref="ContentDifficulty"/> </returns>
@@ -26,7 +26,7 @@ namespace Sirensong.Game.Extensions
         };
 
         /// <summary>
-        ///     Gets the <see cref="ContentType" /> from the given <see cref="ContentFinderCondition" />
+        /// Gets the <see cref="ContentType" /> from the given <see cref="ContentFinderCondition" />
         /// </summary>
         /// <param name="cfCond">The <see cref="ContentFinderCondition" /> sheet to use.</param>
         /// <param name="splitRaids">Whether the check should split <see cref="ContentType.Raids" /> and <see cref="ContentType.AllianceRaids" /> apart.

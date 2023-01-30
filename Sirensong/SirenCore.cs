@@ -6,7 +6,7 @@ using Sirensong.IoC.Internal;
 namespace Sirensong
 {
     /// <summary>
-    ///     Contains core methods for interacting with Sirensong.
+    /// Contains core methods for interacting with Sirensong.
     /// </summary>
     public static class SirenCore
     {
@@ -15,28 +15,28 @@ namespace Sirensong
         internal static readonly ServiceContainer IoC = new();
 
         /// <summary>
-        ///     Whether or not Sirensong has been disposed.
+        /// Whether or not Sirensong has been disposed.
         /// </summary>
-        private static bool isDisposed;
+        private static bool disposedValue;
 
         /// <summary>
-        ///     The initializing assembly.
+        /// The initializing assembly.
         /// </summary>
-        private static Assembly? initializerAssembly;
+        internal static Assembly InitializerAssembly { get; private set; } = null!;
 
         /// <summary>
-        ///     The name of the assembly/plugin that initialized Sirensong.
+        /// The name of the assembly/plugin that initialized Sirensong.
         /// </summary>
-        private static string? initializerName;
+        internal static string InitializerName { get; private set; } = null!;
 
         /// <summary>
-        ///     Initializes the Sirensong library, using the provided <see cref="DalamudPluginInterface"/> to access Dalamud services.
+        /// Initializes the Sirensong library, using the provided <see cref="DalamudPluginInterface"/> to access Dalamud services.
         /// </summary>
         /// <remarks>
-        ///     <para>
-        ///         Initialize is required to be called before accessing any Sirensong services, as it is responsible for creating
-        ///         Both a <see cref="ServiceContainer"/> and a <see cref="SharedServices"/> instance.
-        ///     </para>
+        /// <para>
+        ///     Initialize is required to be called before accessing any Sirensong services, as it is responsible for creating
+        ///     Both a <see cref="ServiceContainer"/> and a <see cref="SharedServices"/> instance.
+        /// </para>
         /// </remarks>
         /// <param name="pluginInterface">Your plugin's <see cref="DalamudPluginInterface"/>.</param>
         /// <param name="pluginName"></param>
@@ -45,50 +45,37 @@ namespace Sirensong
         public static void Initialize(DalamudPluginInterface pluginInterface, string pluginName)
         {
             // Create Dalamud services.
-            pluginInterface.Create<SharedServices>();
+            SharedServices.Initialize(pluginInterface);
 
             // Set initializer information.
-            initializerAssembly = Assembly.GetCallingAssembly();
-            initializerName = pluginName;
+            InitializerAssembly = Assembly.GetCallingAssembly();
+            InitializerName = pluginName;
 
             SirenLog.IDebug($"Initialized successfully!");
         }
 
         /// <summary>
-        ///     Disposes of Sirensong resources.
+        /// Disposes of Sirensong resources.
         /// </summary>
         public static void Dispose()
         {
-            if (isDisposed)
+            if (!disposedValue)
             {
-                return;
+                IoC.Dispose();
+                disposedValue = true;
             }
-
-            IoC.Dispose();
-            isDisposed = true;
         }
 
-        /// <summary>
-        ///     Gets the initializing assembly.
-        /// </summary>
-        /// <returns>The initializing assembly.</returns>
-        /// <exception cref="InvalidOperationException">Thrown if Sirensong has not been initialized.</exception>
-        public static Assembly Initializer => initializerAssembly ?? throw new InvalidOperationException("Sirensong has not been initialized.");
 
-        /// <summary>
-        ///     Gets the name of the assembly/plugin that initialized Sirensong.
-        /// </summary>
-        /// <returns>The name of the assembly/plugin that initialized Sirensong.</returns>
-        /// <exception cref="InvalidOperationException">Thrown if Sirensong has not been initialized.</exception>
-        public static string InitializerName => initializerName ?? throw new InvalidOperationException("Sirensong has not been initialized.");
+        // Public-facing IoC methods.
 
         /// <inheritdoc cref="ServiceContainer.InjectServices{T}"/>
-        public static void InjectServices<T>() => IoC.InjectServices<T>(Assembly.GetCallingAssembly());
+        public static void InjectServices<T>() where T : class => IoC.InjectServices<T>();
 
         /// <inheritdoc cref="ServiceContainer.GetService{T}"/>
-        public static T? GetService<T>() => IoC.GetService<T>();
+        public static T? GetService<T>() where T : class => IoC.GetService<T>();
 
         /// <inheritdoc cref="ServiceContainer.GetOrCreateService{T}"/>
-        public static T GetOrCreateService<T>() => IoC.GetOrCreateService<T>();
+        public static T GetOrCreateService<T>() where T : class => IoC.GetOrCreateService<T>();
     }
 }

@@ -1,7 +1,7 @@
 namespace Sirensong.Game.Enums
 {
     /// <summary>
-    ///     Represents a ContentType, mapping from <see cref="ContentFinderCondition.ContentType" />.
+    /// Represents a ContentType, mapping from <see cref="ContentFinderCondition.ContentType" />.
     /// </summary>
     public enum ContentType
     {

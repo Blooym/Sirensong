@@ -5,7 +5,7 @@ using Lumina.Excel.GeneratedSheets;
 namespace Sirensong.Game.Enums
 {
     /// <summary>
-    ///     A mapping of <see cref="ClassJob"/> role IDs to their names.
+    /// A mapping of <see cref="ClassJob"/> role IDs to their names.
     /// </summary>
     public enum ClassJobRole : uint
     {
@@ -17,7 +17,7 @@ namespace Sirensong.Game.Enums
     }
 
     /// <summary>
-    ///     Extensions for <see cref="ClassJobRole" />
+    /// Extensions for <see cref="ClassJobRole" />
     /// </summary>
     public static class ClassJobRoleExtensions
     {

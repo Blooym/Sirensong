@@ -5,56 +5,56 @@ using Sirensong.IoC.Internal;
 namespace Sirensong.UserInterface.Services
 {
     /// <summary>
-    ///     Wrapper built on top of ImGui's clipboard functions that allow for finer control over the clipboard and clipboard events.
+    /// Wrapper built on top of ImGui's clipboard functions that allow for finer control over the clipboard and clipboard events.
     /// </summary>
     [SirenServiceClass]
     public sealed class ClipboardService
     {
         /// <summary>
-        ///     Creates a new instance of the <see cref="ClipboardService"/> class.
+        /// Creates a new instance of the <see cref="ClipboardService"/> class.
         /// </summary>
         internal ClipboardService() { }
 
         /// <summary>
-        ///     How long should the clipboard be considered copied or pasted for?
+        /// How long should the clipboard be considered copied or pasted for?
         /// </summary>
         /// <remarks>
-        ///     Default value: 1000ms
+        /// Default value: 1000ms
         /// </remarks>
         public int Timeout { get; set; } = 1250;
 
         /// <summary>
-        ///     The last time the clipboard was copied using the <see cref="Copy"/> method.
+        /// The last time the clipboard was copied using the <see cref="Copy"/> method.
         /// </summary>
         public DateTime LastCopyTime { get; private set; }
 
         /// <summary>
-        ///     The last time the clipboard was pasted to using the <see cref="Paste"/> method.
+        /// The last time the clipboard was pasted to using the <see cref="Paste"/> method.
         /// </summary>
         public DateTime LastPasteTime { get; private set; }
 
         /// <summary>
-        ///     Fired when the clipboard is copied using the Clipboard <see cref="Copy"/> method.
+        /// Fired when the clipboard is copied using the Clipboard <see cref="Copy"/> method.
         /// </summary>
         public event Action<object, string> Copied = null!;
 
         /// <summary>
-        ///     Fired when the clipboard is pasted from using the Clipboard <see cref="Paste"/> method.
+        /// Fired when the clipboard is pasted from using the Clipboard <see cref="Paste"/> method.
         /// </summary>
         public event Action<object, string> Pasted = null!;
 
         /// <summary>
-        ///     Was the clipboard copied within the timeout?
+        /// Was the clipboard copied within the timeout?
         /// </summary>
         public bool WasCopied => this.LastCopyTime.AddMilliseconds(this.Timeout) > DateTime.Now;
 
         /// <summary>
-        ///     Was the clipboard pasted within the timeout?
+        /// Was the clipboard pasted within the timeout?
         /// </summary>
         public bool WasPasted => this.LastPasteTime.AddMilliseconds(this.Timeout) > DateTime.Now;
 
         /// <summary>
-        ///     Copies text to the clipboard.
+        /// Copies text to the clipboard.
         /// </summary>
         /// <param name="text"></param>
         /// <param name="silent">If true, suppresses any events from being fired, does not log anything and does not update the <see cref="LastCopyTime"/> property.</param>
@@ -76,7 +76,7 @@ namespace Sirensong.UserInterface.Services
         }
 
         /// <summary>
-        ///     Pastes text from the clipboard.
+        /// Pastes text from the clipboard.
         /// </summary>
         /// <param name="silent">If true, suppresses any events from being fired, does not log anything and does not update the <see cref="LastPasteTime"/> property.</param>
         /// <returns></returns>
@@ -95,10 +95,10 @@ namespace Sirensong.UserInterface.Services
         }
 
         /// <summary>
-        ///     Binds typical keyboard shortcuts for copy, cut, and paste to the clipboard Copy and Paste methods.
+        /// Binds typical keyboard shortcuts for copy, cut, and paste to the clipboard Copy and Paste methods.
         /// </summary>
         /// <remarks>
-        ///    This method should be called in at the end of a window's draw method.
+        ///This method should be called in at the end of a window's draw method.
         /// </remarks>
         public void UseKeyboardShortcuts()
         {

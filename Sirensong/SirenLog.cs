@@ -5,16 +5,16 @@ using Dalamud.Logging;
 namespace Sirensong
 {
     /// <summary>
-    ///     Logging utility wrapping <see cref="PluginLog"/> with a nicer format, for use internally by Sirensong itself.
+    /// Logging utility wrapping <see cref="PluginLog"/> with a nicer format, for use internally by Sirensong itself.
     /// </summary>
     /// <remarks>
-    ///     This class is not intended to be used by plugins because of the way Dalamud handles logging.
-    ///     If this class is used inside of a plugin, ti will show up as "Sirensong" in the log.
+    /// This class is not intended to be used by plugins because of the way Dalamud handles logging.
+    /// If this class is used inside of a plugin, ti will show up as "Sirensong" in the log.
     /// </remarks>
     internal static class SirenLog
     {
         /// <summary>
-        ///     Formats a log message.
+        /// Formats a log message.
         /// </summary>
         /// <param name="message"></param>
         /// <param name="caller"></param>

@@ -1,6 +1,4 @@
 using Dalamud.Game.ClientState.Conditions;
-using Lumina.Excel.GeneratedSheets;
-using Sirensong.Caching;
 using Sirensong.Game.Enums;
 
 namespace Sirensong.Game.State
@@ -36,7 +34,7 @@ namespace Sirensong.Game.State
         /// <returns>True if in an island sanctuary, false otherwise.</returns>
         public static bool IsInIslandSanctuary()
         {
-            var territoryInfo = SirenCore.GetOrCreateService<LuminaCacheService<TerritoryType>>().GetRow(SharedServices.ClientState.TerritoryType);
+            var territoryInfo = SharedServices.TerritoryTypeCache.GetRow(SharedServices.ClientState.TerritoryType);
             if (territoryInfo is null)
             {
                 return false;

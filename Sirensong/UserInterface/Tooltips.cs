@@ -5,7 +5,7 @@ namespace Sirensong.UserInterface
     public static partial class SiGui
     {
         /// <summary>
-        ///     Adds a tooltip to the last item when hovered.
+        /// Adds a tooltip to the last item when hovered.
         /// </summary>
         /// <param name="tooltip">The tooltip text.</param>
         public static void TooltipLast(string tooltip)
@@ -17,7 +17,7 @@ namespace Sirensong.UserInterface
         }
 
         /// <summary>
-        ///     Creates a label with a tooltip.
+        /// Creates a label with a tooltip.
         /// </summary>
         /// <param name="label">The label text</param>
         /// <param name="text">The value text</param>
