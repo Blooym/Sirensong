@@ -6,15 +6,15 @@ using Sirensong.IoC.Internal;
 namespace Sirensong.Game.State
 {
     [SirenServiceClass]
-    public sealed class FateManager : IDisposable
+    public sealed class FateStateManager : IDisposable
     {
         /// <summary>
-        /// Creates a new <see cref="FateManager"/>.
+        /// Creates a new <see cref="FateStateManager"/>.
         /// </summary>
-        internal FateManager() => SharedServices.Framework.Update += this.HandleFateEvents;
+        internal FateStateManager() => SharedServices.Framework.Update += this.HandleFateEvents;
 
         /// <summary>
-        /// Disposes of the <see cref="FateManager"/>.
+        /// Disposes of the <see cref="FateStateManager"/>.
         /// </summary>
         public void Dispose() => SharedServices.Framework.Update -= this.HandleFateEvents;
 
@@ -50,7 +50,7 @@ namespace Sirensong.Game.State
         /// <param name="framework"></param>
         private unsafe void HandleFateEvents(Framework framework)
         {
-            var fateManager = FFXIVClientStructs.FFXIV.Client.Game.Fate.FateManager.Instance();
+            var fateManager = FateManager.Instance();
             if (fateManager == null)
             {
                 return;
