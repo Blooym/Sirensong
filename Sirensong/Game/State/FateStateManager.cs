@@ -67,9 +67,9 @@ namespace Sirensong.Game.State
             }
             else
             {
-
                 if (this.CurrentFate != currentFate)
                 {
+                    this.CurrentFate = currentFate;
                     this.FateJoined?.Invoke(currentFate);
                 }
             }
