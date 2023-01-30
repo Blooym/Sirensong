@@ -87,7 +87,7 @@ namespace Sirensong.IoC.Internal
                 throw new InvalidOperationException($"Cannot create service of type {type.Name} because it already exists.");
             }
 
-            var service = Activator.CreateInstance(type);
+            var service = Activator.CreateInstance(type, true);
             if (service == null)
             {
                 throw new ArgumentNullException(service?.GetType().Name);
