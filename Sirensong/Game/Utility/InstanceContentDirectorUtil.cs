@@ -1,9 +1,9 @@
 using FFXIVClientStructs.FFXIV.Client.Game.Event;
 using Sirensong.Game.Enums;
 
-namespace Sirensong.Game.State
+namespace Sirensong.Game.Utility
 {
-    public static class InstanceContentDirector
+    public static class InstanceContentDirectorUtil
     {
         /// <summary>
         ///  Gets the ContentFlag of the current instance if available.

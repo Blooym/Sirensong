@@ -18,7 +18,9 @@ namespace Sirensong.Caching
         /// Initializes a new instance of the <see cref="LuminaCacheService{T}"/> class.
         /// </summary>
         internal LuminaCacheService()
-        { }
+        {
+
+        }
 
         /// <inheritdoc/>
         public void Dispose()

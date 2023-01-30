@@ -1,9 +1,9 @@
 using Dalamud.Game.ClientState.Conditions;
 using Sirensong.Game.Enums;
 
-namespace Sirensong.Game.State
+namespace Sirensong.Game.Utility
 {
-    public static class Condition
+    public static class ConditionUtil
     {
         /// <summary>
         /// Returns if the given condition flag is set.

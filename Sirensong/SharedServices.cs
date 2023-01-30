@@ -27,6 +27,7 @@ namespace Sirensong
         [PluginService] internal static TargetManager TargetManager { get; private set; } = null!;
         [PluginService] internal static ObjectTable ObjectTable { get; private set; } = null!;
         [PluginService] internal static Dalamud.Game.ClientState.Conditions.Condition Condition { get; private set; } = null!;
+        [PluginService] internal static Framework Framework { get; private set; } = null!;
         [PluginService] internal static DalamudPluginInterface PluginInterface { get; private set; } = null!;
 
         // Dalamud service shortcuts

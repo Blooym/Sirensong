@@ -1,12 +1,12 @@
 using Dalamud.Game.Gui.Toast;
 using Sirensong.Game.Enums;
 
-namespace Sirensong.Game.UI
+namespace Sirensong.Game
 {
     /// <summary>
     /// Methods to show in-game toast notifications.
     /// </summary>
-    public static class GameToasts
+    public static class GameToast
     {
         /// <summary>
         /// Wrapper for <see cref="ToastGui.ShowQuest(string, QuestToastOptions)"/>.

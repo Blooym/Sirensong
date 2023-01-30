@@ -1,7 +1,7 @@
 using Dalamud.Game.Text.SeStringHandling;
 using Sirensong.Game.Enums;
 
-namespace Sirensong.Game.UI
+namespace Sirensong.Game
 {
     /// <summary>
     /// Methods to format and show in-game chat messages.

@@ -32,16 +32,15 @@ namespace Sirensong.IoC.Internal
         {
             if (!this.disposedValue)
             {
+                SirenLog.IVerbose("Disposing of service container.");
                 foreach (var service in this.services.Value)
                 {
                     if (service is IDisposable disposableService)
                     {
-                        SirenLog.IVerbose($"Disposing of service {disposableService.GetType().Name}.");
+                        SirenLog.IVerbose($"Disposing of service {service.GetType().FullName}.");
                         disposableService.Dispose();
                     }
                 }
-
-                SirenLog.IVerbose("Disposed of the service container and all services.");
                 this.disposedValue = true;
             }
         }
@@ -78,13 +77,13 @@ namespace Sirensong.IoC.Internal
 
             if (!IsValidService(type))
             {
-                throw new InvalidOperationException($"Cannot create service of type {type.Name} because it is not a valid service.");
+                throw new InvalidOperationException($"Cannot create service of type {type.FullName} because it is not a valid service.");
             }
 
             var existingService = this.GetService(type);
             if (existingService != null)
             {
-                throw new InvalidOperationException($"Cannot create service of type {type.Name} because it already exists.");
+                throw new InvalidOperationException($"Cannot create service of type {type.FullName} because it already exists.");
             }
 
             var service = Activator.CreateInstance(type, true);
@@ -94,7 +93,7 @@ namespace Sirensong.IoC.Internal
             }
 
             this.services.Value.Add(service);
-            SirenLog.IVerbose($"Successfully created service of type {service.GetType().Name}.");
+            SirenLog.IVerbose($"Service {service.GetType().FullName} created and added to service container.");
             return service;
         }
 
@@ -150,6 +149,7 @@ namespace Sirensong.IoC.Internal
                 disposable.Dispose();
             }
 
+            SirenLog.IVerbose($"Service {service.FullName} removed from service container.");
             this.services.Value.Remove(service);
         }
 
@@ -191,12 +191,12 @@ namespace Sirensong.IoC.Internal
 
                 if (!IsValidService(property.PropertyType))
                 {
-                    throw new InvalidOperationException($"Cannot inject service of type {property.PropertyType.Name} into class {typeof(T).Name} because it is not a valid service.");
+                    throw new InvalidOperationException($"Cannot inject service of type {property.PropertyType.FullName} into class {typeof(T).FullName} because it is not a valid service.");
                 }
 
                 var service = this.GetOrCreateService(property.PropertyType);
                 property.SetValue(null, service);
-                SirenLog.IVerbose($"Successfully injected service of type {service.GetType().Name} into class {typeof(T).Name}.");
+                SirenLog.IVerbose($"Injected service {service.GetType().FullName} into class {typeof(T).FullName}.");
             }
         }
     }

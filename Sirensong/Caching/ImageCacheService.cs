@@ -17,7 +17,10 @@ namespace Sirensong.Caching
         /// <summary>
         /// Initializes a new instance of the <see cref="ImageCacheService" /> class.
         /// </summary>
-        internal ImageCacheService() { }
+        internal ImageCacheService()
+        {
+
+        }
 
         /// <summary>
         /// The dictionary of cached images and their last access time.

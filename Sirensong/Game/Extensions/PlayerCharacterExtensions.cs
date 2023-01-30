@@ -3,7 +3,6 @@ using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Sirensong.Game.Enums;
-using Sirensong.Game.State;
 
 namespace Sirensong.Game.Extensions
 {
@@ -85,9 +84,9 @@ namespace Sirensong.Game.Extensions
         /// <param name="pc"></param>
         /// <param name="status">The status to check for.</param>
         /// <returns></returns>
-        public static bool HasOnlineStatus(this PlayerCharacter pc, OnlineStatusType status) => OnlineStatus.HasStatus(pc, status);
+        public static bool HasOnlineStatus(this PlayerCharacter pc, OnlineStatusType status) => pc.OnlineStatus.Id == (uint)status;
 
         /// <inheritdoc cref="HasOnlineStatus(PlayerCharacter, OnlineStatusType)"/>
-        public static bool HasOnlineStatus(this PlayerCharacter pc, uint status) => OnlineStatus.HasStatus(pc, status);
+        public static bool HasOnlineStatus(this PlayerCharacter pc, uint status) => pc.OnlineStatus.Id == status;
     }
 }

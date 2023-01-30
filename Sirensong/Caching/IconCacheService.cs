@@ -17,7 +17,10 @@ namespace Sirensong.Caching
         /// <summary>
         /// Initializes a new instance of the <see cref="IconCacheService" /> class.
         /// </summary>
-        internal IconCacheService() { }
+        internal IconCacheService()
+        {
+
+        }
 
         /// <summary>
         /// The path to the icon textures.
