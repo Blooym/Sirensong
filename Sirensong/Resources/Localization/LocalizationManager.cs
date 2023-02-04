@@ -5,7 +5,7 @@ using Sirensong.IoC.Internal;
 namespace Sirensong.Resources.Localization
 {
     [SirenServiceClass]
-    internal class LocalizationManager
+    internal sealed class LocalizationManager
     {
         private bool disposedValue;
 
