@@ -10,6 +10,7 @@ using Dalamud.Plugin;
 using Lumina.Excel.GeneratedSheets;
 using Sirensong.Caching;
 using Sirensong.IoC;
+using Sirensong.Resources.Localization;
 
 namespace Sirensong
 {
@@ -37,6 +38,7 @@ namespace Sirensong
         [SirenService] internal static ImageCacheService ImageCache { get; private set; } = null!;
         [SirenService] internal static IconCacheService IconCache { get; private set; } = null!;
         [SirenService] internal static LuminaCacheService<TerritoryType> TerritoryTypeCache { get; private set; } = null!;
+        internal static LocalizationManager LocalizationManager { get; set; } = null!;
 
         internal static void Initialize(DalamudPluginInterface pi)
         {

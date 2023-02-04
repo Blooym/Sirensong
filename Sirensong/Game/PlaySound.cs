@@ -48,16 +48,16 @@ namespace Sirensong.Game
                 var examineFound = SharedServices.SigScanner.TryScanText(Signatures.PlaySound, out var soundData);
                 if (!examineFound || soundData == IntPtr.Zero)
                 {
-                    SirenLog.IWarning($"Could not find signature for PlaySound at {Signatures.PlaySound}, PlaySound functions will be disabled.");
+                    SirenLog.Warning($"Could not find signature for PlaySound at {Signatures.PlaySound}, PlaySound functions will be disabled.");
                     Disabled = true;
                 }
                 invoke = Marshal.GetDelegateForFunctionPointer<PlaySoundDelegate>(soundData);
-                SirenLog.IVerbose($"Initialized PlaySound functions at {Signatures.PlaySound}");
+                SirenLog.Verbose($"Initialized PlaySound functions at {Signatures.PlaySound}");
                 return true;
             }
             catch (Exception e)
             {
-                SirenLog.IWarning($"Could not initialize PlaySound functions, they will be disabled. {e}");
+                SirenLog.Warning($"Could not initialize PlaySound functions, they will be disabled. {e}");
                 Disabled = true;
                 return false;
             }

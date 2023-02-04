@@ -69,7 +69,7 @@ namespace Sirensong.Caching
                         path.EndsWith(".webp", StringComparison.OrdinalIgnoreCase) &&
                         path.EndsWith(".gif", StringComparison.OrdinalIgnoreCase))
                     {
-                        SirenLog.IWarning($"Refusing to load image with invalid extension: {path}");
+                        SirenLog.Warning($"Refusing to load image with invalid extension: {path}");
                         return;
                     }
 
@@ -80,7 +80,7 @@ namespace Sirensong.Caching
                         switch (uri.Scheme)
                         {
                             case "http":
-                                SirenLog.IWarning($"Refusing to load image over HTTP: {path}");
+                                SirenLog.Warning($"Refusing to load image over HTTP: {path}");
                                 return;
                             case "https":
                                 var bytes = await this.GetBytesFromUrl(path);
@@ -90,7 +90,7 @@ namespace Sirensong.Caching
                                 tex = await SharedServices.UiBuilder.LoadImageAsync(uri.LocalPath);
                                 break;
                             default:
-                                SirenLog.IWarning($"Invalid URI: {path}");
+                                SirenLog.Warning($"Invalid URI: {path}");
                                 break;
                         }
 
@@ -98,19 +98,19 @@ namespace Sirensong.Caching
                         if (tex != null && tex.ImGuiHandle != IntPtr.Zero)
                         {
                             this.imageTexCache[path] = tex;
-                            SirenLog.IVerbose($"Loaded image at {path}");
+                            SirenLog.Verbose($"Loaded image at {path}");
                         }
                         else
                         {
                             this.DisposeImage(path);
-                            SirenLog.IWarning($"Image at {path} is not a valid image.");
+                            SirenLog.Warning($"Image at {path} is not a valid image.");
                         }
                     }
                 }
                 catch (Exception ex)
                 {
                     this.DisposeImage(path);
-                    SirenLog.IError($"Something went wrong while loading image at {path}: {ex.Message}");
+                    SirenLog.Error($"Something went wrong while loading image at {path}: {ex.Message}");
                 }
             });
 
@@ -140,7 +140,7 @@ namespace Sirensong.Caching
                 this.imageTexCache.TryRemove(path, out _);
             }
 
-            SirenLog.IVerbose($"Disposed of image at {path}");
+            SirenLog.Verbose($"Disposed of image at {path}");
         }
 
         /// <summary>

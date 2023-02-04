@@ -67,7 +67,7 @@ namespace Sirensong.UserInterface.Services
 
             if (!silent)
             {
-                SirenLog.IVerbose($"Copying text to clipboard: {text}");
+                SirenLog.Verbose($"Copying text to clipboard: {text}");
                 this.LastCopyTime = DateTime.Now;
                 this.Copied?.Invoke(this, text);
             }
@@ -86,7 +86,7 @@ namespace Sirensong.UserInterface.Services
 
             if (!silent && text != string.Empty)
             {
-                SirenLog.IVerbose($"Pasting text from clipboard: {text}");
+                SirenLog.Verbose($"Pasting text from clipboard: {text}");
                 this.LastPasteTime = DateTime.Now;
                 this.Pasted?.Invoke(this, text);
             }

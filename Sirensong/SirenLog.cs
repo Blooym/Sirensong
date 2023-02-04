@@ -23,18 +23,18 @@ namespace Sirensong
         private static string Format(string message, string? caller, string? file) => $"<{Path.GetFileName(file)}::{caller}> via {SirenCore.InitializerName}: {message}";
 
         /// <inheritdoc cref="PluginLog.Verbose(string, object[])"/>
-        internal static void IVerbose(string message, [CallerMemberName] string? caller = null, [CallerFilePath] string? file = null) => PluginLog.Verbose(Format(message, caller, file));
+        internal static void Verbose(string message, [CallerMemberName] string? caller = null, [CallerFilePath] string? file = null) => PluginLog.Verbose(Format(message, caller, file));
 
         /// <inheritdoc cref="PluginLog.Debug(string, object[])"/>
-        internal static void IDebug(string message, [CallerMemberName] string? caller = null, [CallerFilePath] string? file = null) => PluginLog.Debug(Format(message, caller, file));
+        internal static void Debug(string message, [CallerMemberName] string? caller = null, [CallerFilePath] string? file = null) => PluginLog.Debug(Format(message, caller, file));
 
         /// <inheritdoc cref="PluginLog.Information(string, object[])"/>
-        internal static void IInformation(string message, [CallerMemberName] string? caller = null, [CallerFilePath] string? file = null) => PluginLog.Information(Format(message, caller, file));
+        internal static void Information(string message, [CallerMemberName] string? caller = null, [CallerFilePath] string? file = null) => PluginLog.Information(Format(message, caller, file));
 
         /// <inheritdoc cref="PluginLog.Warning(string, object[])"/>
-        internal static void IWarning(string message, [CallerMemberName] string? caller = null, [CallerFilePath] string? file = null) => PluginLog.Warning(Format(message, caller, file));
+        internal static void Warning(string message, [CallerMemberName] string? caller = null, [CallerFilePath] string? file = null) => PluginLog.Warning(Format(message, caller, file));
 
         /// <inheritdoc cref="PluginLog.Error(string, object[])"/>
-        internal static void IError(string message, [CallerMemberName] string? caller = null, [CallerFilePath] string? file = null) => PluginLog.Error(Format(message, caller, file));
+        internal static void Error(string message, [CallerMemberName] string? caller = null, [CallerFilePath] string? file = null) => PluginLog.Error(Format(message, caller, file));
     }
 }

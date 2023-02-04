@@ -69,18 +69,18 @@ namespace Sirensong.Caching
                     if (tex is not null && tex.ImGuiHandle != IntPtr.Zero)
                     {
                         this.iconTexCache[iconId] = tex;
-                        SirenLog.IVerbose($"Loaded texture for icon {iconId}");
+                        SirenLog.Verbose($"Loaded texture for icon {iconId}");
                     }
                     else
                     {
                         tex?.Dispose();
                         this.iconTexCache[iconId] = null!;
-                        SirenLog.IVerbose($"Texture for icon {iconId} does not exist, using placeholder.");
+                        SirenLog.Verbose($"Texture for icon {iconId} does not exist, using placeholder.");
                     }
                 }
                 catch (Exception ex)
                 {
-                    SirenLog.IError($"Something went wrong while loading icon {iconId}: {ex.Message}");
+                    SirenLog.Error($"Something went wrong while loading icon {iconId}: {ex.Message}");
                 }
             });
 
@@ -105,7 +105,7 @@ namespace Sirensong.Caching
                 this.iconTexCache.TryRemove(iconId, out _);
             }
 
-            SirenLog.IVerbose($"Disposed of texture for icon {iconId}");
+            SirenLog.Verbose($"Disposed of texture for icon {iconId}");
         }
 
         /// <summary>

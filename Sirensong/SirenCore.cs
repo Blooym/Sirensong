@@ -51,7 +51,7 @@ namespace Sirensong
             InitializerAssembly = Assembly.GetCallingAssembly();
             InitializerName = pluginName;
 
-            SirenLog.IDebug($"Initialized successfully!");
+            SirenLog.Debug($"Initialized successfully!");
         }
 
         /// <summary>
