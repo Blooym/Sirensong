@@ -44,12 +44,12 @@ namespace Sirensong
         /// <exception cref="ObjectDisposedException">Thrown if Sirensong has been disposed.</exception>
         public static void Initialize(DalamudPluginInterface pluginInterface, string pluginName)
         {
-            // Create Dalamud services.
-            SharedServices.Initialize(pluginInterface);
-
             // Set initializer information.
             InitializerAssembly = Assembly.GetCallingAssembly();
             InitializerName = pluginName;
+
+            // Create Dalamud services.
+            SharedServices.Initialize(pluginInterface);
 
             SirenLog.Debug($"Initialized successfully!");
         }

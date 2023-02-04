@@ -38,7 +38,7 @@ namespace Sirensong.Resources.Localization
         {
             try
             {
-                SirenLog.Information($"Setting up localization for {language}");
+                SirenLog.Debug($"Setting up localization for {language}");
                 Strings.Culture = new CultureInfo(language);
             }
             catch (Exception e)
