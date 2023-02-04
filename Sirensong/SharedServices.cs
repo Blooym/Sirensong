@@ -38,7 +38,7 @@ namespace Sirensong
         [SirenService] internal static ImageCacheService ImageCache { get; private set; } = null!;
         [SirenService] internal static IconCacheService IconCache { get; private set; } = null!;
         [SirenService] internal static LuminaCacheService<TerritoryType> TerritoryTypeCache { get; private set; } = null!;
-        internal static LocalizationManager LocalizationManager { get; set; } = null!;
+        [SirenService] internal static LocalizationManager LocalizationManager { get; private set; } = null!;
 
         internal static void Initialize(DalamudPluginInterface pi)
         {
