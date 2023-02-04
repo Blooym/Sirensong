@@ -18,7 +18,7 @@ namespace Sirensong.UserInterface
         /// <param name="text"></param>
         public static void TextWrapped(string text)
         {
-            var wrapPoint = Vector2.Max(ImGui.GetContentRegionAvail(), ImGui.GetWindowContentRegionMax());
+            var wrapPoint = ImGui.GetWindowContentRegionMax();
             ImGui.PushTextWrapPos(wrapPoint.X);
             ImGui.TextUnformatted(text);
             ImGui.PopTextWrapPos();
