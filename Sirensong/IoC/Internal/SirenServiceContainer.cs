@@ -6,27 +6,27 @@ using System.Reflection;
 namespace Sirensong.IoC.Internal
 {
     /// <summary>
-    /// Handles the creation and management of services.
+    /// Handles the creation and management of services for Sirensong.
     /// </summary>
-    internal sealed class ServiceContainer : IServiceProvider, IDisposable
+    internal sealed class SirenServiceContainer : IServiceProvider, IDisposable
     {
         /// <summary>
-        /// Creates a new instance of the <see cref="ServiceContainer"/> class.
+        /// Creates a new instance of the <see cref="SirenServiceContainer"/> class.
         /// </summary>
-        internal ServiceContainer() { }
+        internal SirenServiceContainer() { }
 
         /// <summary>
-        /// The services held by the <see cref="ServiceContainer"/>.
+        /// The services held by the <see cref="SirenServiceContainer"/>.
         /// </summary>
         private readonly Lazy<List<object>> services = new(() => new List<object>(), true);
 
         /// <summary>
-        /// Whether or not the <see cref="ServiceContainer"/> has been disposed of.
+        /// Whether or not the <see cref="SirenServiceContainer"/> has been disposed of.
         /// </summary>
         private bool disposedValue;
 
         /// <summary>
-        /// Disposes of the <see cref="ServiceContainer"/> and all services contained within it that implement <see cref="IDisposable"/>.
+        /// Disposes of the <see cref="SirenServiceContainer"/> and all services contained within it that implement <see cref="IDisposable"/>.
         /// </summary>
         public void Dispose()
         {
@@ -72,7 +72,7 @@ namespace Sirensong.IoC.Internal
         {
             if (this.disposedValue)
             {
-                throw new ObjectDisposedException(nameof(ServiceContainer));
+                throw new ObjectDisposedException(nameof(SirenServiceContainer));
             }
 
             if (!IsValidService(type))
@@ -111,7 +111,7 @@ namespace Sirensong.IoC.Internal
         {
             if (this.disposedValue)
             {
-                throw new ObjectDisposedException(nameof(ServiceContainer));
+                throw new ObjectDisposedException(nameof(SirenServiceContainer));
             }
             return this.services.Value.FirstOrDefault(service => service.GetType() == type);
         }
@@ -141,7 +141,7 @@ namespace Sirensong.IoC.Internal
         {
             if (this.disposedValue)
             {
-                throw new ObjectDisposedException(nameof(ServiceContainer));
+                throw new ObjectDisposedException(nameof(SirenServiceContainer));
             }
 
             if (service is IDisposable disposable)
@@ -176,7 +176,7 @@ namespace Sirensong.IoC.Internal
         {
             if (this.disposedValue)
             {
-                throw new ObjectDisposedException(nameof(ServiceContainer));
+                throw new ObjectDisposedException(nameof(SirenServiceContainer));
             }
 
             var properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
