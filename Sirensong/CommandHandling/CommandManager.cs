@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sirensong.IoC.Internal;
 
 namespace Sirensong.CommandHandling
@@ -15,7 +16,7 @@ namespace Sirensong.CommandHandling
         /// <summary>
         /// the commands registered to the <see cref="Dalamud.Game.Command.CommandManager"/> from this <see cref="CommandSystem"/>.
         /// </summary>
-        private readonly HashSet<CommandBase> localRegisteredCommands = new();
+        private readonly HashSet<CommandBase> localCommandInstances = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandSystem"/> class.
@@ -26,17 +27,18 @@ namespace Sirensong.CommandHandling
         }
 
         /// <summary>
-        /// Registers a command to the command system if it is not already registered.
+        /// Registers the type of the command to the command system if it is not already registered.
         /// </summary>
-        /// <param name="command">The command to register.</param>
+        /// <typeparam name="T">The type of command to register.</typeparam>
         /// <returns>If the command was successfully registered.</returns>
-        public bool RegisterCommand(CommandBase command)
+        public bool RegisterCommand<T>() where T : CommandBase, new()
         {
             if (this.disposedValue)
             {
                 throw new ObjectDisposedException(nameof(CommandSystem));
             }
 
+            var command = new T();
             if (SharedServices.CommandManager.Commands.ContainsKey(command.Name))
             {
                 return false;
@@ -44,34 +46,37 @@ namespace Sirensong.CommandHandling
 
             if (command.Register())
             {
-                this.localRegisteredCommands.Add(command);
+                this.localCommandInstances.Add(command);
                 return true;
             }
+
             return false;
         }
 
         /// <summary>
-        /// Unregisters a command from the command system if it is registered.
+        /// Unregisters the type of the command from the command system if it is registered.
         /// </summary>
-        /// <param name="command">The command to unregister.</param>
+        /// <typeparam name="T">The type of command to unregister.</typeparam>
         /// <returns>If the command was successfully unregistered.</returns>
-        public bool UnregisterCommand(CommandBase command)
+        public bool UnregisterCommand<T>() where T : CommandBase
         {
             if (this.disposedValue)
             {
                 throw new ObjectDisposedException(nameof(CommandSystem));
             }
 
-            if (!SharedServices.CommandManager.Commands.ContainsKey(command.Name))
+            var command = this.localCommandInstances.FirstOrDefault(x => x.GetType() == typeof(T));
+            if (command is null)
             {
                 return false;
             }
 
             if (command.Unregister())
             {
-                this.localRegisteredCommands.Remove(command);
+                this.localCommandInstances.Remove(command);
                 return true;
             }
+
             return false;
         }
 
@@ -82,11 +87,11 @@ namespace Sirensong.CommandHandling
         {
             if (!this.disposedValue)
             {
-                foreach (var command in this.localRegisteredCommands)
+                foreach (var command in this.localCommandInstances)
                 {
                     command.Unregister();
                 }
-                this.localRegisteredCommands.Clear();
+                this.localCommandInstances.Clear();
                 this.disposedValue = true;
             }
         }
