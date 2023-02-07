@@ -6,24 +6,19 @@ using System.Reflection;
 namespace Sirensong.IoC.Internal
 {
     /// <summary>
-    /// Handles the creation and management of services for Sirensong.
+    /// Handles the creation and management of services.
     /// </summary>
     internal sealed class SirenServiceContainer : IServiceProvider, IDisposable
     {
         /// <summary>
-        /// Creates a new instance of the <see cref="SirenServiceContainer"/> class.
+        /// Whether or not the <see cref="SirenServiceContainer"/> has been disposed of.
         /// </summary>
-        internal SirenServiceContainer() { }
+        private bool disposedValue;
 
         /// <summary>
         /// The services held by the <see cref="SirenServiceContainer"/>.
         /// </summary>
         private readonly Lazy<List<object>> services = new(() => new List<object>(), true);
-
-        /// <summary>
-        /// Whether or not the <see cref="SirenServiceContainer"/> has been disposed of.
-        /// </summary>
-        private bool disposedValue;
 
         /// <summary>
         /// Disposes of the <see cref="SirenServiceContainer"/> and all services contained within it that implement <see cref="IDisposable"/>.

@@ -4,8 +4,12 @@ using System.Collections.Generic;
 namespace Sirensong.IoC
 {
     /// <summary>
-    /// The slimmed down singleton-only service container.
+    /// A slimmed down singleton-only service container.
     /// </summary>
+    /// <remarks>
+    /// Automatically handles the disposal of services that implement <see cref="IDisposable"/>.
+    /// You should use <see cref="RemoveService{T}"/> to remove services instead of trying to dispose of them yourself.
+    /// </remarks>
     public sealed class MiniServiceContainer : IDisposable
     {
         private bool disposedValue;
@@ -42,10 +46,30 @@ namespace Sirensong.IoC
         }
 
         /// <summary>
+        /// Checks if a service exists in the service container.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>True if the service exists, otherwise false.</returns>
+        /// <exception cref="ObjectDisposedException"></exception>
+        public bool ServiceExists<T>() where T : class
+        {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(MiniServiceContainer));
+            }
+
+            lock (ServiceContainerLock)
+            {
+                return ServiceContainer.Value.Find(x => x is T) is not null;
+            }
+        }
+
+        /// <summary>
         /// Gets a service from the service container if it exists.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <returns>The service if found, otherwise <see langword="null"/>.</returns>
+        /// <returns>The service if it exists, otherwise null.</returns>
+        /// <exception cref="ObjectDisposedException"></exception>
         public T? GetService<T>() where T : class
         {
             if (this.disposedValue)
@@ -60,11 +84,15 @@ namespace Sirensong.IoC
         }
 
         /// <summary>
-        /// Checks if a service exists in the service container.
+        /// Creates a service in the service container.
         /// </summary>
+        /// <remarks>
+        /// The service will be disposed of when the <see cref="MiniServiceContainer"/> is disposed of.
+        /// </remarks>
         /// <typeparam name="T"></typeparam>
-        /// <returns>True if the service exists, otherwise false.</returns>
-        public bool ServiceExists<T>() where T : class
+        /// <exception cref="ObjectDisposedException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        public void CreateService<T>() where T : class
         {
             if (this.disposedValue)
             {
@@ -73,20 +101,30 @@ namespace Sirensong.IoC
 
             lock (ServiceContainerLock)
             {
-                return ServiceContainer.Value.Find(x => x is T) is not null;
+                if (this.ServiceExists<T>())
+                {
+                    throw new InvalidOperationException($"Service of type {typeof(T).FullName} already exists.");
+                }
+
+                if (Activator.CreateInstance(typeof(T), true) is not T service)
+                {
+                    throw new InvalidOperationException($"Could not create service of type {typeof(T).FullName}.");
+                }
+
+                ServiceContainer.Value.Add(service);
             }
         }
 
-
         /// <summary>
-        /// Creates the service if it does not exist, returns the service either way.
+        /// Gets a service from the service container if it exists, otherwise creates it.
         /// </summary>
         /// <remarks>
-        /// If you do not dispose of the service yourself, it will be disposed of when the plugin is unloaded.
+        /// The service will be disposed of when the <see cref="MiniServiceContainer"/> is disposed of.
         /// </remarks>
         /// <typeparam name="T">The type of the service.</typeparam>
         /// <returns>The service that was created or found.</returns>
-        /// <exception cref="InvalidOperationException">Thrown if the service could not be created.</exception>
+        /// <exception cref="ObjectDisposedException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         public T GetOrCreateService<T>() where T : class
         {
             if (this.disposedValue)
@@ -104,22 +142,20 @@ namespace Sirensong.IoC
 
                 SirenLog.Debug($"Creating service: {typeof(T).FullName}");
 
-                if (Activator.CreateInstance(typeof(T), true) is not T service)
-                {
-                    throw new InvalidOperationException($"Could not create service of type {typeof(T).FullName}.");
-                }
-
-                ServiceContainer.Value.Add(service);
-                SirenLog.Debug($"Service created: {service.GetType().Name}");
-                return service;
+                this.CreateService<T>();
+                return this.GetService<T>()!;
             }
         }
 
         /// <summary>
-        /// Removes a service from the service container if it exists and disposes of it if it implements <see cref="IDisposable"/>.
+        /// Removes a service from the service container.
         /// </summary>
+        /// <remarks>
+        /// The service will be disposed of if it implements <see cref="IDisposable"/>.
+        /// </remarks>
         /// <typeparam name="T"></typeparam>
         /// <returns>True if removal was successful, otherwise false.</returns>
+        /// <exception cref="ObjectDisposedException"></exception>
         public bool RemoveService<T>() where T : class
         {
             if (this.disposedValue)
@@ -129,18 +165,14 @@ namespace Sirensong.IoC
 
             lock (ServiceContainerLock)
             {
-                var service = ServiceContainer.Value.Find(x => x is T);
+                var service = this.GetService<T>();
                 if (service is not null)
                 {
                     ServiceContainer.Value.Remove(service);
-
                     if (service is IDisposable disposable)
                     {
-                        SirenLog.Debug($"Disposing service: {service.GetType().Name}");
                         disposable.Dispose();
                     }
-
-                    SirenLog.Debug($"Unregistered service: {service.GetType().Name}");
                     return true;
                 }
                 return false;
