@@ -66,9 +66,6 @@ namespace Sirensong
 
                 SirenLog.Information($"Disposed of Sirensong for {InitializerName}.");
 
-                InitializerName = null!;
-                InitializerAssembly = null!;
-
                 disposedValue = true;
             }
         }
