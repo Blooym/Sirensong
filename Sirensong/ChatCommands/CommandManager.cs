@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dalamud.Game.Command;
+using Sirensong.ChatCommands.Interfaces;
 using Sirensong.IoC.Internal;
 
-namespace Sirensong.CommandHandling
+namespace Sirensong.ChatCommands
 {
     /// <summary>
-    /// Wrapper for <see cref="Dalamud.Game.Command.CommandManager"/> that adds some additional functionality.
+    /// Wrapper for <see cref="CommandManager"/> that adds some additional functionality.
     /// </summary>
     [SirenServiceClass]
     public sealed class CommandSystem
@@ -14,9 +16,9 @@ namespace Sirensong.CommandHandling
         private bool disposedValue;
 
         /// <summary>
-        /// the commands registered to the <see cref="Dalamud.Game.Command.CommandManager"/> from this <see cref="CommandSystem"/>.
+        /// The commands registered to the <see cref="CommandManager"/> from this <see cref="CommandSystem"/>.
         /// </summary>
-        private readonly HashSet<CommandBase> localCommandInstances = new();
+        private readonly HashSet<IDalamudCommand> localCommandInstances = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandSystem"/> class.
@@ -31,20 +33,25 @@ namespace Sirensong.CommandHandling
         /// </summary>
         /// <typeparam name="T">The type of command to register.</typeparam>
         /// <returns>If the command was successfully registered.</returns>
-        public bool RegisterCommand<T>() where T : CommandBase, new()
+        public bool RegisterCommand<T>() where T : IDalamudCommand, new()
         {
             if (this.disposedValue)
             {
                 throw new ObjectDisposedException(nameof(CommandSystem));
             }
 
+            // Check if the command is already registered.
             var command = new T();
             if (SharedServices.CommandManager.Commands.ContainsKey(command.Name))
             {
                 return false;
             }
 
-            if (command.Register())
+            // If not, register it.
+            if (SharedServices.CommandManager.AddHandler(command.Name, new CommandInfo(this.OnCommand)
+            {
+                HelpMessage = command.HelpMessage,
+            }))
             {
                 this.localCommandInstances.Add(command);
                 return true;
@@ -58,20 +65,22 @@ namespace Sirensong.CommandHandling
         /// </summary>
         /// <typeparam name="T">The type of command to unregister.</typeparam>
         /// <returns>If the command was successfully unregistered.</returns>
-        public bool UnregisterCommand<T>() where T : CommandBase
+        public bool UnregisterCommand<T>() where T : IDalamudCommand
         {
             if (this.disposedValue)
             {
                 throw new ObjectDisposedException(nameof(CommandSystem));
             }
 
+            // Check if the command is registered.
             var command = this.localCommandInstances.FirstOrDefault(x => x.GetType() == typeof(T));
             if (command is null)
             {
                 return false;
             }
 
-            if (command.Unregister())
+            // If it is, unregister it.
+            if (SharedServices.CommandManager.RemoveHandler(command.Name))
             {
                 this.localCommandInstances.Remove(command);
                 return true;
@@ -89,11 +98,26 @@ namespace Sirensong.CommandHandling
             {
                 foreach (var command in this.localCommandInstances)
                 {
-                    command.Unregister();
+                    SharedServices.CommandManager.RemoveHandler(command.Name);
                 }
                 this.localCommandInstances.Clear();
                 this.disposedValue = true;
             }
+        }
+
+        /// <summary>
+        /// The command handler for the <see cref="CommandManager"/>.
+        /// </summary>
+        /// <param name="command">The command that was executed.</param>
+        /// <param name="arguments">The arguments passed to the command.</param>
+        private void OnCommand(string command, string arguments)
+        {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(CommandSystem));
+            }
+
+            this.localCommandInstances.FirstOrDefault(x => x.Name == command)?.ExecuteCommand(arguments);
         }
     }
 }
