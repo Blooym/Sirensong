@@ -1,5 +1,3 @@
-using System;
-
 namespace Sirensong.ChatCommands.Interfaces
 {
     /// <summary>
@@ -20,6 +18,6 @@ namespace Sirensong.ChatCommands.Interfaces
         /// <summary>
         /// The code to execute when the command is invoked without a subcommand.
         /// </summary>
-        Action<string> ExecuteCommand { get; }
+        void ExecuteCommand(string arguments);
     }
 }
