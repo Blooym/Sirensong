@@ -14,10 +14,12 @@ namespace Sirensong.Caching
     [SirenServiceClass]
     public sealed class IconCacheService : IDisposable, ICache
     {
+        private bool disposedValue;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="IconCacheService" /> class.
         /// </summary>
-        internal IconCacheService()
+        private IconCacheService()
         {
 
         }
@@ -44,8 +46,14 @@ namespace Sirensong.Caching
         /// </summary>
         public void Dispose()
         {
-            this.iconTexCache.Dispose();
-            GC.SuppressFinalize(this);
+            if (!this.disposedValue)
+            {
+                this.iconTexCache.Dispose();
+
+                this.disposedValue = true;
+
+                GC.SuppressFinalize(this);
+            }
         }
 
         /// <inheritdoc />
@@ -59,7 +67,13 @@ namespace Sirensong.Caching
         /// </summary>
         /// <param name="iconId">The icon ID to load the texture for.</param>
         private void LoadIconTexture(uint iconId)
-            => Task.Run(() =>
+        {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(IconCacheService));
+            }
+
+            Task.Run(() =>
             {
                 try
                 {
@@ -83,6 +97,7 @@ namespace Sirensong.Caching
                     SirenLog.Error($"Something went wrong while loading icon {iconId}: {ex.Message}");
                 }
             });
+        }
 
         /// <summary>
         /// Gets the path to the icon texture for the given icon ID.
@@ -98,6 +113,11 @@ namespace Sirensong.Caching
         /// <param name="remove">If true, the image will be removed from the cache.</param>
         private void DisposeIcon(uint iconId, bool remove = false)
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(IconCacheService));
+            }
+
             this.iconTexCache[iconId]?.Dispose();
 
             if (remove)
@@ -115,6 +135,11 @@ namespace Sirensong.Caching
         /// <returns>The icon texture, or null if it could not be loaded.</returns>
         public TextureWrap? GetIcon(uint iconId)
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(IconCacheService));
+            }
+
             if (this.iconTexCache.TryGetValue(iconId, out var tex))
             {
                 return tex;
@@ -130,6 +155,11 @@ namespace Sirensong.Caching
         /// </summary>
         public void ClearCache()
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(IconCacheService));
+            }
+
             foreach (var texture in this.iconTexCache.Keys)
             {
                 this.DisposeIcon(texture);
@@ -142,6 +172,11 @@ namespace Sirensong.Caching
         /// <param name="iconId">The icon ID to clear from the cache.</param>
         public void ClearFromCache(int iconId)
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(IconCacheService));
+            }
+
             if (this.iconTexCache.ContainsKey((uint)iconId))
             {
                 this.DisposeIcon((uint)iconId, true);

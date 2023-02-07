@@ -14,10 +14,12 @@ namespace Sirensong.Caching
     [SirenServiceClass]
     public sealed class LuminaCacheService<T> : IDisposable, ICache where T : ExcelRow
     {
+        private bool disposedValue;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="LuminaCacheService{T}"/> class.
         /// </summary>
-        internal LuminaCacheService()
+        private LuminaCacheService()
         {
 
         }
@@ -25,14 +27,25 @@ namespace Sirensong.Caching
         /// <inheritdoc/>
         public void Dispose()
         {
-            this.cache.Dispose();
-            this.subRowCache.Dispose();
-            GC.SuppressFinalize(this);
+            if (!this.disposedValue)
+            {
+                this.cache.Dispose();
+                this.subRowCache.Dispose();
+
+                this.disposedValue = true;
+
+                GC.SuppressFinalize(this);
+            }
         }
 
         /// <inheritdoc/>
         public void Clear()
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(LuminaCacheService<T>));
+            }
+
             this.cache.Clear();
             this.subRowCache.Clear();
         }
@@ -40,6 +53,11 @@ namespace Sirensong.Caching
         /// <inheritdoc />
         public void HandleExpired()
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(LuminaCacheService<T>));
+            }
+
             this.cache.HandleExpired();
             this.subRowCache.HandleExpired();
         }
@@ -78,7 +96,15 @@ namespace Sirensong.Caching
         /// <param name="id"></param>
         /// <returns></returns>
         /// <exception cref="ObjectDisposedException"></exception>
-        public T? GetRow(uint id) => this.cache.GetOrAdd(id, value => LuminaCacheService<T>.Sheet.GetRow(id)!);
+        public T? GetRow(uint id)
+        {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(LuminaCacheService<T>));
+            }
+
+            return this.cache.GetOrAdd(id, value => LuminaCacheService<T>.Sheet.GetRow(id)!);
+        }
 
         /// <summary>
         /// Gets a row from the sheet, using the subrow and caches it.
@@ -89,6 +115,11 @@ namespace Sirensong.Caching
         /// <exception cref="ObjectDisposedException"></exception>
         public T? GetRow(uint row, uint subRow)
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(LuminaCacheService<T>));
+            }
+
             var targetRow = new Tuple<uint, uint>(row, subRow);
             return this.subRowCache.GetOrAdd(targetRow, value => LuminaCacheService<T>.Sheet.GetRow(row, subRow)!);
         }

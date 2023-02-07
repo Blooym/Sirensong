@@ -14,10 +14,12 @@ namespace Sirensong.Caching
     [SirenServiceClass]
     public sealed class ImageCacheService : IDisposable, ICache
     {
+        private bool disposedValue;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ImageCacheService" /> class.
         /// </summary>
-        internal ImageCacheService()
+        private ImageCacheService()
         {
 
         }
@@ -44,9 +46,15 @@ namespace Sirensong.Caching
         /// </summary>
         public void Dispose()
         {
-            this.imageTexCache.Dispose();
-            this.httpClient.Dispose();
-            GC.SuppressFinalize(this);
+            if (!this.disposedValue)
+            {
+                this.imageTexCache.Dispose();
+                this.httpClient.Dispose();
+
+                this.disposedValue = true;
+
+                GC.SuppressFinalize(this);
+            }
         }
 
         /// <inheritdoc />

@@ -26,6 +26,8 @@ namespace Sirensong.Caching.Collections
     /// <typeparam name="TValue"></typeparam>
     public class CacheCollection<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>, ICache, IDisposable where TKey : notnull where TValue : notnull
     {
+        private bool disposedValue;
+
         /// <summary>
         /// The dictionary of values for the cache.
         /// </summary>
@@ -88,8 +90,16 @@ namespace Sirensong.Caching.Collections
             this.SetupTimer();
         }
 
+        /// <summary>
+        /// Sets up the timer for the cache cleaner.
+        /// </summary>
         private void SetupTimer()
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+            }
+
             if (!this.options.UseBuiltInExpire || (!this.options.AbsoluteExpiry.HasValue && !this.options.SlidingExpiry.HasValue))
             {
                 return;
@@ -108,16 +118,22 @@ namespace Sirensong.Caching.Collections
         /// </summary>
         public void Dispose()
         {
-            if (this.cacheCleanTimer != null)
+            if (this.disposedValue)
             {
-                this.cacheCleanTimer.Stop();
-                this.cacheCleanTimer.Dispose();
-                this.cacheCleanTimer.Elapsed -= (sender, args) => this.HandleExpired();
-            }
+                if (this.cacheCleanTimer != null)
+                {
+                    this.cacheCleanTimer.Stop();
+                    this.cacheCleanTimer.Dispose();
+                    this.cacheCleanTimer.Elapsed -= (sender, args) => this.HandleExpired();
+                }
 
-            // Dispose of the keys and values.
-            this.RemoveAllKV();
-            GC.SuppressFinalize(this);
+                // Dispose of the keys and values.
+                this.RemoveAllKV();
+
+                this.disposedValue = true;
+
+                GC.SuppressFinalize(this);
+            }
         }
 
         /// <summary>
@@ -127,6 +143,11 @@ namespace Sirensong.Caching.Collections
         /// <returns>True if the key is expired (and was removed from the cache), false otherwise.</returns>
         private bool HandleExpired(TKey key)
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+            }
+
             lock (this.lockObject)
             {
                 if (this.accessTimes.TryGetValue(key, out var expiryInfo))
@@ -160,6 +181,11 @@ namespace Sirensong.Caching.Collections
         /// </summary>
         private void RemoveAllKV()
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+            }
+
             lock (this.lockObject)
             {
                 foreach (var kv in this.cache)
@@ -186,6 +212,11 @@ namespace Sirensong.Caching.Collections
         /// <param name="key">The key to update.</param>
         private void UpdateAccessedTime(TKey key)
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+            }
+
             lock (this.lockObject)
             {
                 var expiryInfo = this.accessTimes.GetOrAdd(key, new KeyExpiryInfo());
@@ -204,6 +235,11 @@ namespace Sirensong.Caching.Collections
         /// <param name="key">The key to update.</param>
         private void UpdateUpdatedTime(TKey key)
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+            }
+
             lock (this.lockObject)
             {
                 var expiryInfo = this.accessTimes.GetOrAdd(key, new KeyExpiryInfo());
@@ -225,6 +261,11 @@ namespace Sirensong.Caching.Collections
         {
             get
             {
+                if (this.disposedValue)
+                {
+                    throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+                }
+
                 lock (this.lockObject)
                 {
                     if (this.HandleExpired(key))
@@ -238,6 +279,11 @@ namespace Sirensong.Caching.Collections
             }
             set
             {
+                if (this.disposedValue)
+                {
+                    throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+                }
+
                 lock (this.lockObject)
                 {
                     this.UpdateUpdatedTime(key);
@@ -254,6 +300,11 @@ namespace Sirensong.Caching.Collections
         /// <returns>True if the key was found, false otherwise.</returns>
         public bool TryGetValue(TKey key, out TValue value)
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+            }
+
             lock (this.lockObject)
             {
                 if (this.HandleExpired(key))
@@ -275,6 +326,11 @@ namespace Sirensong.Caching.Collections
         /// <returns>The value for the given key.</returns>
         public TValue GetOrAdd(TKey key, Func<TKey, TValue> valueFactory)
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+            }
+
             lock (this.lockObject)
             {
                 if (this.HandleExpired(key))
@@ -295,6 +351,11 @@ namespace Sirensong.Caching.Collections
         /// <returns>The value for the given key.</returns>
         public TValue GetOrAdd(TKey key, TValue value)
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+            }
+
             lock (this.lockObject)
             {
                 if (this.HandleExpired(key))
@@ -314,6 +375,11 @@ namespace Sirensong.Caching.Collections
         /// <param name="value">The value to add or update.</param>
         public void AddOrUpdate(TKey key, TValue value)
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+            }
+
             lock (this.lockObject)
             {
                 this.cache.AddOrUpdate(key, value, (k, v) => value);
@@ -329,6 +395,11 @@ namespace Sirensong.Caching.Collections
         /// <param name="updateValueFactory">The factory to update the value if it already exists.</param>
         public void AddOrUpdate(TKey key, TValue value, Func<TKey, TValue, TValue> updateValueFactory)
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+            }
+
             lock (this.lockObject)
             {
                 this.cache.AddOrUpdate(key, value, updateValueFactory);
@@ -344,6 +415,11 @@ namespace Sirensong.Caching.Collections
         /// <returns>True if removed, false otherwise.</returns>
         public bool TryRemove(TKey key, out TValue value)
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+            }
+
             lock (this.lockObject)
             {
                 this.accessTimes.TryRemove(key, out _);
@@ -359,6 +435,11 @@ namespace Sirensong.Caching.Collections
         /// <returns>True when a value is found in the dictionary with the specified key; false when the dictionary cannot find a value associated with the specified key.</returns>
         public bool Remove(TKey key, out TValue value)
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+            }
+
             lock (this.lockObject)
             {
                 this.accessTimes.Remove(key, out _);
@@ -373,6 +454,11 @@ namespace Sirensong.Caching.Collections
         /// <returns>True if the key exists, false otherwise.</returns>
         public bool ContainsKey(TKey key)
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+            }
+
             lock (this.lockObject)
             {
                 if (this.HandleExpired(key))
@@ -389,6 +475,11 @@ namespace Sirensong.Caching.Collections
         /// <inheritdoc/>
         public void HandleExpired()
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+            }
+
             lock (this.lockObject)
             {
                 foreach (var key in this.Keys)
@@ -423,6 +514,7 @@ namespace Sirensong.Caching.Collections
             /// </summary>
             public KeyExpiryInfo()
             {
+
             }
 
             /// <summary>
@@ -491,6 +583,9 @@ namespace Sirensong.Caching.Collections
         /// <summary>
         /// Creates a new instance of <see cref="CacheOptions{TKey, TValue}"/>.
         /// </summary>
-        public CacheOptions() { }
+        public CacheOptions()
+        {
+
+        }
     }
 }

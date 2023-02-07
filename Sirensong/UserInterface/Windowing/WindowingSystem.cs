@@ -14,6 +14,8 @@ namespace Sirensong.UserInterface.Windowing
     [SirenServiceClass]
     public sealed class WindowingSystem : IDisposable
     {
+        private bool disposedValue;
+
         /// <summary>
         /// The linked Dalamud <see cref="WindowSystem" />
         /// </summary>
@@ -33,9 +35,9 @@ namespace Sirensong.UserInterface.Windowing
         private ClipboardService Clipboard { get; } = SirenCore.IoC.GetOrCreateService<ClipboardService>();
 
         /// <summary>
-        ///Constructs a new <see cref="WindowingSystem"/>.
+        /// Constructs a new <see cref="WindowingSystem"/>.
         /// </summary>
-        internal WindowingSystem()
+        private WindowingSystem()
         {
             this.uiNamespace = SirenCore.InitializerName;
             this.windowSystem = new(this.uiNamespace);
@@ -47,14 +49,18 @@ namespace Sirensong.UserInterface.Windowing
         /// </summary>
         public void Dispose()
         {
-            SharedServices.UiBuilder.Draw -= this.Draw;
-            SharedServices.UiBuilder.OpenConfigUi -= this.ToggleConfigWindow;
-            foreach (var disposable in this.windowSystem.Windows.OfType<IDisposable>())
+            if (!this.disposedValue)
             {
-                disposable.Dispose();
-                SirenLog.Verbose($"Disposed of window {disposable}");
+                SharedServices.UiBuilder.Draw -= this.Draw;
+                SharedServices.UiBuilder.OpenConfigUi -= this.ToggleConfigWindow;
+                foreach (var disposable in this.windowSystem.Windows.OfType<IDisposable>())
+                {
+                    disposable.Dispose();
+                    SirenLog.Verbose($"Disposed of window {disposable}");
+                }
+                this.windowSystem.RemoveAllWindows();
+                this.disposedValue = true;
             }
-            this.windowSystem.RemoveAllWindows();
         }
 
         /// <summary>
@@ -62,6 +68,11 @@ namespace Sirensong.UserInterface.Windowing
         /// </summary>
         private void Draw()
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(WindowingSystem));
+            }
+
             if (!this.AnyWindowsOpen())
             {
                 return;
@@ -77,6 +88,11 @@ namespace Sirensong.UserInterface.Windowing
         /// <param name="window">The window to use as the config window.</param>
         public void SetConfigWindow(Window window)
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(WindowingSystem));
+            }
+
             if (this.ConfigWindow == null)
             {
                 SharedServices.UiBuilder.OpenConfigUi += this.ToggleConfigWindow;
@@ -89,6 +105,11 @@ namespace Sirensong.UserInterface.Windowing
         /// </summary>
         public void UnsetConfigWindow()
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(WindowingSystem));
+            }
+
             if (this.ConfigWindow != null)
             {
                 SharedServices.UiBuilder.OpenConfigUi -= this.ToggleConfigWindow;
@@ -107,7 +128,15 @@ namespace Sirensong.UserInterface.Windowing
         /// </summary>
         /// <typeparam name="T">The type of window to get.</typeparam>
         /// <returns>The first window with the specified type in the windowing system, or null if it does not exist.</returns>
-        public Window? GetWindow<T>() where T : Window => this.Windows.FirstOrDefault(window => window is T);
+        public Window? GetWindow<T>() where T : Window
+        {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(WindowingSystem));
+            }
+
+            return this.Windows.FirstOrDefault(window => window is T);
+        }
 
         /// <summary>
         /// Tries to get a window by type.
@@ -116,6 +145,11 @@ namespace Sirensong.UserInterface.Windowing
         /// <param name="windowOut">The window with the specified type, or null if it does not exist.</param>
         public bool TryGetWindow<T>(out Window windowOut) where T : Window
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(WindowingSystem));
+            }
+
             windowOut = this.GetWindow<T>()!;
             return windowOut != null;
         }
@@ -130,6 +164,11 @@ namespace Sirensong.UserInterface.Windowing
         /// <param name="isConfigWindow">Whether or not the window is the config window.</param>
         public void AddWindow(Window window, bool isConfigWindow = false)
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(WindowingSystem));
+            }
+
             this.windowSystem.AddWindow(window);
 
             if (isConfigWindow)
@@ -149,6 +188,11 @@ namespace Sirensong.UserInterface.Windowing
         /// <params name="windows">The windows to add.</params>
         public void AddWindows(Dictionary<Window, bool> windows)
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(WindowingSystem));
+            }
+
             foreach (var (window, isConfigWindow) in windows)
             {
                 this.AddWindow(window, isConfigWindow);
@@ -161,6 +205,11 @@ namespace Sirensong.UserInterface.Windowing
         /// <param name="window">The window to remove.</param>
         public void RemoveWindow(Window window)
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(WindowingSystem));
+            }
+
             if (this.ConfigWindow == window)
             {
                 this.UnsetConfigWindow();
@@ -182,6 +231,11 @@ namespace Sirensong.UserInterface.Windowing
         /// <returns>True if any windows are open, false otherwise.</returns>
         internal bool AnyWindowsOpen()
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(WindowingSystem));
+            }
+
             foreach (var window in this.windowSystem.Windows)
             {
                 if (window.IsOpen)
@@ -198,6 +252,11 @@ namespace Sirensong.UserInterface.Windowing
         /// </summary>
         internal void ToggleConfigWindow()
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(WindowingSystem));
+            }
+
             if (this.ConfigWindow == null)
             {
                 return;
