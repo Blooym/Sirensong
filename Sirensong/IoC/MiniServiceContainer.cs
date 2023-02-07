@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Sirensong.IoC
 {
@@ -17,7 +18,7 @@ namespace Sirensong.IoC
         /// <summary>
         /// The services held by the <see cref="MiniServiceContainer"/>.
         /// </summary>
-        private static readonly Lazy<List<object>> ServiceContainer = new(() => new List<object>(), true);
+        private static readonly Lazy<HashSet<object>> ServiceContainer = new(() => new HashSet<object>(), true);
 
         /// <summary>
         /// The lock object for the <see cref="ServiceContainer"/>.
@@ -61,7 +62,7 @@ namespace Sirensong.IoC
 
             lock (ServiceContainerLock)
             {
-                return ServiceContainer.Value.Find(x => x is T) is not null;
+                return ServiceContainer.Value.Any(x => x is T);
             }
         }
 
@@ -80,7 +81,7 @@ namespace Sirensong.IoC
 
             lock (ServiceContainerLock)
             {
-                return ServiceContainer.Value.Find(x => x is T) as T;
+                return ServiceContainer.Value.FirstOrDefault(x => x is T) as T;
             }
         }
 

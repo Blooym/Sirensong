@@ -18,7 +18,7 @@ namespace Sirensong.IoC.Internal
         /// <summary>
         /// The services held by the <see cref="SirenServiceContainer"/>.
         /// </summary>
-        private readonly Lazy<List<object>> services = new(() => new List<object>(), true);
+        private readonly Lazy<HashSet<object>> services = new(() => new HashSet<object>(), true);
 
         /// <summary>
         /// Disposes of the <see cref="SirenServiceContainer"/> and all services contained within it that implement <see cref="IDisposable"/>.
@@ -34,8 +34,9 @@ namespace Sirensong.IoC.Internal
                         SirenLog.Debug($"Disposing of SirenService: {service.GetType().FullName}.");
                         disposableService.Dispose();
                     }
-                    this.services.Value.Clear();
                 }
+                this.services.Value.Clear();
+
                 this.disposedValue = true;
             }
         }
