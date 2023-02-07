@@ -5,7 +5,7 @@ namespace Sirensong.Game.Enums
     /// <summary>
     /// Represents a ContentType, mapping from <see cref="ContentFinderCondition.ContentType" />.
     /// </summary>
-    public enum ContentType
+    public enum ContentType : int
     {
         /// <remarks>
         /// This isn't a ContentType from the game, but is useful to split <see cref="Raids" /> apart from alliance raids.

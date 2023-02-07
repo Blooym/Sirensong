@@ -6,7 +6,7 @@ namespace Sirensong.Game.Enums
     /// <summary>
     /// Represents content difficulty, does not map from real game data.
     /// </summary>
-    public enum ContentDifficulty
+    public enum ContentDifficulty : byte
     {
         Normal,
         Hard,

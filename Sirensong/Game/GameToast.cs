@@ -1,5 +1,4 @@
 using Dalamud.Game.Gui.Toast;
-using Sirensong.Game.Enums;
 
 namespace Sirensong.Game
 {
@@ -28,29 +27,14 @@ namespace Sirensong.Game
         /// <param name="message">The message to display.</param>
         /// <param name="options">The options for the toast.</param>
         /// <param name="sfx">The sound effect to play.</param>
-        public static void ShowNormalToast(string message, ToastOptions options, SoundEffect? sfx = null)
-        {
-            SharedServices.ToastGui.ShowNormal(message, options);
-            if (sfx != null)
-            {
-                PlaySound.Invoke(sfx.Value, 0, 0);
-            }
-        }
+        public static void ShowNormalToast(string message, ToastOptions options) => SharedServices.ToastGui.ShowNormal(message, options);
 
         /// <summary>
         /// Wrapper for <see cref="ToastGui.ShowNormal(Dalamud.Game.Text.SeStringHandling.SeString, ToastOptions)"/>.
         /// </summary>
         /// <param name="message">The message to display.</param>
         /// <param name="options">The options for the toast.</param>
-        /// <param name="sfx">The sound effect to play.</param>
-        public static void ShowNormalToast(Dalamud.Game.Text.SeStringHandling.SeString message, ToastOptions options, SoundEffect? sfx = null)
-        {
-            SharedServices.ToastGui.ShowNormal(message, options);
-            if (sfx != null)
-            {
-                PlaySound.Invoke(sfx.Value, 0, 0);
-            }
-        }
+        public static void ShowNormalToast(Dalamud.Game.Text.SeStringHandling.SeString message, ToastOptions options) => SharedServices.ToastGui.ShowNormal(message, options);
 
         /// <summary>
         /// Wrapper for <see cref="ToastGui.ShowError(string)"/>.

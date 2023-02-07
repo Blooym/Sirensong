@@ -7,7 +7,7 @@ namespace Sirensong.Game.Enums
     /// <summary>
     /// A mapping of <see cref="ClassJob"/> role IDs to their names.
     /// </summary>
-    public enum ClassJobRole : uint
+    public enum ClassJobRole : byte
     {
         Misc = 0,
         Tank = 1,
