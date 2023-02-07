@@ -90,6 +90,23 @@ namespace Sirensong.ChatCommands
         }
 
         /// <summary>
+        /// Unregisters all commands registered to the command system.
+        /// </summary>
+        public void UnregisterAllCommands()
+        {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(CommandSystem));
+            }
+
+            foreach (var command in this.localCommandInstances)
+            {
+                SharedServices.CommandManager.RemoveHandler(command.Name);
+            }
+            this.localCommandInstances.Clear();
+        }
+
+        /// <summary>
         /// Disposes of the command manager.
         /// </summary>
         public void Dispose()
