@@ -27,14 +27,14 @@ namespace Sirensong.IoC.Internal
         {
             if (!this.disposedValue)
             {
-                SirenLog.Verbose("Disposing of service container.");
                 foreach (var service in this.services.Value)
                 {
                     if (service is IDisposable disposableService)
                     {
-                        SirenLog.Verbose($"Disposing of service {service.GetType().FullName}.");
+                        SirenLog.Debug($"Disposing of SirenService: {service.GetType().FullName}.");
                         disposableService.Dispose();
                     }
+                    this.services.Value.Clear();
                 }
                 this.disposedValue = true;
             }
@@ -88,7 +88,7 @@ namespace Sirensong.IoC.Internal
             }
 
             this.services.Value.Add(service);
-            SirenLog.Verbose($"Service {service.GetType().FullName} created and added to service container.");
+            SirenLog.Debug($"Added SirenService {service.GetType().FullName} to container.");
             return service;
         }
 
@@ -144,7 +144,7 @@ namespace Sirensong.IoC.Internal
                 disposable.Dispose();
             }
 
-            SirenLog.Verbose($"Service {service.FullName} removed from service container.");
+            SirenLog.Debug($"Service {service.FullName} removed from service container.");
             this.services.Value.Remove(service);
         }
 
@@ -191,7 +191,7 @@ namespace Sirensong.IoC.Internal
 
                 var service = this.GetOrCreateService(property.PropertyType);
                 property.SetValue(null, service);
-                SirenLog.Verbose($"Injected service {service.GetType().FullName} into class {typeof(T).FullName}.");
+                SirenLog.Debug($"Injected service {service.GetType().FullName} into class {typeof(T).FullName}.");
             }
         }
     }

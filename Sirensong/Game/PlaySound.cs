@@ -52,7 +52,7 @@ namespace Sirensong.Game
                     Disabled = true;
                 }
                 invoke = Marshal.GetDelegateForFunctionPointer<PlaySoundDelegate>(soundData);
-                SirenLog.Verbose($"Initialized PlaySound functions at {Signatures.PlaySound}");
+                SirenLog.Debug($"Initialized PlaySound functions at {Signatures.PlaySound}");
                 return true;
             }
             catch (Exception e)

@@ -9,5 +9,6 @@ namespace Sirensong.IoC
     [AttributeUsage(AttributeTargets.Property)]
     public sealed class SirenServiceAttribute : Attribute
     {
+
     }
 }

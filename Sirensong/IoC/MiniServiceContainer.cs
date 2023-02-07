@@ -38,6 +38,7 @@ namespace Sirensong.IoC
                         if (service is IDisposable disposableService)
                         {
                             disposableService.Dispose();
+                            SirenLog.Debug($"Disposed of SERVICE: {service.GetType().FullName}.");
                         }
                     }
                 }
@@ -111,6 +112,7 @@ namespace Sirensong.IoC
                     throw new InvalidOperationException($"Could not create service of type {typeof(T).FullName}.");
                 }
 
+                SirenLog.Debug($"Added SERVICE to container: {service.GetType().FullName}.");
                 ServiceContainer.Value.Add(service);
             }
         }
@@ -139,8 +141,6 @@ namespace Sirensong.IoC
                 {
                     return existingService;
                 }
-
-                SirenLog.Debug($"Creating service: {typeof(T).FullName}");
 
                 this.CreateService<T>();
                 return this.GetService<T>()!;
@@ -172,7 +172,9 @@ namespace Sirensong.IoC
                     if (service is IDisposable disposable)
                     {
                         disposable.Dispose();
+                        SirenLog.Debug($"Disposed of SERVICE: {service.GetType().FullName}.");
                     }
+                    SirenLog.Debug($"Removed SERVICE from container: {service.GetType().FullName}.");
                     return true;
                 }
                 return false;

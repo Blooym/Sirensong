@@ -56,7 +56,7 @@ namespace Sirensong.UserInterface.Windowing
                 foreach (var disposable in this.windowSystem.Windows.OfType<IDisposable>())
                 {
                     disposable.Dispose();
-                    SirenLog.Verbose($"Disposed of window {disposable}");
+                    SirenLog.Debug($"Disposed of window {disposable}");
                 }
                 this.windowSystem.RemoveAllWindows();
                 this.disposedValue = true;
@@ -176,7 +176,7 @@ namespace Sirensong.UserInterface.Windowing
                 this.SetConfigWindow(window);
             }
 
-            SirenLog.Verbose($"Added {window.WindowName} to {this.uiNamespace}");
+            SirenLog.Debug($"Added window {window} to windowing system.");
         }
 
         /// <summary>
@@ -218,11 +218,11 @@ namespace Sirensong.UserInterface.Windowing
             if (window is IDisposable disposable)
             {
                 disposable.Dispose();
-                SirenLog.Verbose($"Disposed of {disposable.GetType().Name} for {this.uiNamespace}");
+                SirenLog.Verbose($"Disposed of {window.WindowName} from windowing system.");
             }
 
+            SirenLog.Debug($"Removed {window.WindowName} from windowing system.");
             this.windowSystem.RemoveWindow(window);
-            SirenLog.Verbose($"Removed {window.WindowName} from {this.uiNamespace}");
         }
 
         /// <summary>

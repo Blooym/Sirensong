@@ -51,7 +51,8 @@ namespace Sirensong
             // Create Dalamud services.
             SharedServices.Initialize(pluginInterface);
 
-            SirenLog.Debug($"Initialized successfully!");
+            // Log initialization.
+            SirenLog.Information($"Initialized Sirensong for {pluginName}.");
         }
 
         /// <summary>
@@ -62,12 +63,15 @@ namespace Sirensong
             if (!disposedValue)
             {
                 IoC.Dispose();
+
+                SirenLog.Information($"Disposed of Sirensong for {InitializerName}.");
+
+                InitializerName = null!;
+                InitializerAssembly = null!;
+
                 disposedValue = true;
             }
         }
-
-
-        // Public-facing IoC methods.
 
         /// <inheritdoc cref="SirenServiceContainer.InjectServices{T}"/>
         public static void InjectServices<T>() where T : class => IoC.InjectServices<T>();
