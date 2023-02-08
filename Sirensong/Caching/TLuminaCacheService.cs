@@ -2,7 +2,6 @@ using System;
 using Dalamud;
 using Lumina.Excel;
 using Sirensong.Caching.Collections;
-using Sirensong.Caching.Internal.Interfaces;
 using Sirensong.IoC.Internal;
 
 namespace Sirensong.Caching
@@ -12,7 +11,7 @@ namespace Sirensong.Caching
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [SirenServiceClass]
-    public sealed class LuminaCacheService<T> : IDisposable, ICache where T : ExcelRow
+    public sealed class LuminaCacheService<T> : IDisposable where T : ExcelRow
     {
         private bool disposedValue;
 
@@ -38,30 +37,6 @@ namespace Sirensong.Caching
             }
         }
 
-        /// <inheritdoc/>
-        public void Clear()
-        {
-            if (this.disposedValue)
-            {
-                throw new ObjectDisposedException(nameof(LuminaCacheService<T>));
-            }
-
-            this.cache.Clear();
-            this.subRowCache.Clear();
-        }
-
-        /// <inheritdoc />
-        public void HandleExpired()
-        {
-            if (this.disposedValue)
-            {
-                throw new ObjectDisposedException(nameof(LuminaCacheService<T>));
-            }
-
-            this.cache.HandleExpired();
-            this.subRowCache.HandleExpired();
-        }
-
         /// <summary>
         /// The <see cref="ExcelSheet{T}" /> associated with this cache.
         /// </summary>
@@ -80,7 +55,6 @@ namespace Sirensong.Caching
             SlidingExpiry = TimeSpan.FromMinutes(10),
             AbsoluteExpiry = null,
             ExpireInterval = TimeSpan.FromMinutes(1),
-            UseBuiltInExpire = true,
         });
 
         /// <summary>

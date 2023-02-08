@@ -3,7 +3,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using ImGuiScene;
 using Sirensong.Caching.Collections;
-using Sirensong.Caching.Internal.Interfaces;
 using Sirensong.IoC.Internal;
 
 namespace Sirensong.Caching
@@ -12,7 +11,7 @@ namespace Sirensong.Caching
     /// Provides a way to load and cache images.
     /// </summary>
     [SirenServiceClass]
-    public sealed class ImageCacheService : IDisposable, ICache
+    public sealed class ImageCacheService : IDisposable
     {
         private bool disposedValue;
 
@@ -32,7 +31,6 @@ namespace Sirensong.Caching
             SlidingExpiry = TimeSpan.FromMinutes(5),
             AbsoluteExpiry = TimeSpan.FromMinutes(30),
             ExpireInterval = TimeSpan.FromMinutes(1),
-            UseBuiltInExpire = true,
             OnExpiry = (key, value) => value.Dispose(),
         });
 
@@ -56,12 +54,6 @@ namespace Sirensong.Caching
                 GC.SuppressFinalize(this);
             }
         }
-
-        /// <inheritdoc />
-        public void Clear() => this.imageTexCache.Clear();
-
-        /// <inheritdoc />
-        public void HandleExpired() => this.imageTexCache.HandleExpired();
 
         /// <summary>
         /// Loads the image at the given path or URL in a Task.
@@ -105,7 +97,7 @@ namespace Sirensong.Caching
                         // If the texture is valid, add it to the cache
                         if (tex != null && tex.ImGuiHandle != IntPtr.Zero)
                         {
-                            this.imageTexCache[path] = tex;
+                            this.imageTexCache.AddOrUpdate(path, value => tex);
                             SirenLog.Verbose($"Loaded image at {path}");
                         }
                         else
@@ -137,18 +129,10 @@ namespace Sirensong.Caching
         /// Disposes of the image at the given path.
         /// </summary>
         /// <param name="path">The path or URL to the image.</param>
-        /// <param name="remove">If true, the image will be removed from the cache.</param>
-        private void DisposeImage(string path, bool remove = false)
+        private void DisposeImage(string path)
         {
             this.imageTexCache[path]?.Dispose();
-            this.imageTexCache[path] = null!;
-
-            if (remove)
-            {
-                this.imageTexCache.TryRemove(path, out _);
-            }
-
-            SirenLog.Verbose($"Disposed of image at {path}");
+            this.imageTexCache.Remove(path);
         }
 
         /// <summary>
@@ -157,31 +141,11 @@ namespace Sirensong.Caching
         /// <param name="path">The path or URL to the image.</param>
         /// <returns></returns>
         public TextureWrap? GetImage(string path)
-        {
-
-            if (this.imageTexCache.TryGetValue(path, out var tex))
-            {
-                return tex;
-            }
-
-            this.imageTexCache[path] = null!;
-            this.LoadImage(path);
-            return this.imageTexCache[path];
-        }
-
-        /// <summary>
-        /// Clears the image cache.
-        /// </summary>
-        /// <remarks>
-        /// Should not be called when any images are in use within ImGui or when any images are being loaded.
-        /// </remarks>
-        public void ClearCache()
-        {
-            foreach (var texture in this.imageTexCache.Keys)
-            {
-                this.DisposeImage(texture, true);
-            }
-        }
+            => this.imageTexCache.GetOrAdd(path, value =>
+                {
+                    this.LoadImage(path);
+                    return null!;
+                });
 
         /// <summary>
         /// Clears the image at the given path from the cache.
@@ -192,9 +156,9 @@ namespace Sirensong.Caching
         /// <param name="path"></param>
         public void ClearFromCache(string path)
         {
-            if (this.imageTexCache.ContainsKey(path))
+            if (this.imageTexCache[path] != null)
             {
-                this.DisposeImage(path, true);
+                this.DisposeImage(path);
             }
         }
     }
