@@ -6,22 +6,27 @@ using System.Timers;
 
 namespace Sirensong.Caching.Collections
 {
-    public class CacheCollection<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>, IDisposable where TKey : notnull where TValue : notnull
+    /// <summary>
+    /// A collection of keys and values that expire after a certain amount of time.
+    /// </summary>
+    /// <typeparam name="TKey"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
+    public class CacheCollection<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>, IDisposable where TKey : notnull
     {
         private bool disposedValue;
 
         /// <summary>
-        /// The dictionary of values for the cache.
+        /// The underlying dictionary of keys to values for caching.
         /// </summary>
         private readonly Dictionary<TKey, TValue> cache = new();
 
         /// <summary>
-        /// The dictionary of Keys to <see cref="KeyExpiryInfo"/>.
+        /// The underlying dictionary of keys to their expiry information.
         /// </summary>
         private readonly Dictionary<TKey, KeyExpiryInfo> accessTimes = new();
 
         /// <summary>
-        /// The <see cref="CacheOptions{TKey, TValue}"/> for this cache.
+        /// The <see cref="CacheOptions{TKey, TValue}"/> that this cache uses.
         /// </summary>
         private readonly CacheOptions<TKey, TValue> options;
 
@@ -85,6 +90,12 @@ namespace Sirensong.Caching.Collections
             {
                 if (this.cache.TryGetValue(key, out var value))
                 {
+                    if (this.IsExpired(key))
+                    {
+                        this.Expire(key);
+                        throw new KeyNotFoundException();
+                    }
+
                     this.accessTimes[key].Accessed();
                     return value;
                 }
