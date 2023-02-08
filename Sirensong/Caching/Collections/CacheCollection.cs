@@ -96,7 +96,7 @@ namespace Sirensong.Caching.Collections
         /// <returns>True if the key has expired, false otherwise.</returns>
         public bool IsExpired(TKey key)
         {
-            if (!this.cache.ContainsKey(key))
+            if (!this.cache.ContainsKey(key) || !this.accessTimes.ContainsKey(key))
             {
                 return false;
             }
