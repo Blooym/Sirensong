@@ -88,6 +88,11 @@ namespace Sirensong.Caching.Collections
         {
             get
             {
+                if (this.disposedValue)
+                {
+                    throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+                }
+
                 if (this.cache.TryGetValue(key, out var value))
                 {
                     if (this.IsExpired(key))
@@ -116,6 +121,11 @@ namespace Sirensong.Caching.Collections
         /// <param name="dispose">Whether or not to dispose of the value.</param>
         private void RemoveKey(TKey key, bool dispose)
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+            }
+
             if (this.cache.TryGetValue(key, out var value))
             {
                 this.cache.Remove(key);
@@ -144,6 +154,11 @@ namespace Sirensong.Caching.Collections
         /// <returns>True if the key has expired, false otherwise.</returns>
         public bool IsExpired(TKey key)
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+            }
+
             if (!this.cache.ContainsKey(key) || !this.accessTimes.ContainsKey(key))
             {
                 return false;
@@ -203,6 +218,11 @@ namespace Sirensong.Caching.Collections
         /// <returns>The value for the given key.</returns>
         public TValue GetOrAdd(TKey key, Func<TKey, TValue> valueFactory)
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+            }
+
             if (this.cache.TryGetValue(key, out var value))
             {
                 if (this.IsExpired(key))
@@ -234,6 +254,11 @@ namespace Sirensong.Caching.Collections
         /// <param name="valueFactory">The factory to create/update the value.</param>
         public void AddOrUpdate(TKey key, Func<TKey, TValue> valueFactory)
         {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+            }
+
             if (this.cache.TryGetValue(key, out _))
             {
                 if (this.IsExpired(key))
@@ -262,7 +287,14 @@ namespace Sirensong.Caching.Collections
         /// Removes a key from the cache and disposes of it if it implements <see cref="IDisposable"/>.
         /// </summary>
         /// <param name="key">The key to remove.</param>
-        public void Remove(TKey key) => this.RemoveKey(key, true);
+        public void Remove(TKey key)
+        {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+            }
+            this.RemoveKey(key, true);
+        }
 
         /// <summary>
         /// All the keys in the cache.
