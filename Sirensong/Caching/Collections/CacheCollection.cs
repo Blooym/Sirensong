@@ -96,6 +96,11 @@ namespace Sirensong.Caching.Collections
         /// <returns>True if the key has expired, false otherwise.</returns>
         public bool IsExpired(TKey key)
         {
+            if (!this.cache.ContainsKey(key))
+            {
+                return false;
+            }
+
             if (this.options.AbsoluteExpiry.HasValue)
             {
                 if (DateTime.Now - this.accessTimes[key].LastUpdateTime > this.options.AbsoluteExpiry)
