@@ -96,7 +96,12 @@ namespace Sirensong.Caching.Collections
                         throw new KeyNotFoundException();
                     }
 
-                    this.accessTimes[key].Accessed();
+                    if (this.accessTimes.TryGetValue(key, out var expiryInfo))
+                    {
+                        expiryInfo.Accessed();
+                        this.accessTimes[key] = expiryInfo;
+                    }
+
                     return value;
                 }
 
@@ -146,7 +151,7 @@ namespace Sirensong.Caching.Collections
 
             if (this.options.AbsoluteExpiry.HasValue)
             {
-                if (DateTime.Now - this.accessTimes[key].LastUpdateTime > this.options.AbsoluteExpiry)
+                if (DateTimeOffset.Now - this.accessTimes[key].LastUpdateTime > this.options.AbsoluteExpiry)
                 {
                     return true;
                 }
@@ -154,7 +159,7 @@ namespace Sirensong.Caching.Collections
 
             if (this.options.SlidingExpiry.HasValue)
             {
-                if (DateTime.Now - this.accessTimes[key].LastAccessTime > this.options.SlidingExpiry)
+                if (DateTimeOffset.Now - this.accessTimes[key].LastAccessTime > this.options.SlidingExpiry)
                 {
                     return true;
                 }
@@ -206,7 +211,12 @@ namespace Sirensong.Caching.Collections
                 }
                 else
                 {
-                    this.accessTimes[key].Accessed();
+                    if (this.accessTimes.TryGetValue(key, out var accessTime))
+                    {
+                        accessTime.Accessed();
+                        this.accessTimes[key] = accessTime;
+                    }
+
                     return value;
                 }
             }
@@ -232,7 +242,12 @@ namespace Sirensong.Caching.Collections
                 }
                 else
                 {
-                    this.accessTimes[key].Updated();
+                    if (this.accessTimes.TryGetValue(key, out var accessTime))
+                    {
+                        accessTime.Updated();
+                        this.accessTimes[key] = accessTime;
+                    }
+
                     this.cache[key] = valueFactory(key);
                     return;
                 }
