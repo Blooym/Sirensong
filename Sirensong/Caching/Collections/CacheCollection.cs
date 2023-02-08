@@ -313,31 +313,31 @@ namespace Sirensong.Caching.Collections
     /// <summary>
     /// Represents options for a timed cache.
     /// </summary>
-    public struct CacheOptions<TKey, TValue>
+    public readonly struct CacheOptions<TKey, TValue>
     {
         /// <summary>
         /// The sliding expiry time for the cache. Items in the cache will expire after this amount of time since they were last accessed.
         /// Default: null.
         /// </summary>
-        public TimeSpan? SlidingExpiry { get; set; } = null;
+        public readonly TimeSpan? SlidingExpiry { get; } = null;
 
         /// <summary>
         /// The absolute expiry time for the cache. Items in the cache will expire after this amount of time since they were last updated.
         /// Default: 1 hour.
         /// </summary>
-        public TimeSpan? AbsoluteExpiry { get; set; } = TimeSpan.FromHours(1);
+        public readonly TimeSpan? AbsoluteExpiry { get; } = TimeSpan.FromHours(1);
 
         /// <summary>
         ///Called when an item is expired from the cache.
         ///Default: null.
         /// </summary>
-        public Action<TKey, TValue>? OnExpiry { get; set; }
+        public readonly Action<TKey, TValue>? OnExpiry { get; }
 
         /// <summary>
         /// The interval to check for expired items, only used if <see cref="UseBuiltInExpire"/> is true.
         /// Defaults to 1 minute.
         /// </summary>
-        public TimeSpan ExpireInterval { get; set; } = TimeSpan.FromMinutes(1);
+        public readonly TimeSpan ExpireInterval { get; } = TimeSpan.FromMinutes(1);
 
         /// <summary>
         /// Creates a new instance of <see cref="CacheOptions{TKey, TValue}"/>.
