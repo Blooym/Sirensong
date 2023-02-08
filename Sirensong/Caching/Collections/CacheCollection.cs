@@ -154,6 +154,7 @@ namespace Sirensong.Caching.Collections
 
             value = valueFactory(key);
             this.cache.Add(key, value);
+            this.accessTimes.Add(key, new KeyExpiryInfo());
             return value;
         }
 
@@ -180,6 +181,7 @@ namespace Sirensong.Caching.Collections
 
             var value = valueFactory(key);
             this.cache.Add(key, value);
+            this.accessTimes.Add(key, new KeyExpiryInfo());
         }
 
         /// <summary>
@@ -194,7 +196,6 @@ namespace Sirensong.Caching.Collections
                 this.accessTimes.Remove(key);
                 return true;
             }
-
             return false;
         }
 
