@@ -297,6 +297,23 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
+        /// Removes everything from the cache and disposes keys/values if set to dispose and they implement <see cref="IDisposable"/>.
+        /// </summary>
+        /// <param name="dispose">Whether to dispose of the keys.</param>
+        public void Clear(bool dispose = true)
+        {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+            }
+
+            foreach (var key in this.cache.Keys.ToArray())
+            {
+                this.RemoveKey(key, dispose);
+            }
+        }
+
+        /// <summary>
         /// All the keys in the cache.
         /// </summary>
         public IReadOnlyCollection<TKey> Keys => this.cache.Keys;

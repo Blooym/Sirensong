@@ -54,7 +54,7 @@ namespace Sirensong.Caching
         {
             SlidingExpiry = TimeSpan.FromMinutes(10),
             AbsoluteExpiry = null,
-            ExpireInterval = TimeSpan.FromMinutes(1),
+            ExpireInterval = TimeSpan.FromMinutes(10),
         });
 
         /// <summary>

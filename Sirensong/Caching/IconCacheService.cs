@@ -33,9 +33,9 @@ namespace Sirensong.Caching
         /// </summary>
         private readonly CacheCollection<uint, TextureWrap> iconTexCache = new(new CacheOptions<uint, TextureWrap>()
         {
-            SlidingExpiry = TimeSpan.FromMinutes(5),
+            SlidingExpiry = TimeSpan.FromMinutes(10),
             AbsoluteExpiry = null,
-            ExpireInterval = TimeSpan.FromMinutes(1),
+            ExpireInterval = TimeSpan.FromMinutes(5),
             OnExpiry = (key, value) => value.Dispose()
         });
 

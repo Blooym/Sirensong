@@ -14,13 +14,13 @@ namespace Sirensong.UserInterface
         /// <param name="msDelay">The delay in milliseconds before the notification disappears.</param>
         private static void HandleToast(string message, NotificationType type, uint msDelay = 3000) => SharedServices.UiBuilder.AddNotification(message, SirenCore.InitializerName, type, msDelay);
 
-        /// <inheritdoc cref="HandleToast(string,NotificationType,uint,SoundEffect?)"/>
+        /// <inheritdoc cref="HandleToast(string,NotificationType,uint,ChatSoundEffect?)"/>
         public static void ShowToast(string message) => HandleToast(message, NotificationType.None, 3000);
 
-        /// <inheritdoc cref="HandleToast(string,NotificationType,uint,SoundEffect?)"/>
+        /// <inheritdoc cref="HandleToast(string,NotificationType,uint,ChatSoundEffect?)"/>
         public static void ShowToast(string message, NotificationType type) => HandleToast(message, type, 3000);
 
-        /// <inheritdoc cref="HandleToast(string,NotificationType,uint,SoundEffect?)"/>
+        /// <inheritdoc cref="HandleToast(string,NotificationType,uint,ChatSoundEffect?)"/>
         public static void ShowToast(string message, NotificationType type, uint msDelay) => HandleToast(message, type, msDelay);
     }
 }

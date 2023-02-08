@@ -10,7 +10,6 @@ namespace Sirensong
     /// </summary>
     public static class SirenCore
     {
-
         /// <inheritdoc cref="SirenServiceContainer"/>
         internal static readonly SirenServiceContainer IoC = new();
 
