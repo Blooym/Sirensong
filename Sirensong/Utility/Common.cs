@@ -1,4 +1,5 @@
 using System;
+using Dalamud.Utility;
 
 namespace Sirensong.Utility
 {
@@ -12,13 +13,9 @@ namespace Sirensong.Utility
         /// </summary>
         public static string GetOS()
         {
-            if (bool.TryParse(Environment.GetEnvironmentVariable("XL_WINEONLINUX"), out var isWineOnLinux) && isWineOnLinux)
+            if (Util.IsLinux())
             {
-                return "Linux";
-            }
-            else if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WINEPREFIX")))
-            {
-                return "Wine";
+                return "Linux/Wine";
             }
             return Environment.OSVersion.Platform switch
             {
