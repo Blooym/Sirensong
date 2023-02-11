@@ -1,6 +1,5 @@
 using Dalamud.Interface;
 using Dalamud.Interface.Internal.Notifications;
-using Sirensong.Game.Enums;
 
 namespace Sirensong.UserInterface
 {

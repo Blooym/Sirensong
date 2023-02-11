@@ -1,9 +1,12 @@
 using FFXIVClientStructs.FFXIV.Client.Game.Event;
 using Sirensong.Game.Enums;
 
-namespace Sirensong.Game.Utility
+namespace Sirensong.Game.Helpers
 {
-    public static class InstanceContentDirectorUtil
+    /// <summary>
+    /// Helper methods for interacting with the instance content director.
+    /// </summary>
+    public static class ICDHelper
     {
         /// <summary>
         /// Returns if the given content flag is set.

@@ -2,7 +2,6 @@ using Dalamud.Data;
 using Dalamud.Game;
 using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Objects;
-using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
 using Dalamud.Game.Gui.Toast;
 using Dalamud.Interface;
@@ -23,7 +22,6 @@ namespace Sirensong
         // Dalamud services
         [PluginService] internal static ClientState ClientState { get; private set; } = null!;
         [PluginService] internal static DataManager DataManager { get; private set; } = null!;
-        [PluginService] internal static SigScanner SigScanner { get; private set; } = null!;
         [PluginService] internal static ToastGui ToastGui { get; private set; } = null!;
         [PluginService] internal static ChatGui ChatGui { get; private set; } = null!;
         [PluginService] internal static TargetManager TargetManager { get; private set; } = null!;
@@ -31,7 +29,6 @@ namespace Sirensong
         [PluginService] internal static Dalamud.Game.ClientState.Conditions.Condition Condition { get; private set; } = null!;
         [PluginService] internal static Framework Framework { get; private set; } = null!;
         [PluginService] internal static DalamudPluginInterface PluginInterface { get; private set; } = null!;
-        [PluginService] internal static CommandManager CommandManager { get; private set; } = null!;
 
         // Dalamud service shortcuts
         internal static UiBuilder UiBuilder => PluginInterface.UiBuilder;
