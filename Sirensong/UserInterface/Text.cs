@@ -92,17 +92,14 @@ namespace Sirensong.UserInterface
         }
 
         /// <summary>
-        ///     Labeled text with a tooltip on hover of the text.
+        ///     Text with a description below.
         /// </summary>
-        /// <param name="label">The label text</param>
-        /// <param name="text">The value text</param>
-        /// <param name="tooltip">The tooltip text</param>
-        public static void Label(string label, string text, string tooltip)
+        /// <param name="title">The non-wrapped text to use for title.</param>
+        /// <param name="description">The wrapped text to use for description.</param>
+        public static void TextWithDescription(string title, string description)
         {
-            ImGui.TextUnformatted($"{label}: ");
-            ImGui.SameLine();
-            ImGui.TextUnformatted($"{text}*");
-            AddTooltip(tooltip);
+            TextWrapped(title);
+            TextDisabledWrapped(description);
         }
     }
 }

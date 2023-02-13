@@ -69,15 +69,7 @@ namespace Sirensong.UserInterface.Windowing
         /// <summary>
         ///     Draws all windows in the windowing system, with Sirens added providers.
         /// </summary>
-        private void Draw()
-        {
-            if (!this.AnyWindowsOpen())
-            {
-                return;
-            }
-
-            this.windowSystem.Draw();
-        }
+        private void Draw() => this.windowSystem.Draw();
 
         /// <summary>
         ///     Sets the config window to use for <see cref="UiBuilder.OpenConfigUi" />.
