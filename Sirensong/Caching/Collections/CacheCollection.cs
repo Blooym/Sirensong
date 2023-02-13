@@ -11,7 +11,7 @@ namespace Sirensong.Caching.Collections
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TValue"></typeparam>
-    public class CacheCollection<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>, IDisposable where TKey : notnull
+    public sealed class CacheCollection<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>, IDisposable where TKey : notnull
     {
         /// <summary>
         ///     The underlying dictionary of keys to their expiry information.

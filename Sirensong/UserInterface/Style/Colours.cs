@@ -1,5 +1,4 @@
 using System.Numerics;
-using Dalamud.Interface.Colors;
 
 namespace Sirensong.UserInterface.Style
 {
@@ -11,21 +10,26 @@ namespace Sirensong.UserInterface.Style
         /// <summary>
         ///     Colour for errors.
         /// </summary>
-        public static Vector4 Error => ImGuiColors.DalamudRed;
+        public static readonly Vector4 Error = new(1f, 0.0f, 0.0f, 1f);
 
         /// <summary>
         ///     Colour for warnings.
         /// </summary>
-        public static Vector4 Warning => ImGuiColors.DalamudOrange;
+        public static readonly Vector4 Warning = new(1f, 0.709f, 0.0f, 1f);
 
         /// <summary>
         ///     Colour for success.
         /// </summary>
-        public static Vector4 Success => ImGuiColors.ParsedGreen;
+        public static readonly Vector4 Success = new(0.117f, 1f, 0.0f, 1f);
+
+        /// <summary>
+        ///     Colour for info.
+        /// </summary>
+        public static readonly Vector4 Informational = new(0.0f, 0.6f, 1f, 1f);
 
         /// <summary>
         ///     Colour for important information.
         /// </summary>
-        public static Vector4 Important => ImGuiColors.DalamudViolet;
+        public static readonly Vector4 Important = new(0.77f, 0.7f, 0.965f, 1f);
     }
 }
