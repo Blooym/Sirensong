@@ -7,36 +7,36 @@ using System.Timers;
 namespace Sirensong.Caching.Collections
 {
     /// <summary>
-    /// A collection of keys and values that expire after a certain amount of time.
+    ///     A collection of keys and values that expire after a certain amount of time.
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TValue"></typeparam>
     public class CacheCollection<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>, IDisposable where TKey : notnull
     {
-        private bool disposedValue;
-
         /// <summary>
-        /// The underlying dictionary of keys to values for caching.
-        /// </summary>
-        private readonly Dictionary<TKey, TValue> cache = new();
-
-        /// <summary>
-        /// The underlying dictionary of keys to their expiry information.
+        ///     The underlying dictionary of keys to their expiry information.
         /// </summary>
         private readonly Dictionary<TKey, KeyExpiryInfo> accessTimes = new();
 
         /// <summary>
-        /// The <see cref="CacheOptions{TKey, TValue}"/> that this cache uses.
+        ///     The underlying dictionary of keys to values for caching.
         /// </summary>
-        private readonly CacheOptions<TKey, TValue> options;
+        private readonly Dictionary<TKey, TValue> cache = new();
 
         /// <summary>
-        /// The timer for expiring keys.
+        ///     The timer for expiring keys.
         /// </summary>
         private readonly Timer expiryTimer;
 
         /// <summary>
-        /// Creates a new <see cref="CacheCollection{TKey,TValue}" /> with default options.
+        ///     The <see cref="CacheOptions{TKey, TValue}" /> that this cache uses.
+        /// </summary>
+        private readonly CacheOptions<TKey, TValue> options;
+
+        private bool disposedValue;
+
+        /// <summary>
+        ///     Creates a new <see cref="CacheCollection{TKey,TValue}" /> with default options.
         /// </summary>
         public CacheCollection() : this(new CacheOptions<TKey, TValue>())
         {
@@ -44,9 +44,9 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        /// Creates a new <see cref="CacheCollection{TKey,TValue}" /> with the specified options.
+        ///     Creates a new <see cref="CacheCollection{TKey,TValue}" /> with the specified options.
         /// </summary>
-        /// <param name="options">The <see cref="CacheOptions{TKey, TValue}"/> for this cache.</param>
+        /// <param name="options">The <see cref="CacheOptions{TKey, TValue}" /> for this cache.</param>
         public CacheCollection(CacheOptions<TKey, TValue> options)
         {
             this.options = options;
@@ -57,29 +57,7 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        /// Disposes of the cache and all its values.
-        /// </summary>
-        public void Dispose()
-        {
-            if (!this.disposedValue)
-            {
-                this.expiryTimer.Elapsed -= this.ExpireKeys;
-                this.expiryTimer.Stop();
-                this.expiryTimer.Dispose();
-
-                foreach (var key in this.cache.Keys.ToArray())
-                {
-                    this.RemoveKey(key, true);
-                }
-
-                GC.SuppressFinalize(this);
-
-                this.disposedValue = true;
-            }
-        }
-
-        /// <summary>
-        /// Gets the given key from the cache.
+        ///     Gets the given key from the cache.
         /// </summary>
         /// <param name="key">The key to get.</param>
         /// <returns>The value for the given key.</returns>
@@ -115,7 +93,51 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        /// Removes a key from the cache and optionally disposes of it.
+        ///     All the keys in the cache.
+        /// </summary>
+        public IReadOnlyCollection<TKey> Keys => this.cache.Keys;
+
+        /// <summary>
+        ///     All the values in the cache.
+        /// </summary>
+        public IReadOnlyCollection<TValue> Values => this.cache.Values;
+
+        /// <summary>
+        ///     Disposes of the cache and all its values.
+        /// </summary>
+        public void Dispose()
+        {
+            if (!this.disposedValue)
+            {
+                this.expiryTimer.Elapsed -= this.ExpireKeys;
+                this.expiryTimer.Stop();
+                this.expiryTimer.Dispose();
+
+                foreach (var key in this.cache.Keys.ToArray())
+                {
+                    this.RemoveKey(key, true);
+                }
+
+                GC.SuppressFinalize(this);
+
+                this.disposedValue = true;
+            }
+        }
+
+        /// <summary>
+        ///     Gets the enumerator for the cache.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => this.cache.GetEnumerator();
+
+        /// <summary>
+        ///     Gets the enumerator for the cache.
+        /// </summary>
+        /// <returns></returns>
+        IEnumerator IEnumerable.GetEnumerator() => this.cache.GetEnumerator();
+
+        /// <summary>
+        ///     Removes a key from the cache and optionally disposes of it.
         /// </summary>
         /// <param name="key">The key to remove.</param>
         /// <param name="dispose">Whether or not to dispose of the value.</param>
@@ -148,7 +170,7 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        /// Checks to see if the given key has expired.
+        ///     Checks to see if the given key has expired.
         /// </summary>
         /// <param name="key">The key to check.</param>
         /// <returns>True if the key has expired, false otherwise.</returns>
@@ -184,7 +206,7 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        /// Expires the given key.
+        ///     Expires the given key.
         /// </summary>
         /// <param name="key"></param>
         private void Expire(TKey key)
@@ -194,7 +216,7 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        /// Expires all keys in the cache that have expired.
+        ///     Expires all keys in the cache that have expired.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -211,7 +233,7 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        /// Gets a value or adds it to the cache.
+        ///     Gets a value or adds it to the cache.
         /// </summary>
         /// <param name="key">The key to get or add.</param>
         /// <param name="valueFactory">The factory to create the value if it doesn't exist.</param>
@@ -248,7 +270,7 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        /// Adds or updates a value in the cache.
+        ///     Adds or updates a value in the cache.
         /// </summary>
         /// <param name="key">The key to add or update.</param>
         /// <param name="valueFactory">The factory to create/update the value.</param>
@@ -284,7 +306,7 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        /// Removes a key from the cache and disposes of it if it implements <see cref="IDisposable"/>.
+        ///     Removes a key from the cache and disposes of it if it implements <see cref="IDisposable" />.
         /// </summary>
         /// <param name="key">The key to remove.</param>
         public void Remove(TKey key)
@@ -297,7 +319,8 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        /// Removes everything from the cache and disposes keys/values if set to dispose and they implement <see cref="IDisposable"/>.
+        ///     Removes everything from the cache and disposes keys/values if set to dispose and they implement
+        ///     <see cref="IDisposable" />.
         /// </summary>
         /// <param name="dispose">Whether to dispose of the keys.</param>
         public void Clear(bool dispose = true)
@@ -314,44 +337,22 @@ namespace Sirensong.Caching.Collections
         }
 
         /// <summary>
-        /// All the keys in the cache.
-        /// </summary>
-        public IReadOnlyCollection<TKey> Keys => this.cache.Keys;
-
-        /// <summary>
-        /// All the values in the cache.
-        /// </summary>
-        public IReadOnlyCollection<TValue> Values => this.cache.Values;
-
-        /// <summary>
-        /// Gets the enumerator for the cache.
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => this.cache.GetEnumerator();
-
-        /// <summary>
-        /// Gets the enumerator for the cache.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerator IEnumerable.GetEnumerator() => this.cache.GetEnumerator();
-
-        /// <summary>
-        /// Represents expiry information for a key.
+        ///     Represents expiry information for a key.
         /// </summary>
         private struct KeyExpiryInfo
         {
             /// <summary>
-            /// The last time the key was accessed.
+            ///     The last time the key was accessed.
             /// </summary>
             public DateTime LastAccessTime { get; private set; } = DateTime.Now;
 
             /// <summary>
-            /// The last time the key was updated.
+            ///     The last time the key was updated.
             /// </summary>
             public DateTime LastUpdateTime { get; private set; } = DateTime.Now;
 
             /// <summary>
-            /// Creates a new instance of <see cref="KeyExpiryInfo"/> with the current time.
+            ///     Creates a new instance of <see cref="KeyExpiryInfo" /> with the current time.
             /// </summary>
             public KeyExpiryInfo()
             {
@@ -359,7 +360,7 @@ namespace Sirensong.Caching.Collections
             }
 
             /// <summary>
-            /// Creates a new instance of <see cref="KeyExpiryInfo"/> with the given times.
+            ///     Creates a new instance of <see cref="KeyExpiryInfo" /> with the given times.
             /// </summary>
             /// <param name="lastAccessTime"></param>
             /// <param name="lastUpdateTime"></param>
@@ -370,12 +371,12 @@ namespace Sirensong.Caching.Collections
             }
 
             /// <summary>
-            /// Updates the last access time to the current time.
+            ///     Updates the last access time to the current time.
             /// </summary>
             public void Accessed() => this.LastAccessTime = DateTime.Now;
 
             /// <summary>
-            /// Updates the last update time to the current time.
+            ///     Updates the last update time to the current time.
             /// </summary>
             public void Updated()
             {
@@ -386,36 +387,38 @@ namespace Sirensong.Caching.Collections
     }
 
     /// <summary>
-    /// Represents options for a timed cache.
+    ///     Represents options for a timed cache.
     /// </summary>
     public readonly struct CacheOptions<TKey, TValue>
     {
         /// <summary>
-        /// The sliding expiry time for the cache. Items in the cache will expire after this amount of time since they were last accessed.
-        /// Default: null.
+        ///     The sliding expiry time for the cache. Items in the cache will expire after this amount of time since they were
+        ///     last accessed.
+        ///     Default: null.
         /// </summary>
         public readonly TimeSpan? SlidingExpiry { get; init; } = null;
 
         /// <summary>
-        /// The absolute expiry time for the cache. Items in the cache will expire after this amount of time since they were last updated.
-        /// Default: 1 hour.
+        ///     The absolute expiry time for the cache. Items in the cache will expire after this amount of time since they were
+        ///     last updated.
+        ///     Default: 1 hour.
         /// </summary>
         public readonly TimeSpan? AbsoluteExpiry { get; init; } = TimeSpan.FromHours(1);
 
         /// <summary>
-        ///Called when an item is expired from the cache.
-        ///Default: null.
+        ///     Called when an item is expired from the cache.
+        ///     Default: null.
         /// </summary>
         public readonly Action<TKey, TValue>? OnExpiry { get; init; }
 
         /// <summary>
-        /// The interval to check for expired items, only used if <see cref="UseBuiltInExpire"/> is true.
-        /// Defaults to 1 minute.
+        ///     The interval to check for expired items, only used if <see cref="UseBuiltInExpire" /> is true.
+        ///     Defaults to 1 minute.
         /// </summary>
         public readonly TimeSpan ExpireInterval { get; init; } = TimeSpan.FromMinutes(1);
 
         /// <summary>
-        /// Creates a new instance of <see cref="CacheOptions{TKey, TValue}"/>.
+        ///     Creates a new instance of <see cref="CacheOptions{TKey, TValue}" />.
         /// </summary>
         public CacheOptions()
         {

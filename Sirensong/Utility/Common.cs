@@ -4,18 +4,19 @@ using Dalamud.Utility;
 namespace Sirensong.Utility
 {
     /// <summary>
-    /// A collection of common utility methods.
+    ///     A collection of common utility methods.
     /// </summary>
     public static class Common
     {
         /// <summary>
-        /// Returns the operating system of the executing system or "Wine" if in a WINEPREFIX.
+        ///     Heuristically determine the operating system. Checks for Wine first, then the environment.
         /// </summary>
-        public static string GetOS()
+        /// <returns>The operating system, "UNIX/Wine" if Wine is detected, or "Unknown" if the OS is not recognized.</returns>
+        public static string DetermineOS()
         {
             if (Util.IsLinux())
             {
-                return "Linux/Wine";
+                return "UNIX/Wine";
             }
             return Environment.OSVersion.Platform switch
             {

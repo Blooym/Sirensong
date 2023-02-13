@@ -5,7 +5,7 @@
 namespace Sirensong.Game.Enums
 {
     /// <summary>
-    /// A mapping of internal sound effects to their IDs.
+    ///     A mapping of internal sound effects to their IDs.
     /// </summary>
     public enum SoundEffect : uint
     {
@@ -30,6 +30,6 @@ namespace Sirensong.Game.Enums
         IncomingMail = 59,
         Enmity = 60,
         DutyPop = 67,
-        LimitBreak = 70
+        LimitBreak = 70,
     }
 }

@@ -5,28 +5,30 @@ using System.Linq;
 namespace Sirensong.IoC
 {
     /// <summary>
-    /// A slimmed down singleton-only service container.
+    ///     A slimmed down singleton-only service container.
     /// </summary>
     /// <remarks>
-    /// Automatically handles the disposal of services that implement <see cref="IDisposable"/>.
-    /// You should use <see cref="RemoveService{T}"/> to remove services instead of trying to dispose of them yourself.
+    ///     Automatically handles the disposal of services that implement <see cref="IDisposable" />.
+    ///     You should use <see cref="RemoveService{T}" /> to remove services instead of trying to dispose of them yourself.
     /// </remarks>
     public sealed class MiniServiceContainer : IDisposable
     {
-        private bool disposedValue;
 
         /// <summary>
-        /// The services held by the <see cref="MiniServiceContainer"/>.
+        ///     The services held by the <see cref="MiniServiceContainer" />.
         /// </summary>
         private static readonly Lazy<HashSet<object>> ServiceContainer = new(() => new HashSet<object>(), true);
 
         /// <summary>
-        /// The lock object for the <see cref="ServiceContainer"/>.
+        ///     The lock object for the <see cref="ServiceContainer" />.
         /// </summary>
         private static readonly object ServiceContainerLock = new();
 
+        private bool disposedValue;
+
         /// <summary>
-        /// Disposes of the <see cref="MiniServiceContainer"/> and all services contained within it that implement <see cref="IDisposable"/>.
+        ///     Disposes of the <see cref="MiniServiceContainer" /> and all services contained within it that implement
+        ///     <see cref="IDisposable" />.
         /// </summary>
         public void Dispose()
         {
@@ -48,7 +50,7 @@ namespace Sirensong.IoC
         }
 
         /// <summary>
-        /// Checks if a service exists in the service container.
+        ///     Checks if a service exists in the service container.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns>True if the service exists, otherwise false.</returns>
@@ -67,7 +69,7 @@ namespace Sirensong.IoC
         }
 
         /// <summary>
-        /// Gets a service from the service container if it exists.
+        ///     Gets a service from the service container if it exists.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns>The service if it exists, otherwise null.</returns>
@@ -86,10 +88,10 @@ namespace Sirensong.IoC
         }
 
         /// <summary>
-        /// Creates a service in the service container.
+        ///     Creates a service in the service container.
         /// </summary>
         /// <remarks>
-        /// The service will be disposed of when the <see cref="MiniServiceContainer"/> is disposed of.
+        ///     The service will be disposed of when the <see cref="MiniServiceContainer" /> is disposed of.
         /// </remarks>
         /// <typeparam name="T"></typeparam>
         /// <exception cref="ObjectDisposedException"></exception>
@@ -119,10 +121,10 @@ namespace Sirensong.IoC
         }
 
         /// <summary>
-        /// Gets a service from the service container if it exists, otherwise creates it.
+        ///     Gets a service from the service container if it exists, otherwise creates it.
         /// </summary>
         /// <remarks>
-        /// The service will be disposed of when the <see cref="MiniServiceContainer"/> is disposed of.
+        ///     The service will be disposed of when the <see cref="MiniServiceContainer" /> is disposed of.
         /// </remarks>
         /// <typeparam name="T">The type of the service.</typeparam>
         /// <returns>The service that was created or found.</returns>
@@ -149,10 +151,10 @@ namespace Sirensong.IoC
         }
 
         /// <summary>
-        /// Removes a service from the service container.
+        ///     Removes a service from the service container.
         /// </summary>
         /// <remarks>
-        /// The service will be disposed of if it implements <see cref="IDisposable"/>.
+        ///     The service will be disposed of if it implements <see cref="IDisposable" />.
         /// </remarks>
         /// <typeparam name="T"></typeparam>
         /// <returns>True if removal was successful, otherwise false.</returns>

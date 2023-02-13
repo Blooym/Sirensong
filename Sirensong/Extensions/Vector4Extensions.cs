@@ -6,7 +6,7 @@ namespace Sirensong.Extensions
     public static class Vector4Extensions
     {
         /// <summary>
-        /// Converts a <see cref="Vector4"/> to a <see cref="uint"/>.
+        ///     Converts a <see cref="Vector4" /> to a <see cref="uint" />.
         /// </summary>
         /// <param name="vector"></param>
         /// <returns></returns>

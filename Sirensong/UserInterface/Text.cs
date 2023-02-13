@@ -7,25 +7,24 @@ namespace Sirensong.UserInterface
     public static partial class SiGui
     {
         /// <summary>
-        /// <see cref="ImGui.Text(string)"/> without the formatting.
+        ///     A <see cref="ImGui.TextUnformatted(string)" /> element.
         /// </summary>
         /// <param name="text"></param>
         public static void Text(string text) => ImGui.TextUnformatted(text);
 
         /// <summary>
-        /// <see cref="ImGui.TextWrapped(string)"/> without the formatting.
+        ///     A <see cref="ImGui.TextWrapped(string)" /> element without formatting.
         /// </summary>
         /// <param name="text"></param>
         public static void TextWrapped(string text)
         {
-            var wrapPoint = ImGui.GetWindowContentRegionMax();
-            ImGui.PushTextWrapPos(wrapPoint.X);
+            ImGui.PushTextWrapPos(ImGui.GetWindowContentRegionMax().X);
             ImGui.TextUnformatted(text);
             ImGui.PopTextWrapPos();
         }
 
         /// <summary>
-        /// <see cref="ImGui.TextColored(Vector4, string)"/> without the formatting.
+        ///     A <see cref="ImGui.TextColored(Vector4, string)" /> element without formatting.
         /// </summary>
         /// <param name="colour"></param>
         /// <param name="text"></param>
@@ -37,33 +36,32 @@ namespace Sirensong.UserInterface
         }
 
         /// <summary>
-        /// <see cref="ImGui.TextDisabled(string)"/> without the formatting.
+        ///     A <see cref="ImGui.TextDisabled(string)" /> element without formatting.
         /// </summary>
         /// <param name="text"></param>
         public static unsafe void TextDisabled(string text)
         {
-            var disabledCol = ImGui.GetStyleColorVec4(ImGuiCol.TextDisabled);
-            ImGui.PushStyleColor(ImGuiCol.Text, *disabledCol);
+            ImGui.PushStyleColor(ImGuiCol.Text, *ImGui.GetStyleColorVec4(ImGuiCol.TextDisabled));
             ImGui.TextUnformatted(text);
             ImGui.PopStyleColor();
         }
 
         /// <summary>
-        /// <see cref="ImGui.TextDisabled(string)"/> wrapped without the formatting.
+        ///     A <see cref="ImGui.TextDisabled(string)" /> element without formatting and wrapped to the window width.
         /// </summary>
         /// <param name="text"></param>
         public static unsafe void TextDisabledWrapped(string text)
         {
-            var disabledCol = ImGui.GetStyleColorVec4(ImGuiCol.TextDisabled);
-            ImGui.PushStyleColor(ImGuiCol.Text, *disabledCol);
+            ImGui.PushStyleColor(ImGuiCol.Text, *ImGui.GetStyleColorVec4(ImGuiCol.TextDisabled));
             TextWrapped(text);
             ImGui.PopStyleColor();
         }
 
         /// <summary>
-        /// <see cref="ImGui.TextWrapped(string)"/> with a custom colour.
+        ///     A <see cref="ImGui.TextWrapped(string)" /> element without formatting and with a custom colour.
         /// </summary>
         /// <param name="colour"></param>
+        /// <param name="text"></param>
         public static void TextWrappedColoured(Vector4 colour, string text)
         {
             ImGui.PushStyleColor(ImGuiCol.Text, colour);
@@ -72,7 +70,7 @@ namespace Sirensong.UserInterface
         }
 
         /// <summary>
-        /// A heading with a separator and spacing below.
+        ///     A heading text with a separator and spacing below.
         /// </summary>
         /// <param name="text"></param>
         public static void Heading(string text)
@@ -83,14 +81,28 @@ namespace Sirensong.UserInterface
         }
 
         /// <summary>
-        /// A footer with a separator and spacing above.
+        ///     A footer text with a separator and spacing above.
         /// </summary>
         /// <param name="text"></param>
-        public static unsafe void Footer(string text)
+        public static void Footer(string text)
         {
             ImGui.Dummy(Spacing.FooterSpacing);
             ImGui.Separator();
             TextDisabled(text);
+        }
+
+        /// <summary>
+        ///     Labeled text with a tooltip on hover of the text.
+        /// </summary>
+        /// <param name="label">The label text</param>
+        /// <param name="text">The value text</param>
+        /// <param name="tooltip">The tooltip text</param>
+        public static void Label(string label, string text, string tooltip)
+        {
+            ImGui.TextUnformatted($"{label}: ");
+            ImGui.SameLine();
+            ImGui.TextUnformatted($"{text}*");
+            AddTooltip(tooltip);
         }
     }
 }

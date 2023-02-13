@@ -3,17 +3,17 @@ using Sirensong.Resources.Localization;
 namespace Sirensong.Game.Enums
 {
     /// <summary>
-    /// Represents a ContentType, mapping from <see cref="ContentFinderCondition.ContentType" />.
+    ///     Represents a ContentType, mapping from <see cref="ContentFinderCondition.ContentType" />.
     /// </summary>
-    public enum ContentType : int
+    public enum ContentType
     {
         /// <remarks>
-        /// This isn't a ContentType from the game, but is useful to split <see cref="Raids" /> apart from alliance raids.
+        ///     This isn't a ContentType from the game, but is useful to split <see cref="Raids" /> apart from alliance raids.
         /// </remarks>
         AllianceRaid = -1,
 
         /// <summary>
-        /// This isn't a ContentType from the game, but is used when unable to determine the ContentType.
+        ///     This isn't a ContentType from the game, but is used when unable to determine the ContentType.
         /// </summary>
         Unknown = -2,
 
@@ -49,12 +49,12 @@ namespace Sirensong.Game.Enums
     }
 
     /// <summary>
-    /// Extensions for <see cref="ContentType" />.
+    ///     Extensions for <see cref="ContentType" />.
     /// </summary>
     public static class ContentTypeExtensions
     {
         /// <summary>
-        /// Gets the localized name of the <see cref="ContentType" /> according to the current CultureInfo.
+        ///     Gets the localized name of the <see cref="ContentType" /> according to the current CultureInfo.
         /// </summary>
         /// <param name="contentType"></param>
         /// <returns>The localized name of the <see cref="ContentType" />.</returns>
@@ -95,7 +95,7 @@ namespace Sirensong.Game.Enums
         };
 
         /// <summary>
-        /// Gets the localized plural name of the <see cref="ContentType" /> according to the current CultureInfo.
+        ///     Gets the localized plural name of the <see cref="ContentType" /> according to the current CultureInfo.
         /// </summary>
         /// <param name="contentType"></param>
         /// <returns></returns>

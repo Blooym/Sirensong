@@ -6,7 +6,7 @@ namespace Sirensong.Game.Extensions
     public static class ClassJobExtensions
     {
         /// <summary>
-        /// Get class job role from class job
+        ///     Get class job role from class job
         /// </summary>
         /// <param name="classJob"></param>
         /// <returns></returns>

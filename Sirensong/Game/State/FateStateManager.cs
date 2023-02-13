@@ -9,43 +9,43 @@ namespace Sirensong.Game.State
     public sealed class FateStateManager : IDisposable
     {
         /// <summary>
-        /// Creates a new <see cref="FateStateManager"/>.
-        /// </summary>
-        internal FateStateManager() => SharedServices.Framework.Update += this.HandleFateEvents;
-
-        /// <summary>
-        /// Disposes of the <see cref="FateStateManager"/>.
-        /// </summary>
-        public void Dispose() => SharedServices.Framework.Update -= this.HandleFateEvents;
-
-        /// <summary>
-        /// The delegate for when a fate event occurs with a context.
+        ///     The delegate for when a fate event occurs with a context.
         /// </summary>
         /// <param name="fate"></param>
         public unsafe delegate void FateContextHandler(FateContext* fate);
 
         /// <summary>
-        /// The delegate for when a fate event occurs with no context.
+        ///     The delegate for when a fate event occurs with no context.
         /// </summary>
-        public unsafe delegate void FateNoContext();
+        public delegate void FateNoContext();
 
         /// <summary>
-        /// Called when the player first joins a fate.
+        ///     Creates a new <see cref="FateStateManager" />.
         /// </summary>
-        public event FateContextHandler? FateJoined;
+        private FateStateManager() => SharedServices.Framework.Update += this.HandleFateEvents;
 
         /// <summary>
-        /// Called when the player leaves a fate.
-        /// </summary>
-        public event FateNoContext? FateLeft;
-
-        /// <summary>
-        /// The current fate the player is in.
+        ///     The current fate the player is in.
         /// </summary>
         public unsafe FateContext* CurrentFate { get; private set; }
 
         /// <summary>
-        /// Handles detecting fate events and invoking the appropriate event.
+        ///     Disposes of the <see cref="FateStateManager" />.
+        /// </summary>
+        public void Dispose() => SharedServices.Framework.Update -= this.HandleFateEvents;
+
+        /// <summary>
+        ///     Called when the player first joins a fate.
+        /// </summary>
+        public event FateContextHandler? FateJoined;
+
+        /// <summary>
+        ///     Called when the player leaves a fate.
+        /// </summary>
+        public event FateNoContext? FateLeft;
+
+        /// <summary>
+        ///     Handles detecting fate events and invoking the appropriate event.
         /// </summary>
         /// <param name="framework"></param>
         private unsafe void HandleFateEvents(Framework framework)
