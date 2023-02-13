@@ -1,432 +1,366 @@
 using System;
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
-using Sirensong.Caching.Internal.Interfaces;
 
 namespace Sirensong.Caching.Collections
 {
     /// <summary>
-    /// Provides a cache for a given Key, Value pair, built ontop of a <see cref="ConcurrentDictionary{TKey,TValue}"/>, implements an automatic cache cleaner system for expiring items.
+    ///     A collection of keys and values that expire after a certain amount of time.
     /// </summary>
-    /// <remarks>
-    /// <para>
-    ///     When an item is accessed its access time is updated, and it will be removed from the cache when the SlidingExpiry is reached.
-    /// </para>
-    /// <para>
-    ///     When an item is created or updated its update time is updated, and it will be removed from the cache when the AbsoluteExpiry is reached.
-    /// </para>
-    /// <para>
-    ///     If both <see cref="CacheOptions{TKey, TValue}.SlidingExpiry"/> and <see cref="CacheOptions{TKey, TValue}.AbsoluteExpiry"/> are set, the item will be removed from the cache when either is reached.
-    /// </para>
-    /// </remarks>
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TValue"></typeparam>
-    public class CacheCollection<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>, ICache, IDisposable where TKey : notnull where TValue : notnull
+    public class CacheCollection<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>, IDisposable where TKey : notnull
     {
         /// <summary>
-        /// The dictionary of values for the cache.
+        ///     The underlying dictionary of keys to their expiry information.
         /// </summary>
-        private readonly ConcurrentDictionary<TKey, TValue> cache = new();
+        private readonly Dictionary<TKey, KeyExpiryInfo> accessTimes = new();
 
         /// <summary>
-        /// The dictionary of Keys to <see cref="KeyExpiryInfo"/>.
+        ///     The underlying dictionary of keys to values for caching.
         /// </summary>
-        private readonly ConcurrentDictionary<TKey, KeyExpiryInfo> accessTimes = new();
+        private readonly Dictionary<TKey, TValue> cache = new();
 
         /// <summary>
-        /// The timer for cleaning the cache.
+        ///     The timer for expiring keys.
         /// </summary>
-        private Timer? cacheCleanTimer;
+        private readonly Timer expiryTimer;
 
         /// <summary>
-        /// The lock object for the cache.
-        /// </summary>
-        private readonly object lockObject = new();
-
-        /// <summary>
-        /// The <see cref="CacheOptions{TKey, TValue}"/> for this cache.
+        ///     The <see cref="CacheOptions{TKey, TValue}" /> that this cache uses.
         /// </summary>
         private readonly CacheOptions<TKey, TValue> options;
 
-        /// <summary>
-        /// All the keys in the cache.
-        /// </summary>
-        public IReadOnlyCollection<TKey> Keys => this.cache.Keys.ToList().AsReadOnly();
+        private bool disposedValue;
 
         /// <summary>
-        /// All the values in the cache.
+        ///     Creates a new <see cref="CacheCollection{TKey,TValue}" /> with default options.
         /// </summary>
-        public IReadOnlyCollection<TValue> Values => this.cache.Values.ToList().AsReadOnly();
+        public CacheCollection() : this(new CacheOptions<TKey, TValue>())
+        {
+
+        }
 
         /// <summary>
-        /// Gets the enumerator for the cache.
+        ///     Creates a new <see cref="CacheCollection{TKey,TValue}" /> with the specified options.
+        /// </summary>
+        /// <param name="options">The <see cref="CacheOptions{TKey, TValue}" /> for this cache.</param>
+        public CacheCollection(CacheOptions<TKey, TValue> options)
+        {
+            this.options = options;
+
+            this.expiryTimer = new Timer(this.options.ExpireInterval.TotalMilliseconds);
+            this.expiryTimer.Elapsed += this.ExpireKeys;
+            this.expiryTimer.Start();
+        }
+
+        /// <summary>
+        ///     Gets the given key from the cache.
+        /// </summary>
+        /// <param name="key">The key to get.</param>
+        /// <returns>The value for the given key.</returns>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public TValue this[TKey key]
+        {
+            get
+            {
+                if (this.disposedValue)
+                {
+                    throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+                }
+
+                if (this.cache.TryGetValue(key, out var value))
+                {
+                    if (this.IsExpired(key))
+                    {
+                        this.Expire(key);
+                        throw new KeyNotFoundException();
+                    }
+
+                    if (this.accessTimes.TryGetValue(key, out var expiryInfo))
+                    {
+                        expiryInfo.Accessed();
+                        this.accessTimes[key] = expiryInfo;
+                    }
+
+                    return value;
+                }
+
+                throw new KeyNotFoundException();
+            }
+        }
+
+        /// <summary>
+        ///     All the keys in the cache.
+        /// </summary>
+        public IReadOnlyCollection<TKey> Keys => this.cache.Keys;
+
+        /// <summary>
+        ///     All the values in the cache.
+        /// </summary>
+        public IReadOnlyCollection<TValue> Values => this.cache.Values;
+
+        /// <summary>
+        ///     Disposes of the cache and all its values.
+        /// </summary>
+        public void Dispose()
+        {
+            if (!this.disposedValue)
+            {
+                this.expiryTimer.Elapsed -= this.ExpireKeys;
+                this.expiryTimer.Stop();
+                this.expiryTimer.Dispose();
+
+                foreach (var key in this.cache.Keys.ToArray())
+                {
+                    this.RemoveKey(key, true);
+                }
+
+                GC.SuppressFinalize(this);
+
+                this.disposedValue = true;
+            }
+        }
+
+        /// <summary>
+        ///     Gets the enumerator for the cache.
         /// </summary>
         /// <returns></returns>
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => this.cache.GetEnumerator();
 
         /// <summary>
-        /// Gets the enumerator for the cache.
+        ///     Gets the enumerator for the cache.
         /// </summary>
         /// <returns></returns>
         IEnumerator IEnumerable.GetEnumerator() => this.cache.GetEnumerator();
 
         /// <summary>
-        /// Creates a new <see cref="CacheCollection{TKey,TValue}" /> with default options.
+        ///     Removes a key from the cache and optionally disposes of it.
         /// </summary>
-        public CacheCollection() : this(new CacheOptions<TKey, TValue>()) => this.SetupTimer();
-
-        /// <summary>
-        /// Creates a new <see cref="CacheCollection{TKey,TValue}" /> with the specified options.
-        /// </summary>
-        /// <param name="options">The <see cref="CacheOptions{TKey, TValue}"/> for this cache.</param>
-        public CacheCollection(CacheOptions<TKey, TValue> options)
+        /// <param name="key">The key to remove.</param>
+        /// <param name="dispose">Whether or not to dispose of the value.</param>
+        private void RemoveKey(TKey key, bool dispose)
         {
-            this.options = options;
-            this.SetupTimer();
-        }
-
-        private void SetupTimer()
-        {
-            if (!this.options.UseBuiltInExpire || (!this.options.AbsoluteExpiry.HasValue && !this.options.SlidingExpiry.HasValue))
+            if (this.disposedValue)
             {
-                return;
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
             }
 
-            this.cacheCleanTimer?.Stop();
-            this.cacheCleanTimer?.Dispose();
-            this.cacheCleanTimer = new Timer(this.options.ExpireInterval.HasValue ? this.options.ExpireInterval.Value.TotalMilliseconds : 5000);
-
-            this.cacheCleanTimer.Elapsed += (sender, args) => this.HandleExpired();
-            this.cacheCleanTimer.Start();
-        }
-
-        /// <summary>
-        /// Disposes of the cache and all its keys and values if they implement <see cref="IDisposable"/>.
-        /// </summary>
-        public void Dispose()
-        {
-            if (this.cacheCleanTimer != null)
+            if (this.cache.TryGetValue(key, out var value))
             {
-                this.cacheCleanTimer.Stop();
-                this.cacheCleanTimer.Dispose();
-                this.cacheCleanTimer.Elapsed -= (sender, args) => this.HandleExpired();
-            }
+                this.cache.Remove(key);
+                this.accessTimes.Remove(key);
+                this.options.OnExpiry?.Invoke(key, value);
 
-            // Dispose of the keys and values.
-            this.RemoveAllKV();
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Checks if the given key is expired and removes it if it is.
-        /// </summary>
-        /// <param name="key">The key to check.</param>
-        /// <returns>True if the key is expired (and was removed from the cache), false otherwise.</returns>
-        private bool HandleExpired(TKey key)
-        {
-            lock (this.lockObject)
-            {
-                if (this.accessTimes.TryGetValue(key, out var expiryInfo))
+                if (dispose)
                 {
-                    // We have to access the cache directly to avoid updating the access time.
-                    var value = this.cache.GetValueOrDefault(key);
-
-                    if (this.options.AbsoluteExpiry.HasValue && expiryInfo.LastUpdateTime + this.options.AbsoluteExpiry.Value < DateTimeOffset.Now)
-                    {
-                        this.cache.TryRemove(key, out _);
-                        this.accessTimes.TryRemove(key, out _);
-                        this.options.OnExpiry?.Invoke(key, value!);
-                        SirenLog.IVerbose($"Cache key {key} expired due to absolute expiry.");
-                        return true;
-                    }
-                    else if (this.options.SlidingExpiry.HasValue && expiryInfo.LastAccessTime + this.options.SlidingExpiry.Value < DateTimeOffset.Now)
-                    {
-                        this.cache.TryRemove(key, out _);
-                        this.accessTimes.TryRemove(key, out _);
-                        this.options.OnExpiry?.Invoke(key, value!);
-                        SirenLog.IVerbose($"Cache key {key} expired due to sliding expiry.");
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Removes of all keys and values in the cache and disposes if they implement <see cref="IDisposable"/>.
-        /// </summary>
-        private void RemoveAllKV()
-        {
-            lock (this.lockObject)
-            {
-                foreach (var kv in this.cache)
-                {
-                    if (kv.Key is IDisposable disposableKey)
+                    if (key is IDisposable disposableKey)
                     {
                         disposableKey.Dispose();
                     }
 
-                    if (kv.Value is IDisposable disposableValue)
+                    if (value is IDisposable disposable)
                     {
-                        disposableValue.Dispose();
+                        disposable.Dispose();
                     }
                 }
-
-                this.cache.Clear();
-                this.accessTimes.Clear();
             }
         }
 
         /// <summary>
-        /// Updates the access time for the given key.
+        ///     Checks to see if the given key has expired.
         /// </summary>
-        /// <param name="key">The key to update.</param>
-        private void UpdateAccessedTime(TKey key)
+        /// <param name="key">The key to check.</param>
+        /// <returns>True if the key has expired, false otherwise.</returns>
+        public bool IsExpired(TKey key)
         {
-            lock (this.lockObject)
+            if (this.disposedValue)
             {
-                var expiryInfo = this.accessTimes.GetOrAdd(key, new KeyExpiryInfo());
-
-                this.accessTimes.AddOrUpdate(key, expiryInfo, (k, v) =>
-                {
-                    expiryInfo.Accessed();
-                    return expiryInfo;
-                });
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
             }
-        }
 
-        /// <summary>
-        /// Updates the update time for the given key.
-        /// </summary>
-        /// <param name="key">The key to update.</param>
-        private void UpdateUpdatedTime(TKey key)
-        {
-            lock (this.lockObject)
+            if (!this.cache.ContainsKey(key) || !this.accessTimes.ContainsKey(key))
             {
-                var expiryInfo = this.accessTimes.GetOrAdd(key, new KeyExpiryInfo());
-
-                this.accessTimes.AddOrUpdate(key, expiryInfo, (k, v) =>
-                {
-                    expiryInfo.Updated();
-                    return expiryInfo;
-                });
+                return false;
             }
-        }
 
-        /// <summary>
-        /// Gets or sets the value for the given key.
-        /// </summary>
-        /// <param name="key">The key to get or set.</param>
-        /// <returns>The value for the given key or null if the key is not found.</returns>
-        public TValue this[TKey key]
-        {
-            get
+            if (this.options.AbsoluteExpiry.HasValue)
             {
-                lock (this.lockObject)
+                if (DateTimeOffset.Now - this.accessTimes[key].LastUpdateTime > this.options.AbsoluteExpiry)
                 {
-                    if (this.HandleExpired(key))
-                    {
-                        return default!;
-                    }
-
-                    this.UpdateAccessedTime(key);
-                    return this.cache[key];
+                    return true;
                 }
             }
-            set
+
+            if (this.options.SlidingExpiry.HasValue)
             {
-                lock (this.lockObject)
+                if (DateTimeOffset.Now - this.accessTimes[key].LastAccessTime > this.options.SlidingExpiry)
                 {
-                    this.UpdateUpdatedTime(key);
-                    this.cache[key] = value;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        ///     Expires the given key.
+        /// </summary>
+        /// <param name="key"></param>
+        private void Expire(TKey key)
+        {
+            this.RemoveKey(key, false);
+            this.options.OnExpiry?.Invoke(key, this.cache[key]);
+        }
+
+        /// <summary>
+        ///     Expires all keys in the cache that have expired.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ExpireKeys(object? sender, ElapsedEventArgs e)
+        {
+            var keys = new List<TKey>(this.cache.Keys);
+            foreach (var key in keys.ToArray())
+            {
+                if (this.IsExpired(key))
+                {
+                    this.Expire(key);
                 }
             }
         }
 
         /// <summary>
-        /// Gets the value for the given sealedkey.
+        ///     Gets a value or adds it to the cache.
         /// </summary>
-        /// <param name="key">The key to get.</param>
-        /// <param name="value">The value for the given key.</param>
-        /// <returns>True if the key was found, false otherwise.</returns>
-        public bool TryGetValue(TKey key, out TValue value)
-        {
-            lock (this.lockObject)
-            {
-                if (this.HandleExpired(key))
-                {
-                    value = default!;
-                    return false;
-                }
-
-                this.UpdateAccessedTime(key);
-                return this.cache.TryGetValue(key, out value!);
-            }
-        }
-
-        /// <summary>
-        /// Gets or creates the value for the given key.
-        /// </summary>
-        /// <param name="key">The key to get or create.</param>
+        /// <param name="key">The key to get or add.</param>
         /// <param name="valueFactory">The factory to create the value if it doesn't exist.</param>
         /// <returns>The value for the given key.</returns>
         public TValue GetOrAdd(TKey key, Func<TKey, TValue> valueFactory)
         {
-            lock (this.lockObject)
+            if (this.disposedValue)
             {
-                if (this.HandleExpired(key))
-                {
-                    this.cache.TryRemove(key, out _);
-                }
-
-                this.UpdateAccessedTime(key);
-                return this.cache.GetOrAdd(key, valueFactory);
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
             }
+
+            if (this.cache.TryGetValue(key, out var value))
+            {
+                if (this.IsExpired(key))
+                {
+                    this.Expire(key);
+                }
+                else
+                {
+                    if (this.accessTimes.TryGetValue(key, out var accessTime))
+                    {
+                        accessTime.Accessed();
+                        this.accessTimes[key] = accessTime;
+                    }
+
+                    return value;
+                }
+            }
+
+            value = valueFactory(key);
+            this.cache.Add(key, value);
+            this.accessTimes.Add(key, new KeyExpiryInfo());
+            return value;
         }
 
         /// <summary>
-        /// Gets or creates the value for the given key.
-        /// </summary>
-        /// <param name="key">The key to get or create.</param>
-        /// <param name="value">The value to create if it doesn't exist.</param>
-        /// <returns>The value for the given key.</returns>
-        public TValue GetOrAdd(TKey key, TValue value)
-        {
-            lock (this.lockObject)
-            {
-                if (this.HandleExpired(key))
-                {
-                    this.cache.TryRemove(key, out _);
-                }
-
-                this.UpdateAccessedTime(key);
-                return this.cache.GetOrAdd(key, value);
-            }
-        }
-
-        /// <summary>
-        /// Adds or updates the value for the given key.
+        ///     Adds or updates a value in the cache.
         /// </summary>
         /// <param name="key">The key to add or update.</param>
-        /// <param name="value">The value to add or update.</param>
-        public void AddOrUpdate(TKey key, TValue value)
+        /// <param name="valueFactory">The factory to create/update the value.</param>
+        public void AddOrUpdate(TKey key, Func<TKey, TValue> valueFactory)
         {
-            lock (this.lockObject)
+            if (this.disposedValue)
             {
-                this.cache.AddOrUpdate(key, value, (k, v) => value);
-                this.UpdateUpdatedTime(key);
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
             }
-        }
 
-        /// <summary>
-        ///Adds or updates the value for the given key.
-        /// </summary>
-        /// <param name="key">The key to add or update.</param>
-        /// <param name="value">The value to add or update.</param>
-        /// <param name="updateValueFactory">The factory to update the value if it already exists.</param>
-        public void AddOrUpdate(TKey key, TValue value, Func<TKey, TValue, TValue> updateValueFactory)
-        {
-            lock (this.lockObject)
+            if (this.cache.TryGetValue(key, out _))
             {
-                this.cache.AddOrUpdate(key, value, updateValueFactory);
-                this.UpdateUpdatedTime(key);
-            }
-        }
-
-        /// <summary>
-        /// Attempts to remove the key and value from the cache.
-        /// </summary>
-        /// <param name="key">The key to remove.</param>
-        /// <param name="value"></param>
-        /// <returns>True if removed, false otherwise.</returns>
-        public bool TryRemove(TKey key, out TValue value)
-        {
-            lock (this.lockObject)
-            {
-                this.accessTimes.TryRemove(key, out _);
-                return this.cache.TryRemove(key, out value!);
-            }
-        }
-
-        /// <summary>
-        /// Attempts to remove the key and value from the cache.
-        /// </summary>
-        /// <param name="key">The key to remove.</param>
-        /// <param name="value"></param>
-        /// <returns>True when a value is found in the dictionary with the specified key; false when the dictionary cannot find a value associated with the specified key.</returns>
-        public bool Remove(TKey key, out TValue value)
-        {
-            lock (this.lockObject)
-            {
-                this.accessTimes.Remove(key, out _);
-                return this.cache.Remove(key, out value!);
-            }
-        }
-
-        /// <summary>
-        /// Checks if the given key exists.
-        /// </summary>
-        /// <param name="key">The key to check.</param>
-        /// <returns>True if the key exists, false otherwise.</returns>
-        public bool ContainsKey(TKey key)
-        {
-            lock (this.lockObject)
-            {
-                if (this.HandleExpired(key))
+                if (this.IsExpired(key))
                 {
-                    this.cache.TryRemove(key, out _);
-                    return false;
+                    this.Expire(key);
                 }
-
-                this.UpdateAccessedTime(key);
-                return this.cache.ContainsKey(key);
-            }
-        }
-
-        /// <inheritdoc/>
-        public void HandleExpired()
-        {
-            lock (this.lockObject)
-            {
-                foreach (var key in this.Keys)
+                else
                 {
-                    this.HandleExpired(key);
+                    if (this.accessTimes.TryGetValue(key, out var accessTime))
+                    {
+                        accessTime.Updated();
+                        this.accessTimes[key] = accessTime;
+                    }
+
+                    this.cache[key] = valueFactory(key);
+                    return;
                 }
             }
+
+            var value = valueFactory(key);
+            this.cache.Add(key, value);
+            this.accessTimes.Add(key, new KeyExpiryInfo());
         }
 
         /// <summary>
-        /// Clears the cache.
+        ///     Removes a key from the cache and disposes of it if it implements <see cref="IDisposable" />.
         /// </summary>
-        public void Clear() => this.RemoveAllKV();
+        /// <param name="key">The key to remove.</param>
+        public void Remove(TKey key)
+        {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+            }
+            this.RemoveKey(key, true);
+        }
 
         /// <summary>
-        /// Represents expiry information for a key.
+        ///     Removes everything from the cache and disposes keys/values if set to dispose and they implement
+        ///     <see cref="IDisposable" />.
+        /// </summary>
+        /// <param name="dispose">Whether to dispose of the keys.</param>
+        public void Clear(bool dispose = true)
+        {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
+            }
+
+            foreach (var key in this.cache.Keys.ToArray())
+            {
+                this.RemoveKey(key, dispose);
+            }
+        }
+
+        /// <summary>
+        ///     Represents expiry information for a key.
         /// </summary>
         private struct KeyExpiryInfo
         {
             /// <summary>
-            /// The last time the key was accessed.
+            ///     The last time the key was accessed.
             /// </summary>
             public DateTime LastAccessTime { get; private set; } = DateTime.Now;
 
             /// <summary>
-            /// The last time the key was updated.
+            ///     The last time the key was updated.
             /// </summary>
             public DateTime LastUpdateTime { get; private set; } = DateTime.Now;
 
             /// <summary>
-            /// Creates a new instance of <see cref="KeyExpiryInfo"/> with the current time.
+            ///     Creates a new instance of <see cref="KeyExpiryInfo" /> with the current time.
             /// </summary>
             public KeyExpiryInfo()
             {
+
             }
 
             /// <summary>
-            /// Creates a new instance of <see cref="KeyExpiryInfo"/> with the given times.
+            ///     Creates a new instance of <see cref="KeyExpiryInfo" /> with the given times.
             /// </summary>
             /// <param name="lastAccessTime"></param>
             /// <param name="lastUpdateTime"></param>
@@ -437,12 +371,12 @@ namespace Sirensong.Caching.Collections
             }
 
             /// <summary>
-            /// Updates the last access time to the current time.
+            ///     Updates the last access time to the current time.
             /// </summary>
             public void Accessed() => this.LastAccessTime = DateTime.Now;
 
             /// <summary>
-            /// Updates the last update time to the current time.
+            ///     Updates the last update time to the current time.
             /// </summary>
             public void Updated()
             {
@@ -453,44 +387,42 @@ namespace Sirensong.Caching.Collections
     }
 
     /// <summary>
-    /// Represents options for a timed cache.
+    ///     Represents options for a timed cache.
     /// </summary>
-    public struct CacheOptions<TKey, TValue>
+    public readonly struct CacheOptions<TKey, TValue>
     {
         /// <summary>
-        /// The sliding expiry time for the cache. Items in the cache will expire after this amount of time since they were last accessed.
-        /// Default: null.
+        ///     The sliding expiry time for the cache. Items in the cache will expire after this amount of time since they were
+        ///     last accessed.
+        ///     Default: null.
         /// </summary>
-        public TimeSpan? SlidingExpiry { get; set; } = null;
+        public readonly TimeSpan? SlidingExpiry { get; init; } = null;
 
         /// <summary>
-        /// The absolute expiry time for the cache. Items in the cache will expire after this amount of time since they were last updated.
-        /// Default: 1 hour.
+        ///     The absolute expiry time for the cache. Items in the cache will expire after this amount of time since they were
+        ///     last updated.
+        ///     Default: 1 hour.
         /// </summary>
-        public TimeSpan? AbsoluteExpiry { get; set; } = TimeSpan.FromHours(1);
+        public readonly TimeSpan? AbsoluteExpiry { get; init; } = TimeSpan.FromHours(1);
 
         /// <summary>
-        ///Called when an item is expired from the cache.
-        ///Default: null.
+        ///     Called when an item is expired from the cache.
+        ///     Default: null.
         /// </summary>
-        public Action<TKey, TValue>? OnExpiry { get; set; }
+        public readonly Action<TKey, TValue>? OnExpiry { get; init; }
 
         /// <summary>
-        /// If true, the cache will use the built in expiry system to expire items automatically.
-        /// If false, the cache will not expire items automatically, and items will be expired on access or when <see cref="CacheCollection{TKey, TValue}.HandleExpired()"/> is called.
-        /// Default: true.
+        ///     The interval to check for expired items, only used if <see cref="UseBuiltInExpire" /> is true.
+        ///     Defaults to 1 minute.
         /// </summary>
-        public bool UseBuiltInExpire { get; set; } = true;
+        public readonly TimeSpan ExpireInterval { get; init; } = TimeSpan.FromMinutes(1);
 
         /// <summary>
-        /// The interval to check for expired items, only used if <see cref="UseBuiltInExpire"/> is true.
-        /// Defaults to 1 minute.
+        ///     Creates a new instance of <see cref="CacheOptions{TKey, TValue}" />.
         /// </summary>
-        public TimeSpan? ExpireInterval { get; set; } = TimeSpan.FromMinutes(1);
+        public CacheOptions()
+        {
 
-        /// <summary>
-        /// Creates a new instance of <see cref="CacheOptions{TKey, TValue}"/>.
-        /// </summary>
-        public CacheOptions() { }
+        }
     }
 }

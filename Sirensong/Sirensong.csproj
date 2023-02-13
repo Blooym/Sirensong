@@ -7,7 +7,7 @@
     <Version>0.0.0.1</Version>
     <RepositoryUrl>https://github.com/BitsOfAByte/Sirensong</RepositoryUrl>
     <PackageProjectUrl>https://github.com/BitsOfAByte/Sirensong</PackageProjectUrl>
-    <Description> A collection of commonly used methods for Dalamud Plugins.</Description>
+    <Description>A collection of commonly used methods for Dalamud Plugins.</Description>
     <PackageLicenseExpression>AGPL-3.0-only</PackageLicenseExpression>
     <Copyright>AGPL-3.0-only</Copyright>
   </PropertyGroup>
@@ -42,7 +42,7 @@
       <DependentUpon>SirenCore.cs</DependentUpon>
     </Compile>
   </ItemGroup>
-  
+
   <!-- Dalamud Paths -->
   <PropertyGroup>
     <DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
@@ -87,9 +87,9 @@
       <HintPath>$(DalamudLibPath)Newtonsoft.Json.dll</HintPath>
       <Private>false</Private>
     </Reference>
-	  <Reference Include="CheapLoc">
-	    <Private>false</Private>
-	    <HintPath>$(DalamudLibPath)CheapLoc.dll</HintPath>
-	  </Reference>
+    <Reference Include="CheapLoc">
+      <Private>false</Private>
+      <HintPath>$(DalamudLibPath)CheapLoc.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
