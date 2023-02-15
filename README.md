@@ -1,4 +1,4 @@
-<div style="text-align: center;">
+<div align="center">
 
 <img src="./.assets/Icons/icon.png" alt="Sirensong Icon" width="15%" />
 
