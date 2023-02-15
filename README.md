@@ -10,39 +10,39 @@ A collection of common utilities, helpers, extensions & UI styles for use in Dal
 
 </div>
 
-## Important Disclaimer
-
-Sirensong is designed to be used within my own plugins first and foremost. As such, it will contain a fair amount of opinionated design choices that may not work for you. **Breaking changes may be made at any time.** Please be aware of this before using Sirensong in your own plugins.
+---
 
 ## About
 
-Sirensong is a collection of functionality that I have found myself reusing frequently and wanted to put into a centrialized location. It is designed to be used as a submodule within your own git repository and is not available as a NuGet package.
+Sirensong is a library that aids in the creation of Dalamud plugins by providing useful services, utility & extension methods and ImGui components.
 
-If you encounter any issues while trying to use Sirensong, please open an issue and I will try to address it as soon as possible. Please be aware that opinionated design choices might not be changed.
+As Sirensong is intended for use primarily within my projects, it contains many opinionated design choices that may not work for others. Right now Sirensong is not considered stable and, as such, may contain many breaking changes or bugs.
 
 ## Installing
 
-Sirensong should be used as a submodule within your git repository. To add Sirensong as a submodule, run the in your git repository:
+Sirensong should be used as a submodule within your git repository. To do this, run the following command:
 
-```bash
+```
 git submodule add https://github.com/BitsOfAByte/Sirensong.git
 ```
 
 ## Updating
 
-To update Sirensong to the latest version, run the following command in your git repository:
+To update to the latest version of the Sirensong submodule run the following command:
 
-```bash
+```
 git submodule update --remote
 ```
 
-This will update the submodule to the latest version. You should be ready for breaking changes any time you do this.
+Please be aware that updating your submodule may introduce breaking changes.
 
 ## Usage
 
-You **must** initialize Sirensong before using any of its features. This is done by calling the `Initialize` method. It is recommended to do this within your plugin constructor. If you do not initialize Sirensong, you will run into unpredictable or unstable behavior.
+To use Sirensong you must first initialize it. To do this call the initialize method within the `SirenCore` class. If you do not do this you will experience unstable behaviour when trying to use any functionality.
 
-You also need to dispose of Sirensong when your plugin is unloaded. This is done by calling the `Dispose` method. It is recommended to do this within your plugin dispose method.
+You are also required to dispose of Sirensong when you are finished using all of its functionality, although you don't need to dispose of any service class you did not explicitly instantiate with the `new` keyword.
+
+An example of usage within a Dalamud plugin can be found below.
 
 ```csharp
 using Sirensong;
@@ -63,6 +63,6 @@ public class MyPlugin : IDalamudPlugin
 }
 ```
 
-## License and Credits
+## Licence and Credits
 
-This project is licensed under the [GNU Affero General Public License v3.0](./LICENSE) and is maintained by [BitsOfAByte](https://github.com/BitsOfAByte). All contributions made to this project will also be licensed under the same license.
+Sirensong is licenced under the [GNU Affero General Public License v3.0](./LICENSE) and is maintained by [BitsOfAByte](https://github.com/BitsOfAByte). All contributions made to this project will also be licenced under the same licence.
