@@ -19,6 +19,6 @@ namespace Sirensong.Game.Extensions
         public static IEnumerable<PlayerCharacter> GetPlayerCharacters(this ObjectTable objectTable, bool includeSelf = true) => objectTable
             .Where(x => x is PlayerCharacter).Cast<PlayerCharacter>()
             .Where(x => includeSelf || x.ObjectId != SharedServices.ClientState.LocalPlayer?.ObjectId)
-            .Where(x => x.ObjectId < 240);
+            .Where(x => x.ObjectId > 240);
     }
 }
