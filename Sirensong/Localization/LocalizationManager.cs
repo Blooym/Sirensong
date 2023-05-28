@@ -1,8 +1,9 @@
 using System;
 using System.Globalization;
 using Sirensong.IoC.Internal;
+using Sirensong.Localization.Resources;
 
-namespace Sirensong.Resources.Localization
+namespace Sirensong.Localization
 {
     [SirenServiceClass]
     internal sealed class LocalizationManager

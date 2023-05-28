@@ -1,9 +1,8 @@
 using System;
 using Lumina.Excel.GeneratedSheets;
-using Sirensong.Game.Enums;
-using ContentType = Sirensong.Game.Enums.ContentType;
+using Sirensong.Extensions;
 
-namespace Sirensong.Game.Extensions
+namespace Sirensong.Game.Enums
 {
     /// <summary>
     ///     Extensions for <see cref="ContentFinderCondition" />

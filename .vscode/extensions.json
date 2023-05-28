@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "ms-dotnettools.csharp",
+        "tintoy.msbuild-project-tools",
+        "kreativ-software.csharpextensions",
+        "fernandoescolar.vscode-solution-explorer"
+    ]
+}

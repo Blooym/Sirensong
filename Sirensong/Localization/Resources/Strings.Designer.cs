@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Sirensong.Resources.Localization {
+namespace Sirensong.Localization.Resources {
     using System;
     
     

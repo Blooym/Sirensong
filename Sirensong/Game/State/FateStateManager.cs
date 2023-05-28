@@ -5,8 +5,11 @@ using Sirensong.IoC.Internal;
 
 namespace Sirensong.Game.State
 {
+    /// <summary>
+    ///     A service for tracking information about the current fate state.
+    /// </summary>
     [SirenServiceClass]
-    public sealed class FateStateManager : IDisposable
+    public sealed class FateStateService : IDisposable
     {
         /// <summary>
         ///     The delegate for when a fate event occurs with a context.
@@ -20,9 +23,9 @@ namespace Sirensong.Game.State
         public delegate void FateNoContext();
 
         /// <summary>
-        ///     Creates a new <see cref="FateStateManager" />.
+        ///     Creates a new <see cref="FateStateService" />.
         /// </summary>
-        private FateStateManager() => SharedServices.Framework.Update += this.HandleFateEvents;
+        private FateStateService() => SharedServices.Framework.Update += this.HandleFateEvents;
 
         /// <summary>
         ///     The current fate the player is in.
@@ -30,7 +33,7 @@ namespace Sirensong.Game.State
         public unsafe FateContext* CurrentFate { get; private set; }
 
         /// <summary>
-        ///     Disposes of the <see cref="FateStateManager" />.
+        ///     Disposes of the <see cref="FateStateService" />.
         /// </summary>
         public void Dispose() => SharedServices.Framework.Update -= this.HandleFateEvents;
 
@@ -61,6 +64,7 @@ namespace Sirensong.Game.State
             {
                 if (this.CurrentFate != null)
                 {
+                    SirenLog.Debug($"Player left fate: {this.CurrentFate->FateId}");
                     this.CurrentFate = null;
                     this.FateLeft?.Invoke();
                 }
@@ -71,6 +75,7 @@ namespace Sirensong.Game.State
                 {
                     this.CurrentFate = currentFate;
                     this.FateJoined?.Invoke(currentFate);
+                    SirenLog.Debug($"Player joined fate: {currentFate->FateId}");
                 }
             }
         }

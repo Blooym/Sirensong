@@ -9,10 +9,10 @@ namespace Sirensong.Game.Helpers
     public static class MapHelper
     {
         /// <summary>
-        ///     Gets the current map ID.
+        ///     The current map ID of the local player's location.
         /// </summary>
         /// <returns>The current map ID.</returns>
-        public static unsafe uint GetCurrentMapId() => AgentMap.Instance()->CurrentMapId;
+        public static unsafe uint CurrentMapId => AgentMap.Instance()->CurrentMapId;
 
         /// <summary>
         ///     Opens the map with the given ID.

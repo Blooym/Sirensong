@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
 
-namespace Sirensong.Caching.Collections
+namespace Sirensong.Cache.Collections
 {
     /// <summary>
     ///     A collection of keys and values that expire after a certain amount of time.
@@ -13,6 +13,8 @@ namespace Sirensong.Caching.Collections
     /// <typeparam name="TValue"></typeparam>
     public sealed class CacheCollection<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>, IDisposable where TKey : notnull
     {
+        private bool disposedValue;
+
         /// <summary>
         ///     The underlying dictionary of keys to their expiry information.
         /// </summary>
@@ -32,8 +34,6 @@ namespace Sirensong.Caching.Collections
         ///     The <see cref="CacheOptions{TKey, TValue}" /> that this cache uses.
         /// </summary>
         private readonly CacheOptions<TKey, TValue> options;
-
-        private bool disposedValue;
 
         /// <summary>
         ///     Creates a new <see cref="CacheCollection{TKey,TValue}" /> with default options.

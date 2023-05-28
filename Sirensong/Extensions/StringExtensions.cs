@@ -17,7 +17,7 @@ namespace Sirensong.Extensions
         public static string RemoveWhitespace(this string str) => new(str.Where(c => !char.IsWhiteSpace(c)).ToArray());
 
         /// <summary>
-        ///     Removes all proceeding and trailing whitespace and any duplicate whitespace.
+        ///     Removes all proceeding and trailing whitespace and any duplicate whitespace from a string.
         /// </summary>
         /// <param name="str"></param>
         /// <returns>A new string that has been trimmed and squished.</returns>

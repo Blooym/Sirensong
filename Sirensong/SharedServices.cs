@@ -9,9 +9,9 @@ using Dalamud.Interface;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Lumina.Excel.GeneratedSheets;
-using Sirensong.Caching;
+using Sirensong.Cache;
 using Sirensong.IoC;
-using Sirensong.Resources.Localization;
+using Sirensong.Localization;
 using Condition = Dalamud.Game.ClientState.Conditions.Condition;
 
 namespace Sirensong

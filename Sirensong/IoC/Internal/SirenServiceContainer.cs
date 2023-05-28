@@ -10,7 +10,6 @@ namespace Sirensong.IoC.Internal
     /// </summary>
     internal sealed class SirenServiceContainer : IServiceProvider, IDisposable
     {
-
         /// <summary>
         ///     The services held by the <see cref="SirenServiceContainer" />.
         /// </summary>
@@ -41,21 +40,6 @@ namespace Sirensong.IoC.Internal
 
                 this.disposedValue = true;
             }
-        }
-
-        /// <summary>
-        ///     Gets a service from the service container.
-        /// </summary>
-        /// <param name="type">The type of the service to get.</param>
-        /// <exception cref="ObjectDisposedException">Thrown if the service container has been disposed.</exception>
-        /// <returns>The service, or null if it was not found.</returns>
-        public object? GetService(Type type)
-        {
-            if (this.disposedValue)
-            {
-                throw new ObjectDisposedException(nameof(SirenServiceContainer));
-            }
-            return this.services.Value.FirstOrDefault(service => service.GetType() == type);
         }
 
         /// <summary>
@@ -113,10 +97,6 @@ namespace Sirensong.IoC.Internal
         /// <inheritdoc cref="CreateService(Type)" />
         /// <typeparam name="T">The type of the service to add.</typeparam>
         internal T CreateService<T>() where T : class => (T)this.CreateService(typeof(T));
-
-        /// <inheritdoc cref="GetService(Type)" />
-        /// <typeparam name="T">The type of the service to get.</typeparam>
-        public T? GetService<T>() where T : class => (T?)this.GetService(typeof(T));
 
         /// <summary>
         ///     Gets or creates a service from the service container.
@@ -198,5 +178,25 @@ namespace Sirensong.IoC.Internal
                 SirenLog.Debug($"Injected service {service.GetType().FullName} into class {typeof(T).FullName}.");
             }
         }
+
+        /// <summary>
+        ///     Gets a service from the service container.
+        /// </summary>
+        /// <param name="type">The type of the service to get.</param>
+        /// <exception cref="ObjectDisposedException">Thrown if the service container has been disposed.</exception>
+        /// <returns>The service, or null if it was not found.</returns>
+        public object? GetService(Type type)
+        {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(SirenServiceContainer));
+            }
+            SirenLog.Debug($"Getting requested service: {type.FullName}.");
+            return this.services.Value.FirstOrDefault(service => service.GetType() == type);
+        }
+
+        /// <inheritdoc cref="GetService(Type)" />
+        /// <typeparam name="T">The type of the service to get.</typeparam>
+        public T? GetService<T>() where T : class => (T?)this.GetService(typeof(T));
     }
 }

@@ -3,7 +3,7 @@ using System.Linq;
 using Dalamud.Game.ClientState.Objects;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 
-namespace Sirensong.Game.Extensions
+namespace Sirensong.Extensions
 {
     /// <summary>
     ///     Extensions for <see cref="ObjectTable" />.
@@ -20,5 +20,15 @@ namespace Sirensong.Game.Extensions
             .Where(x => x is PlayerCharacter).Cast<PlayerCharacter>()
             .Where(x => includeSelf || x.ObjectId != SharedServices.ClientState.LocalPlayer?.ObjectId)
             .Where(x => x.ObjectId > 240);
+
+        /// <summary>
+        ///     Gets all nearby friend <see cref="PlayerCharacter" />s in the <see cref="ObjectTable" />.
+        /// </summary>
+        /// <param name="objectTable"></param>
+        /// <returns></returns>
+        public static IEnumerable<PlayerCharacter> GetFriendCharacters(this ObjectTable objectTable) => objectTable
+            .Where(x => x is PlayerCharacter).Cast<PlayerCharacter>()
+            .Where(x => x.ObjectId > 240)
+            .Where(x => x.IsFriend());
     }
 }

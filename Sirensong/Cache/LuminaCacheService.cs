@@ -1,10 +1,10 @@
 using System;
 using Dalamud;
 using Lumina.Excel;
-using Sirensong.Caching.Collections;
+using Sirensong.Cache.Collections;
 using Sirensong.IoC.Internal;
 
-namespace Sirensong.Caching
+namespace Sirensong.Cache
 {
     /// <summary>
     ///     Caching for Lumina Rows and Subrows.

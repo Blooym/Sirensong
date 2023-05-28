@@ -4,7 +4,7 @@ using Sirensong.Game.Enums;
 namespace Sirensong.Game.Helpers
 {
     /// <summary>
-    ///     Helper methods for interacting with the condition manager.
+    ///     Helper methods for interacting with player condition flags.
     /// </summary>
     public static class ConditionHelper
     {
@@ -61,5 +61,14 @@ namespace Sirensong.Game.Helpers
         public static bool IsBetweenAreas()
             => HasFlag(ConditionFlag.BetweenAreas) ||
                 HasFlag(ConditionFlag.BetweenAreas51);
+
+        /// <summary>
+        ///     Returns if the player is currently crafting.
+        /// </summary>
+        /// <returns>True if crafting, false otherwise.</returns>
+        public static bool IsCrafting
+            => HasFlag(ConditionFlag.Crafting) ||
+                HasFlag(ConditionFlag.Crafting40) ||
+                HasFlag(ConditionFlag.PreparingToCraft);
     }
 }

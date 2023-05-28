@@ -13,7 +13,6 @@ namespace Sirensong.IoC
     /// </remarks>
     public sealed class MiniServiceContainer : IDisposable
     {
-
         /// <summary>
         ///     The services held by the <see cref="MiniServiceContainer" />.
         /// </summary>
@@ -115,7 +114,7 @@ namespace Sirensong.IoC
                     throw new InvalidOperationException($"Could not create service of type {typeof(T).FullName}.");
                 }
 
-                SirenLog.Debug($"Added SERVICE to container: {service.GetType().FullName}.");
+                SirenLog.Debug($"Added service to container: {service.GetType().FullName}.");
                 ServiceContainer.Value.Add(service);
             }
         }
@@ -175,9 +174,9 @@ namespace Sirensong.IoC
                     if (service is IDisposable disposable)
                     {
                         disposable.Dispose();
-                        SirenLog.Debug($"Disposed of SERVICE: {service.GetType().FullName}.");
+                        SirenLog.Debug($"Disposed of service: {service.GetType().FullName}.");
                     }
-                    SirenLog.Debug($"Removed SERVICE from container: {service.GetType().FullName}.");
+                    SirenLog.Debug($"Removed service from container: {service.GetType().FullName}.");
                     return true;
                 }
                 return false;

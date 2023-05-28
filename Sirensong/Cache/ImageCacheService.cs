@@ -2,10 +2,10 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using ImGuiScene;
-using Sirensong.Caching.Collections;
+using Sirensong.Cache.Collections;
 using Sirensong.IoC.Internal;
 
-namespace Sirensong.Caching
+namespace Sirensong.Cache
 {
     /// <summary>
     ///     Provides a way to load and cache images.

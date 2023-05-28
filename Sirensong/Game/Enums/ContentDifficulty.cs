@@ -1,5 +1,5 @@
 using System;
-using Sirensong.Resources.Localization;
+using Sirensong.Localization.Resources;
 
 namespace Sirensong.Game.Enums
 {

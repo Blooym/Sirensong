@@ -1,12 +1,12 @@
 using Dalamud.Game.Gui.Toast;
 using Dalamud.Game.Text.SeStringHandling;
 
-namespace Sirensong.Game
+namespace Sirensong.Game.Helpers
 {
     /// <summary>
-    ///     Methods to show in-game toast notifications.
+    ///     Helper methods for showing in-game toast notifications.
     /// </summary>
-    public static class GameToast
+    public static class ToastHelper
     {
         /// <summary>
         ///     Wrapper for <see cref="ToastGui.ShowQuest(string, QuestToastOptions)" />.
