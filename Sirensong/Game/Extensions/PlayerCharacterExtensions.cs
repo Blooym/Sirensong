@@ -2,8 +2,10 @@ using System;
 using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Memory;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Sirensong.Game.Enums;
+using Sirensong.Game.Helpers;
 
 namespace Sirensong.Game.Extensions
 {
@@ -13,7 +15,7 @@ namespace Sirensong.Game.Extensions
     public static class PlayerCharacterExtensions
     {
         /// <summary>
-        ///     Creates a <see cref="Dalamud.Game.ClientState.Objects.Types.GameObject" /> from the <see cref="PlayerCharacter" />
+        ///     Creates a <see cref="GameObject" /> from the <see cref="PlayerCharacter" />
         ///     address.
         /// </summary>
         /// <param name="pc"></param>
@@ -69,6 +71,17 @@ namespace Sirensong.Game.Extensions
         public static bool IsFromCurrentDatacenter(this PlayerCharacter pc) => pc.CurrentWorld.GameData?.DataCenter == pc.HomeWorld.GameData?.DataCenter;
 
         /// <summary>
+        ///     Checks the players' current FriendsList to see if the player is a friend of the current player.
+        /// </summary>
+        /// <param name="pc"></param>
+        /// <returns></returns>
+        public static unsafe bool IsFriend(this PlayerCharacter pc) => FriendsListHelper.GetFriendsList()
+            .Exists(
+                    f => MemoryHelper.ReadSeStringNullTerminated((IntPtr)f.Name) == pc.Name &&
+                    f.HomeWorld == pc.HomeWorld.Id
+                );
+
+        /// <summary>
         ///     Opens the player's adventurer plate.
         /// </summary>
         /// <param name="pc"></param>
@@ -80,7 +93,7 @@ namespace Sirensong.Game.Extensions
         /// <param name="pc"></param>
         /// <exception cref="InvalidOperationException">
         ///     Thrown if unable to create a
-        ///     <see cref="Dalamud.Game.ClientState.Objects.Types.GameObject" /> from the <see cref="PlayerCharacter" /> address.
+        ///     <see cref="GameObject" /> from the <see cref="PlayerCharacter" /> address.
         /// </exception>
         public static unsafe void OpenExamine(this PlayerCharacter pc) => AgentInspect.Instance()->ExamineCharacter(pc.ObjectId);
 

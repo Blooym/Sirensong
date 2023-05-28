@@ -28,7 +28,9 @@ namespace Sirensong.Caching
         /// </summary>
         private readonly CacheCollection<Tuple<uint, uint>, T> subRowCache = new(new CacheOptions<Tuple<uint, uint>, T>
         {
-            SlidingExpiry = TimeSpan.FromMinutes(10), AbsoluteExpiry = null, ExpireInterval = TimeSpan.FromMinutes(10),
+            SlidingExpiry = TimeSpan.FromMinutes(10),
+            AbsoluteExpiry = null,
+            ExpireInterval = TimeSpan.FromMinutes(10),
         });
 
         private bool disposedValue;

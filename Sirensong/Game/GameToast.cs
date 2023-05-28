@@ -16,7 +16,7 @@ namespace Sirensong.Game
         public static void ShowQuestToast(string message, QuestToastOptions options) => SharedServices.ToastGui.ShowQuest(message, options);
 
         /// <summary>
-        ///     Wrapper for <see cref="ToastGui.ShowQuest(Dalamud.Game.Text.SeStringHandling.SeString, QuestToastOptions)" />.
+        ///     Wrapper for <see cref="ToastGui.ShowQuest(SeString, QuestToastOptions)" />.
         /// </summary>
         /// <param name="message">The message to display.</param>
         /// <param name="options">The options for the toast.</param>
@@ -30,7 +30,7 @@ namespace Sirensong.Game
         public static void ShowNormalToast(string message, ToastOptions options) => SharedServices.ToastGui.ShowNormal(message, options);
 
         /// <summary>
-        ///     Wrapper for <see cref="ToastGui.ShowNormal(Dalamud.Game.Text.SeStringHandling.SeString, ToastOptions)" />.
+        ///     Wrapper for <see cref="ToastGui.ShowNormal(SeString, ToastOptions)" />.
         /// </summary>
         /// <param name="message">The message to display.</param>
         /// <param name="options">The options for the toast.</param>
@@ -43,7 +43,7 @@ namespace Sirensong.Game
         public static void ShowErrorToast(string message) => SharedServices.ToastGui.ShowError(message);
 
         /// <summary>
-        ///     Wrapper for <see cref="ToastGui.ShowError(Dalamud.Game.Text.SeStringHandling.SeString)" />.
+        ///     Wrapper for <see cref="ToastGui.ShowError(SeString)" />.
         /// </summary>
         /// <param name="message">The message to display.</param>
         public static void ShowErrorToast(SeString message) => SharedServices.ToastGui.ShowError(message);

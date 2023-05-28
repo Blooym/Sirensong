@@ -20,6 +20,8 @@ namespace Sirensong
     ///     A class containing shared services.
     /// </summary>
     [SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Local")]
+    [SuppressMessage("ReSharper", "UnusedMember.Local")]
+#pragma warning disable IDE0051
     internal sealed class SharedServices
     {
         // Dalamud services

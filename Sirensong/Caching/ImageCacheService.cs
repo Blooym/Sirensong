@@ -23,7 +23,10 @@ namespace Sirensong.Caching
         /// </summary>
         private readonly CacheCollection<string, TextureWrap> imageTexCache = new(new CacheOptions<string, TextureWrap>
         {
-            SlidingExpiry = TimeSpan.FromMinutes(10), AbsoluteExpiry = TimeSpan.FromMinutes(60), ExpireInterval = TimeSpan.FromMinutes(5), OnExpiry = (key, value) => value.Dispose(),
+            SlidingExpiry = TimeSpan.FromMinutes(10),
+            AbsoluteExpiry = TimeSpan.FromMinutes(60),
+            ExpireInterval = TimeSpan.FromMinutes(5),
+            OnExpiry = (key, value) => value.Dispose(),
         });
 
         private bool disposedValue;
