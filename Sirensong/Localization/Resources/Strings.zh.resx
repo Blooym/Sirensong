@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns="" id="root">
+    <xsd:element name="root" msdata:IsDataSet="true">
+
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+      PublicKeyToken=b77a5c561934e089
+    </value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral,
+      PublicKeyToken=b77a5c561934e089
+    </value>
+  </resheader>
+  <data name="ContentDifficulty_Normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="ContentDifficulty_Hard" xml:space="preserve">
+    <value>Hard</value>
+  </data>
+  <data name="ContentDifficulty_Extreme" xml:space="preserve">
+    <value>Extreme</value>
+  </data>
+  <data name="ContentDifficulty_Savage" xml:space="preserve">
+    <value>Savage</value>
+  </data>
+  <data name="ContentDifficulty_Ultimate" xml:space="preserve">
+    <value>Ultimate</value>
+  </data>
+  <data name="ContentDifficulty_Unreal" xml:space="preserve">
+    <value>Unreal</value>
+  </data>
+  <data name="ContentType_AllianceRaid" xml:space="preserve">
+    <value>Alliance Raid</value>
+  </data>
+  <data name="ContentType_Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="ContentType_Roulette" xml:space="preserve">
+    <value>Roulette</value>
+  </data>
+  <data name="ContentType_Dungeon" xml:space="preserve">
+    <value>Dungeon</value>
+  </data>
+  <data name="ContentType_Guildhest" xml:space="preserve">
+    <value>Guildhest</value>
+  </data>
+  <data name="ContentType_Trial" xml:space="preserve">
+    <value>Trial</value>
+  </data>
+  <data name="ContentType_Raid" xml:space="preserve">
+    <value>Raid</value>
+  </data>
+  <data name="ContentType_PvP" xml:space="preserve">
+    <value>PvP</value>
+  </data>
+  <data name="ContentType_QuestBattle" xml:space="preserve">
+    <value>Quest Battle</value>
+  </data>
+  <data name="ContentType_FATE" xml:space="preserve">
+    <value>FATE</value>
+  </data>
+  <data name="ContentType_TreasureHunt" xml:space="preserve">
+    <value>Treasure Hunt</value>
+  </data>
+  <data name="ContentType_Levequest" xml:space="preserve">
+    <value>Levequest</value>
+  </data>
+  <data name="ContentType_GrandCompany" xml:space="preserve">
+    <value>Grand Company</value>
+  </data>
+  <data name="ContentType_Companion" xml:space="preserve">
+    <value>Companion</value>
+  </data>
+  <data name="ContentType_TribalQuest" xml:space="preserve">
+    <value>Tribal Quest</value>
+  </data>
+  <data name="ContentType_OverallCompletion" xml:space="preserve">
+    <value>Overall Completion</value>
+  </data>
+  <data name="ContentType_PlayerCommendation" xml:space="preserve">
+    <value>Player Commendation</value>
+  </data>
+  <data name="ContentType_DiscipleOfTheLand" xml:space="preserve">
+    <value>Disciple of the Land</value>
+  </data>
+  <data name="ContentType_DiscipleOfTheHand" xml:space="preserve">
+    <value>Disciples of the Hand</value>
+  </data>
+  <data name="ContentType_RetainerVenture" xml:space="preserve">
+    <value>Retainer Venture</value>
+  </data>
+  <data name="ContentType_GoldSaucer" xml:space="preserve">
+    <value>Gold Saucer</value>
+  </data>
+  <data name="ContentType_DeepDungeon" xml:space="preserve">
+    <value>Deep Dungeon</value>
+  </data>
+  <data name="ContentType_WonderousTails" xml:space="preserve">
+    <value>Wonderous Tails</value>
+  </data>
+  <data name="ContentType_CustomDelivery" xml:space="preserve">
+    <value>Custom Delivery</value>
+  </data>
+  <data name="ContentType_Eureka" xml:space="preserve">
+    <value>Eureka</value>
+  </data>
+  <data name="ContentType_SouthernFront" xml:space="preserve">
+    <value>Southern Front</value>
+  </data>
+  <data name="ContentType_VCDungeon" xml:space="preserve">
+    <value>V&amp;C Dungeon</value>
+  </data>
+  <data name="ContentType_AllianceRaid_Plural" xml:space="preserve">
+    <value>Alliance Raids</value>
+  </data>
+  <data name="ContentType_Companion_Plural" xml:space="preserve">
+    <value>Companions</value>
+  </data>
+  <data name="ContentType_CustomDelivery_Plural" xml:space="preserve">
+    <value>Custom Deliveries</value>
+  </data>
+  <data name="ContentType_DeepDungeon_Plural" xml:space="preserve">
+    <value>Deep Dungeons</value>
+  </data>
+  <data name="ContentType_DiscipleOfTheHand_Plural" xml:space="preserve">
+    <value>Disciples of the Hands</value>
+  </data>
+  <data name="ContentType_DiscipleOfTheLand_Plural" xml:space="preserve">
+    <value>Disciples of the Land</value>
+  </data>
+  <data name="ContentType_Dungeon_Plural" xml:space="preserve">
+    <value>Dungeons</value>
+  </data>
+  <data name="ContentType_Eureka_Plural" xml:space="preserve">
+    <value>Eureka</value>
+  </data>
+  <data name="ContentType_FATE_Plural" xml:space="preserve">
+    <value>FATEs</value>
+  </data>
+  <data name="ContentType_GoldSaucer_Plural" xml:space="preserve">
+    <value>Gold Saucer</value>
+  </data>
+  <data name="ContentType_GrandCompany_Plural" xml:space="preserve">
+    <value>Grand Companies</value>
+  </data>
+  <data name="ContentType_Guildhest_Plural" xml:space="preserve">
+    <value>Guildhests</value>
+  </data>
+  <data name="ContentType_OverallCompletion_Plural" xml:space="preserve">
+    <value>Overall Completions</value>
+  </data>
+  <data name="ContentType_PlayerCommendation_Plural" xml:space="preserve">
+    <value>Player Commendations</value>
+  </data>
+  <data name="ContentType_PvP_Plural" xml:space="preserve">
+    <value>PvP</value>
+  </data>
+  <data name="ContentType_QuestBattle_Plural" xml:space="preserve">
+    <value>Quest Battles</value>
+  </data>
+  <data name="ContentType_Raid_Plural" xml:space="preserve">
+    <value>Raids</value>
+  </data>
+  <data name="ContentType_RetainerVenture_Plural" xml:space="preserve">
+    <value>Retainer Ventures</value>
+  </data>
+  <data name="ContentType_Roulette_Plural" xml:space="preserve">
+    <value>Roulettes</value>
+  </data>
+  <data name="ContentType_SouthernFront_Plural" xml:space="preserve">
+    <value>Southern Front</value>
+  </data>
+  <data name="ContentType_TreasureHunt_Plural" xml:space="preserve">
+    <value>Treasure Hunts</value>
+  </data>
+  <data name="ContentType_Trial_Plural" xml:space="preserve">
+    <value>Trials</value>
+  </data>
+  <data name="ContentType_TribalQuest_Plural" xml:space="preserve">
+    <value>Tribal Quests</value>
+  </data>
+  <data name="ContentType_Unknown_Plural" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="ContentType_VCDungeon_Plural" xml:space="preserve">
+    <value>V&amp;C Dungeons</value>
+  </data>
+  <data name="ContentType_WonderousTails_Plural" xml:space="preserve">
+    <value>Wonderous Tails</value>
+  </data>
+  <data name="ContentType_Levequest_Plural" xml:space="preserve">
+    <value>Levequests</value>
+  </data>
+</root>
