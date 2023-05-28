@@ -1,6 +1,5 @@
 using System;
 using Lumina.Excel.GeneratedSheets;
-using Sirensong.Extensions;
 
 namespace Sirensong.Game.Enums
 {
