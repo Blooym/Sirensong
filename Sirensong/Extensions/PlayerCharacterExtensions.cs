@@ -4,7 +4,6 @@ using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Sirensong.Game.Enums;
-using Sirensong.Game.Helpers;
 
 namespace Sirensong.Extensions
 {
@@ -65,13 +64,6 @@ namespace Sirensong.Extensions
         /// <param name="pc"></param>
         /// <returns>True if the player is from the current datacenter, false otherwise.</returns>
         public static bool IsFromCurrentDatacenter(this PlayerCharacter pc) => pc.CurrentWorld.GameData?.DataCenter == pc.HomeWorld.GameData?.DataCenter;
-
-        /// <summary>
-        ///     Checks the players' current FriendsList to see if the player is a friend of the current player.
-        /// </summary>
-        /// <param name="pc"></param>
-        /// <returns></returns>
-        public static unsafe bool IsFriend(this PlayerCharacter pc) => FriendHelper.IsFriend(pc);
 
         /// <summary>
         ///     Opens the player's adventurer plate or "chara card".

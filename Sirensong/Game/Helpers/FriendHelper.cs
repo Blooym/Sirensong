@@ -51,7 +51,7 @@ namespace Sirensong.Game.Helpers
         /// </summary>
         /// <param name="playerCharacter"></param>
         /// <returns></returns>
-        public static unsafe bool IsFriend(PlayerCharacter playerCharacter)
+        public static unsafe bool IsFriend(this PlayerCharacter playerCharacter)
         {
             if (playerCharacter == null)
             {
