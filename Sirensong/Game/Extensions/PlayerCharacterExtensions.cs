@@ -77,7 +77,7 @@ namespace Sirensong.Game.Extensions
         /// <returns></returns>
         public static unsafe bool IsFriend(this PlayerCharacter pc) => FriendsListHelper.GetFriendsList()
             .Exists(
-                    f => MemoryHelper.ReadSeStringNullTerminated((IntPtr)f.Name) == pc.Name &&
+                    f => MemoryHelper.ReadSeStringNullTerminated((IntPtr)f.Name).TextValue == pc.Name.TextValue &&
                     f.HomeWorld == pc.HomeWorld.Id
                 );
 
