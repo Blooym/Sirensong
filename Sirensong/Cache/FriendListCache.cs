@@ -15,6 +15,15 @@ namespace Sirensong.Cache
         /// </summary>
         private IList<InfoProxyCommonList.CharacterData> friendsListCache = Array.Empty<InfoProxyCommonList.CharacterData>();
 
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="FriendListCache" /> class.
+        /// </summary>
+        private FriendListCache()
+        {
+
+        }
+
         /// <summary>
         ///     Gets the cached version of the local player's friends list.
         /// </summary>
