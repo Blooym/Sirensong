@@ -6,7 +6,7 @@
 
 A collection of common utilities, helpers, extensions & UI styles for use in Dalamud plugins.
 
-**[Issues](https://github.com/BitsOfAByte/Sirensong/issues) · [Pull Requests](https://github.com/BitsOfAByte/Sirensong/pulls)**
+**[Issues](https://github.com/Blooym/Sirensong/issues) · [Pull Requests](https://github.com/Blooym/Sirensong/pulls)**
 
 </div>
 
@@ -23,7 +23,7 @@ As Sirensong is intended for use primarily within my projects, it contains many 
 Sirensong should be used as a submodule within your git repository. To do this, run the following command:
 
 ```
-git submodule add https://github.com/BitsOfAByte/Sirensong.git
+git submodule add https://github.com/Blooym/Sirensong.git
 ```
 
 ## Updating
@@ -65,4 +65,4 @@ public class MyPlugin : IDalamudPlugin
 
 ## Licence and Credits
 
-Sirensong is licenced under the [GNU Affero General Public License v3.0](./LICENSE) and is maintained by [BitsOfAByte](https://github.com/BitsOfAByte). All contributions made to this project will also be licenced under the same licence.
+Sirensong is licenced under the [GNU Affero General Public License v3.0](./LICENSE) and is maintained by [Blooym](https://github.com/Blooym). All contributions made to this project will also be licenced under the same licence.

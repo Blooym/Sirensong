@@ -4,7 +4,7 @@ namespace Sirensong.Game.Enums
     ///     A mapping of Chat UI colours to their IDs.
     /// </summary>
     /// <remarks>
-    ///     Reference image: https://github.com/BitsOfAByte/Sirensong/blob/main/.assets/uiColours.png
+    ///     Reference image: https://github.com/Blooym/Sirensong/blob/main/.assets/uiColours.png
     /// </remarks>
     public enum ChatUiColourKey : ushort
     {
