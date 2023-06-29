@@ -2,7 +2,7 @@ using System;
 
 namespace Sirensong.Utility
 {
-    public static class SafetyUtil
+    public static class Safety
     {
         /// <summary>
         ///     Wraps a value or an exception to safely handle exceptions.

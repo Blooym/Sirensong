@@ -3,13 +3,14 @@ using Dalamud.Utility;
 
 namespace Sirensong.Utility
 {
-    public static class OsUtil
+    [Obsolete($"No longer necessary - use Util.IsLinux from Dalamud instead.")]
+    public static class OS
     {
         /// <summary>
         ///     Heuristically determine the operating system. Checks for Wine first, then the environment.
         /// </summary>
         /// <returns>The operating system, "UNIX/Wine" if Wine is detected, or "Unknown" if the OS is not recognized.</returns>
-        public static string DetermineOS()
+        public static string GetOSName()
         {
             if (Util.IsLinux())
             {
