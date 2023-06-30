@@ -31,25 +31,25 @@ namespace Sirensong.Extensions
         ///     Set the player as the <see cref="ClientState.LocalPlayer" />'s target.
         /// </summary>
         /// <param name="pc"></param>
-        public static void Target(this PlayerCharacter pc) => SharedServices.TargetManager.SetTarget(pc.ToDalamudGameObject());
+        public static void Target(this PlayerCharacter pc) => SharedServices.TargetManager.Target = pc.ToDalamudGameObject();
 
         /// <summary>
         ///     Set the player as the <see cref="ClientState.LocalPlayer" />'s reticle target.
         /// </summary>
         /// <param name="pc"></param>
-        public static void SoftTarget(this PlayerCharacter pc) => SharedServices.TargetManager.SetSoftTarget(pc.ToDalamudGameObject());
+        public static void SoftTarget(this PlayerCharacter pc) => SharedServices.TargetManager.SoftTarget = pc.ToDalamudGameObject();
 
         /// <summary>
         ///     Set the player as the <see cref="ClientState.LocalPlayer" />'s focus target.
         /// </summary>
         /// <param name="pc"></param>
-        public static void FocusTarget(this PlayerCharacter pc) => SharedServices.TargetManager.SetFocusTarget(pc.ToDalamudGameObject());
+        public static void FocusTarget(this PlayerCharacter pc) => SharedServices.TargetManager.FocusTarget = pc.ToDalamudGameObject();
 
         /// <summary>
-        ///     Set the player as the <see cref="ClientState.LocalPlayer" />'s mouseover target.
+        ///     Set the player as the <see cref="ClientState.LocalPlayer" />'s mouse over target.
         /// </summary>
         /// <param name="pc"></param>
-        public static void MoTarget(this PlayerCharacter pc) => SharedServices.TargetManager.SetMouseOverTarget(pc.ToDalamudGameObject());
+        public static void MouseOverTarget(this PlayerCharacter pc) => SharedServices.TargetManager.MouseOverTarget = pc.ToDalamudGameObject();
 
         /// <summary>
         ///     Gets a boolean value indicating whether the player is from the current world.
