@@ -9,6 +9,7 @@ namespace Sirensong.Game.Enums
     /// </summary>
     public enum SoundEffect : uint
     {
+        ButtonHover = 0,
         Click = 1,
         Error = 7,
         WindowOpen = 23,
