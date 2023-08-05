@@ -22,7 +22,8 @@ namespace Sirensong.Game.Enums
         GrandCompany = 30,
         DeepDungeons = 31,
         Eureka = 41,
+        Diadem = 47,
         BozjaZadnor = 48,
-        IslandSanctuary = 47,
+        IslandSanctuary = 49,
     }
 }
