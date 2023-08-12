@@ -12,8 +12,8 @@
         "vscode": {
             "extensions": [
                 "ms-dotnettools.csharp",
-                "tintoy.msbuild-project-tools",
-                "kreativ-software.csharpextensions"
+                "EditorConfig.EditorConfig",
+                "ms-dotnettools.csdevkit"
             ]
         }
     }

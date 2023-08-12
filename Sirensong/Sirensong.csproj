@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+<Project ToolsVersion="Current" Sdk="Microsoft.NET.Sdk">
   <!-- Project Configuration -->
   <PropertyGroup>
     <Title>Sirensong</Title>
