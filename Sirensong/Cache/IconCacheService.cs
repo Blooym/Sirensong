@@ -68,7 +68,7 @@ namespace Sirensong.Cache
                 try
                 {
                     var path = GetIconPath(iconId);
-                    var tex = SharedServices.DataManager.GetImGuiTexture(path);
+                    var tex = SharedServices.TextureProvider.GetTextureFromGame(path);
 
                     if (tex is not null && tex.ImGuiHandle != nint.Zero)
                     {

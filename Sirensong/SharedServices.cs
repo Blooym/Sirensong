@@ -8,6 +8,7 @@ using Dalamud.Game.Gui.Toast;
 using Dalamud.Interface;
 using Dalamud.IoC;
 using Dalamud.Plugin;
+using Dalamud.Plugin.Services;
 using Lumina.Excel.GeneratedSheets;
 using Sirensong.Cache;
 using Sirensong.IoC;
@@ -34,6 +35,7 @@ namespace Sirensong
         [PluginService] internal static Condition Condition { get; private set; } = null!;
         [PluginService] internal static Framework Framework { get; private set; } = null!;
         [PluginService] internal static DalamudPluginInterface PluginInterface { get; private set; } = null!;
+        [PluginService] internal static ITextureProvider TextureProvider { get; private set; } = null!;
 
         // Dalamud service shortcuts
         internal static UiBuilder UiBuilder => PluginInterface.UiBuilder;

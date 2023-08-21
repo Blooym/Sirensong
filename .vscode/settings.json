@@ -1,10 +1,10 @@
 {
     // OmniSharp Settings
     "omnisharp.enableRoslynAnalyzers": true,
-    "omnisharp.enableImportCompletion": true,
     "omnisharp.organizeImportsOnFormat": true,
     "omnisharp.enableAsyncCompletion": true,
     "omnisharp.analyzeOpenDocumentsOnly": false,
+    "omnisharp.enableImportCompletion": true,
     "omnisharp.enableEditorConfigSupport": true,
     // C# Settings
     "csharp.format.enable": true,
