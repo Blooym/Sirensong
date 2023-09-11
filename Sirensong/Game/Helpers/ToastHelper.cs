@@ -1,5 +1,6 @@
 using Dalamud.Game.Gui.Toast;
 using Dalamud.Game.Text.SeStringHandling;
+using Dalamud.Plugin.Services;
 
 namespace Sirensong.Game.Helpers
 {
@@ -9,41 +10,41 @@ namespace Sirensong.Game.Helpers
     public static class ToastHelper
     {
         /// <summary>
-        ///     Wrapper for <see cref="ToastGui.ShowQuest(string, QuestToastOptions)" />.
+        ///     Wrapper for <see cref="IToastGui.ShowQuest(string, QuestToastOptions)" />.
         /// </summary>
         /// <param name="message">The message to display.</param>
         /// <param name="options">The options for the toast.</param>
         public static void ShowQuestToast(string message, QuestToastOptions options) => SharedServices.ToastGui.ShowQuest(message, options);
 
         /// <summary>
-        ///     Wrapper for <see cref="ToastGui.ShowQuest(SeString, QuestToastOptions)" />.
+        ///     Wrapper for <see cref="IToastGui.ShowQuest(SeString, QuestToastOptions)" />.
         /// </summary>
         /// <param name="message">The message to display.</param>
         /// <param name="options">The options for the toast.</param>
         public static void ShowQuestToast(SeString message, QuestToastOptions options) => SharedServices.ToastGui.ShowQuest(message, options);
 
         /// <summary>
-        ///     Wrapper for <see cref="ToastGui.ShowNormal(string, ToastOptions)" />.
+        ///     Wrapper for <see cref="IToastGui.ShowNormal(string, ToastOptions)" />.
         /// </summary>
         /// <param name="message">The message to display.</param>
         /// <param name="options">The options for the toast.</param>
         public static void ShowNormalToast(string message, ToastOptions options) => SharedServices.ToastGui.ShowNormal(message, options);
 
         /// <summary>
-        ///     Wrapper for <see cref="ToastGui.ShowNormal(SeString, ToastOptions)" />.
+        ///     Wrapper for <see cref="IToastGui.ShowNormal(SeString, ToastOptions)" />.
         /// </summary>
         /// <param name="message">The message to display.</param>
         /// <param name="options">The options for the toast.</param>
         public static void ShowNormalToast(SeString message, ToastOptions options) => SharedServices.ToastGui.ShowNormal(message, options);
 
         /// <summary>
-        ///     Wrapper for <see cref="ToastGui.ShowError(string)" />.
+        ///     Wrapper for <see cref="IToastGui.ShowError(string)" />.
         /// </summary>
         /// <param name="message">The message to display.</param>
         public static void ShowErrorToast(string message) => SharedServices.ToastGui.ShowError(message);
 
         /// <summary>
-        ///     Wrapper for <see cref="ToastGui.ShowError(SeString)" />.
+        ///     Wrapper for <see cref="IToastGui.ShowError(SeString)" />.
         /// </summary>
         /// <param name="message">The message to display.</param>
         public static void ShowErrorToast(SeString message) => SharedServices.ToastGui.ShowError(message);

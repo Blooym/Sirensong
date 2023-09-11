@@ -1,5 +1,5 @@
 using System;
-using Dalamud.Game;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game.Fate;
 using Sirensong.IoC.Internal;
 
@@ -51,7 +51,7 @@ namespace Sirensong.Game.State
         ///     Handles detecting fate events and invoking the appropriate event.
         /// </summary>
         /// <param name="framework"></param>
-        private unsafe void HandleFateEvents(Framework framework)
+        private unsafe void HandleFateEvents(IFramework framework)
         {
             var fateManager = FateManager.Instance();
             if (fateManager == null)

@@ -1,10 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
-using Dalamud.Data;
-using Dalamud.Game;
-using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Objects;
 using Dalamud.Game.Gui;
-using Dalamud.Game.Gui.Toast;
 using Dalamud.Interface;
 using Dalamud.IoC;
 using Dalamud.Plugin;
@@ -13,7 +9,6 @@ using Lumina.Excel.GeneratedSheets;
 using Sirensong.Cache;
 using Sirensong.IoC;
 using Sirensong.Localization;
-using Condition = Dalamud.Game.ClientState.Conditions.Condition;
 
 namespace Sirensong
 {
@@ -26,14 +21,14 @@ namespace Sirensong
     internal sealed class SharedServices
     {
         // Dalamud services
-        [PluginService] internal static ClientState ClientState { get; private set; } = null!;
-        [PluginService] internal static DataManager DataManager { get; private set; } = null!;
-        [PluginService] internal static ToastGui ToastGui { get; private set; } = null!;
+        [PluginService] internal static IClientState ClientState { get; private set; } = null!;
+        [PluginService] internal static IDataManager DataManager { get; private set; } = null!;
+        [PluginService] internal static IToastGui ToastGui { get; private set; } = null!;
         [PluginService] internal static ChatGui ChatGui { get; private set; } = null!;
-        [PluginService] internal static TargetManager TargetManager { get; private set; } = null!;
-        [PluginService] internal static ObjectTable ObjectTable { get; private set; } = null!;
-        [PluginService] internal static Condition Condition { get; private set; } = null!;
-        [PluginService] internal static Framework Framework { get; private set; } = null!;
+        [PluginService] internal static ITargetManager TargetManager { get; private set; } = null!;
+        [PluginService] internal static IObjectTable ObjectTable { get; private set; } = null!;
+        [PluginService] internal static ICondition Condition { get; private set; } = null!;
+        [PluginService] internal static IFramework Framework { get; private set; } = null!;
         [PluginService] internal static DalamudPluginInterface PluginInterface { get; private set; } = null!;
         [PluginService] internal static ITextureProvider TextureProvider { get; private set; } = null!;
 
