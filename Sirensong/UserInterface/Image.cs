@@ -1,7 +1,7 @@
 using System;
 using System.Numerics;
+using Dalamud.Interface.Internal;
 using ImGuiNET;
-using ImGuiScene;
 
 namespace Sirensong.UserInterface
 {
@@ -13,7 +13,7 @@ namespace Sirensong.UserInterface
         /// <param name="texture"></param>
         /// <param name="scalingMode"></param>
         /// <param name="size"></param>
-        public static void Image(TextureWrap texture, ScalingMode scalingMode = ScalingMode.None, Vector2? size = null) => ImGui.Image(texture.ImGuiHandle, scalingMode.ApplyTo(texture, size));
+        public static void Image(IDalamudTextureWrap texture, ScalingMode scalingMode = ScalingMode.None, Vector2? size = null) => ImGui.Image(texture.ImGuiHandle, scalingMode.ApplyTo(texture, size));
 
         /// <summary>
         ///     Draw an image with the texture from the given uri.
@@ -62,7 +62,7 @@ namespace Sirensong.UserInterface
         /// <param name="scalingMode"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        public static bool ImageButton(TextureWrap texture, ScalingMode scalingMode = ScalingMode.None, Vector2? size = null) => ImGui.ImageButton(texture.ImGuiHandle, scalingMode.ApplyTo(texture, size));
+        public static bool ImageButton(IDalamudTextureWrap texture, ScalingMode scalingMode = ScalingMode.None, Vector2? size = null) => ImGui.ImageButton(texture.ImGuiHandle, scalingMode.ApplyTo(texture, size));
 
         /// <summary>
         ///     Draw an image button with the texture from the given uri.
@@ -135,7 +135,7 @@ namespace Sirensong.UserInterface
         /// <param name="texture"></param>
         /// <param name="appliedSizing"></param>
         /// <returns></returns>
-        public static Vector2 ApplyTo(this ScalingMode scalingMode, TextureWrap texture, Vector2? appliedSizing = null)
+        public static Vector2 ApplyTo(this ScalingMode scalingMode, IDalamudTextureWrap texture, Vector2? appliedSizing = null)
         {
             var windowSize = ImGui.GetContentRegionAvail();
 

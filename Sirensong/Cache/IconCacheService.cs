@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
+using Dalamud.Interface.Internal;
 using Dalamud.Utility;
-using ImGuiScene;
 using Sirensong.Cache.Collections;
 using Sirensong.IoC.Internal;
 
@@ -21,7 +21,7 @@ namespace Sirensong.Cache
         /// <summary>
         ///     The dictionary of icon textures.
         /// </summary>
-        private readonly CacheCollection<uint, TextureWrap> iconTexCache = new(new CacheOptions<uint, TextureWrap>
+        private readonly CacheCollection<uint, IDalamudTextureWrap> iconTexCache = new(new CacheOptions<uint, IDalamudTextureWrap>
         {
             SlidingExpiry = TimeSpan.FromMinutes(10),
             AbsoluteExpiry = null,
@@ -122,7 +122,7 @@ namespace Sirensong.Cache
         /// </summary>
         /// <param name="iconId">The icon ID to get the texture for.</param>
         /// <returns>The icon texture, or null if it could not be loaded.</returns>
-        public TextureWrap? GetIcon(uint iconId)
+        public IDalamudTextureWrap? GetIcon(uint iconId)
         {
             if (this.disposedValue)
             {

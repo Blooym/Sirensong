@@ -1,7 +1,7 @@
 using System;
-using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using Sirensong.Game.Enums;
 
@@ -28,25 +28,25 @@ namespace Sirensong.Extensions
         public static GameObject? ToDalamudGameObject(this PlayerCharacter pc) => SharedServices.ObjectTable.CreateObjectReference(pc.Address);
 
         /// <summary>
-        ///     Set the player as the <see cref="ClientState.LocalPlayer" />'s target.
+        ///     Set the player as the <see cref="IClientState.LocalPlayer" />'s target.
         /// </summary>
         /// <param name="pc"></param>
         public static void Target(this PlayerCharacter pc) => SharedServices.TargetManager.Target = pc.ToDalamudGameObject();
 
         /// <summary>
-        ///     Set the player as the <see cref="ClientState.LocalPlayer" />'s reticle target.
+        ///     Set the player as the <see cref="IClientState.LocalPlayer" />'s reticle target.
         /// </summary>
         /// <param name="pc"></param>
         public static void SoftTarget(this PlayerCharacter pc) => SharedServices.TargetManager.SoftTarget = pc.ToDalamudGameObject();
 
         /// <summary>
-        ///     Set the player as the <see cref="ClientState.LocalPlayer" />'s focus target.
+        ///     Set the player as the <see cref="IClientState.LocalPlayer" />'s focus target.
         /// </summary>
         /// <param name="pc"></param>
         public static void FocusTarget(this PlayerCharacter pc) => SharedServices.TargetManager.FocusTarget = pc.ToDalamudGameObject();
 
         /// <summary>
-        ///     Set the player as the <see cref="ClientState.LocalPlayer" />'s mouse over target.
+        ///     Set the player as the <see cref="IClientState.LocalPlayer" />'s mouse over target.
         /// </summary>
         /// <param name="pc"></param>
         public static void MouseOverTarget(this PlayerCharacter pc) => SharedServices.TargetManager.MouseOverTarget = pc.ToDalamudGameObject();

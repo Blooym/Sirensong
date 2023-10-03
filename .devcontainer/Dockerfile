@@ -1,4 +1,4 @@
-FROM ghcr.io/blooym/docker-dalamud:staging
+FROM ghcr.io/blooym/docker-dalamud:v9
 
 # Optout of telemtry.
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1

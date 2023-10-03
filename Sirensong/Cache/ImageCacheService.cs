@@ -1,7 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using ImGuiScene;
+using Dalamud.Interface.Internal;
 using Sirensong.Cache.Collections;
 using Sirensong.IoC.Internal;
 
@@ -21,7 +21,7 @@ namespace Sirensong.Cache
         /// <summary>
         ///     The dictionary of cached images and their last access time.
         /// </summary>
-        private readonly CacheCollection<string, TextureWrap> imageTexCache = new(new CacheOptions<string, TextureWrap>
+        private readonly CacheCollection<string, IDalamudTextureWrap> imageTexCache = new(new CacheOptions<string, IDalamudTextureWrap>
         {
             SlidingExpiry = TimeSpan.FromMinutes(10),
             AbsoluteExpiry = TimeSpan.FromMinutes(60),
@@ -71,7 +71,7 @@ namespace Sirensong.Cache
                         return;
                     }
 
-                    TextureWrap? tex = null;
+                    IDalamudTextureWrap? tex = null;
 
                     if (Uri.TryCreate(path, UriKind.Absolute, out var uri))
                     {
@@ -138,7 +138,7 @@ namespace Sirensong.Cache
         /// </summary>
         /// <param name="path">The path or URL to the image.</param>
         /// <returns></returns>
-        public TextureWrap? GetImage(string path)
+        public IDalamudTextureWrap? GetImage(string path)
             => this.imageTexCache.GetOrAdd(path, value =>
             {
                 this.LoadImage(path);
