@@ -20,6 +20,9 @@ namespace Sirensong.Extensions
         public static unsafe FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* ToCsGameObject(this PlayerCharacter pc)
             => (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)pc.Address;
 
+        public static unsafe FFXIVClientStructs.FFXIV.Client.Game.Character.Character* ToCSPlayerCharacter(this PlayerCharacter pc)
+            => (FFXIVClientStructs.FFXIV.Client.Game.Character.Character*)pc.Address;
+
         /// <summary>
         ///     Casts a <see cref="PlayerCharacter" /> to a <see cref="GameObject" />.
         /// </summary>

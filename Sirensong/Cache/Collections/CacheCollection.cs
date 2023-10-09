@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
@@ -18,12 +19,12 @@ namespace Sirensong.Cache.Collections
         /// <summary>
         ///     The underlying dictionary of keys to their expiry information.
         /// </summary>
-        private readonly Dictionary<TKey, KeyExpiryInfo> accessTimes = new();
+        private readonly ConcurrentDictionary<TKey, KeyExpiryInfo> accessTimes = new();
 
         /// <summary>
         ///     The underlying dictionary of keys to values for caching.
         /// </summary>
-        private readonly Dictionary<TKey, TValue> cache = new();
+        private readonly ConcurrentDictionary<TKey, TValue> cache = new();
 
         /// <summary>
         ///     The timer for expiring keys.
@@ -95,12 +96,12 @@ namespace Sirensong.Cache.Collections
         /// <summary>
         ///     All the keys in the cache.
         /// </summary>
-        public IReadOnlyCollection<TKey> Keys => this.cache.Keys;
+        public ICollection<TKey> Keys => this.cache.Keys;
 
         /// <summary>
         ///     All the values in the cache.
         /// </summary>
-        public IReadOnlyCollection<TValue> Values => this.cache.Values;
+        public ICollection<TValue> Values => this.cache.Values;
 
         /// <summary>
         ///     Disposes of the cache and all its values.
@@ -148,10 +149,15 @@ namespace Sirensong.Cache.Collections
                 throw new ObjectDisposedException(nameof(CacheCollection<TKey, TValue>));
             }
 
+            if (key is null)
+            {
+                return;
+            }
+
             if (this.cache.TryGetValue(key, out var value))
             {
-                this.cache.Remove(key);
-                this.accessTimes.Remove(key);
+                this.cache.Remove(key, out _);
+                this.accessTimes.Remove(key, out _);
                 this.options.OnExpiry?.Invoke(key, value);
 
                 if (dispose)
@@ -264,8 +270,8 @@ namespace Sirensong.Cache.Collections
             }
 
             value = valueFactory(key);
-            this.cache.Add(key, value);
-            this.accessTimes.Add(key, new KeyExpiryInfo());
+            this.cache.TryAdd(key, value);
+            this.accessTimes.TryAdd(key, new KeyExpiryInfo());
             return value;
         }
 
@@ -301,8 +307,8 @@ namespace Sirensong.Cache.Collections
             }
 
             var value = valueFactory(key);
-            this.cache.Add(key, value);
-            this.accessTimes.Add(key, new KeyExpiryInfo());
+            this.cache.TryAdd(key, value);
+            this.accessTimes.TryAdd(key, new KeyExpiryInfo());
         }
 
         /// <summary>

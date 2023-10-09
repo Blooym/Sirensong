@@ -24,10 +24,10 @@ namespace Sirensong.Extensions
         public static string TrimAndSquish(this string str) => string.IsNullOrEmpty(str) ? string.Empty : string.Join(" ", str.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
 
         /// <summary>
-        ///     Converts a string to title case using <see cref="CultureInfo.CurrentCulture" />.
+        ///     Converts a string to title case using <see cref="CultureInfo.InvariantCulture" />.
         /// </summary>
         /// <param name="str"></param>
         /// <returns>A new string in title case.</returns>
-        public static string ToTitleCase(this string str) => string.IsNullOrEmpty(str) ? string.Empty : CultureInfo.CurrentCulture.TextInfo.ToTitleCase(str);
+        public static string ToTitleCase(this string str) => string.IsNullOrWhiteSpace(str) ? "" : string.Join(' ', str.Split(' ').Select(s => s[..1].ToUpperInvariant() + s[1..].ToLowerInvariant()));
     }
 }
