@@ -28,6 +28,6 @@ namespace Sirensong.Extensions
         /// </summary>
         /// <param name="str"></param>
         /// <returns>A new string in title case.</returns>
-        public static string ToTitleCase(this string str) => string.IsNullOrWhiteSpace(str) ? "" : string.Join(' ', str.Split(' ').Select(s => s[..1].ToUpperInvariant() + s[1..].ToLowerInvariant()));
+        public static string ToTitleCase(this string str) => string.IsNullOrWhiteSpace(str) ? string.Empty : string.Join(' ', str.Split(' ').Select(s => s[..1].ToUpperInvariant() + s[1..].ToLowerInvariant()));
     }
 }
