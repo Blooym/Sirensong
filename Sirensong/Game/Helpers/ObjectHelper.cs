@@ -14,9 +14,8 @@ namespace Sirensong.Game.Helpers
         /// <summary>
         ///     Gets all nearby <see cref="Character" />s from the <see cref="GameObjectManager" />.
         /// </summary>
-        /// <param name="includeSelf">Whether or not to include the local player.</param>
         /// <returns>An <see cref="IEnumerable{T}" /> of <see cref="Pointer{T}" />s to <see cref="Character" />s.</returns>
-        public static unsafe IEnumerable<Pointer<Character>> GetCharacters(bool includeSelf = true)
+        public static unsafe IEnumerable<Pointer<Character>> GetCharacters()
         {
             var table = GameObjectManager.Instance()->ObjectList;
             if (table is null)
@@ -32,7 +31,7 @@ namespace Sirensong.Game.Helpers
                     continue;
                 }
 
-                if (obj->ObjectKind != (byte)ObjectKind.Pc && obj->ObjectID > HighestValidObjectId && (includeSelf || obj->ObjectID != SharedServices.ClientState.LocalPlayer?.ObjectId))
+                if (obj->ObjectKind != (byte)ObjectKind.Pc && obj->ObjectID > HighestValidObjectId)
                 {
                     continue;
                 }
