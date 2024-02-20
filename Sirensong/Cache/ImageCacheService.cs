@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 using Dalamud.Interface.Internal;
 using Sirensong.Cache.Collections;
@@ -16,7 +17,13 @@ namespace Sirensong.Cache
         /// <summary>
         ///     HTTP Client instance.
         /// </summary>
-        private readonly HttpClient httpClient = new();
+        private readonly HttpClient httpClient = new()
+        {
+            DefaultRequestHeaders =
+                {
+                    { "User-Agent", $"Sirensong/{Assembly.GetExecutingAssembly().GetName().Version}"},
+                },
+        };
 
         /// <summary>
         ///     The dictionary of cached images and their last access time.
