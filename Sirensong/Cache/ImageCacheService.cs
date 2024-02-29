@@ -104,9 +104,12 @@ namespace Sirensong.Cache
                         // If the texture is valid, add it to the cache
                         if (tex != null && tex.ImGuiHandle != nint.Zero)
                         {
-                            var entry = this.imageTexCache.CreateEntry(path);
-                            entry.SlidingExpiration = SlidingExpiryTime;
-                            entry.PostEvictionCallbacks.Add(new PostEvictionCallbackRegistration()
+                            var options = new MemoryCacheEntryOptions
+                            {
+                                SlidingExpiration = SlidingExpiryTime
+                            };
+
+                            options.PostEvictionCallbacks.Add(new PostEvictionCallbackRegistration()
                             {
                                 EvictionCallback = (key, value, reason, state) =>
                                 {
@@ -116,7 +119,9 @@ namespace Sirensong.Cache
                                     }
                                 },
                             });
-                            this.imageTexCache.Set(path, entry);
+
+                            this.imageTexCache.Set(path, tex, options);
+
                             SirenLog.Verbose($"Loaded image at {path}");
                         }
                         else

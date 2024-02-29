@@ -67,9 +67,12 @@ namespace Sirensong.Cache
 
                     if (tex is not null && tex.ImGuiHandle != nint.Zero)
                     {
-                        var entry = this.iconTexCache.CreateEntry(iconId);
-                        entry.SlidingExpiration = SlidingExpiryTime;
-                        entry.PostEvictionCallbacks.Add(new PostEvictionCallbackRegistration()
+                        var options = new MemoryCacheEntryOptions
+                        {
+                            SlidingExpiration = SlidingExpiryTime
+                        };
+
+                        options.PostEvictionCallbacks.Add(new PostEvictionCallbackRegistration()
                         {
                             EvictionCallback = (key, value, reason, state) =>
                             {
@@ -79,7 +82,8 @@ namespace Sirensong.Cache
                                 }
                             },
                         });
-                        this.iconTexCache.Set(iconId, entry);
+
+                        this.iconTexCache.Set(iconId, tex, options);
                         SirenLog.Verbose($"Loaded and cached texture for icon {iconId}");
                     }
                     else
