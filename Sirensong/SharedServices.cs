@@ -37,6 +37,7 @@ namespace Sirensong
 
         // Siren services
         [SirenService] internal static ImageCacheService ImageCache { get; private set; } = null!;
+        [SirenService] internal static IconCacheService IconCache { get; private set; } = null!;
         [SirenService] internal static LuminaCacheService<TerritoryType> TerritoryTypeCache { get; private set; } = null!;
         [SirenService] private static LocalizationManager LocalizationManager { get; set; } = null!;
 
