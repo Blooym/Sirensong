@@ -23,7 +23,7 @@ namespace Sirensong.Cache
         private static readonly ExcelSheet<T> Sheet = SharedServices.DataManager.GetExcelSheet<T>()!;
 
         /// <summary>
-        ///     A timed cache of the rows.
+        ///     A cache of the rows and subrows.
         /// </summary>
         private readonly MemoryCache cache = new(new MemoryCacheOptions());
 

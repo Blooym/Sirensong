@@ -30,7 +30,7 @@ namespace Sirensong.Cache
         };
 
         /// <summary>
-        ///     The dictionary of cached images and their last access time.
+        ///     The cache of loaded images.
         /// </summary>
         private readonly MemoryCache imageTexCache = new(new MemoryCacheOptions());
 

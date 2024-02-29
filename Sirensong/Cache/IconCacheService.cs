@@ -23,8 +23,12 @@ namespace Sirensong.Cache
         private static readonly TimeSpan SlidingExpiryTime = TimeSpan.FromMinutes(5);
 
         /// <summary>
-        ///     The dictionary of icon textures.
+        ///     The cache of <see cref="IDalamudTextureWrap" /> obtained from lookups.
         /// </summary>
+        /// <remarks>
+        ///     Does not hold the texture instance itself, just the wrapper that can be used to load
+        ///     the texture in on the fly.
+        /// </remarks>
         private readonly MemoryCache iconTexCache = new(new MemoryCacheOptions());
 
         /// <summary>
