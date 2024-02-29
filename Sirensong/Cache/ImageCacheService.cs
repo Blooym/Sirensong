@@ -159,7 +159,7 @@ namespace Sirensong.Cache
         {
             if (this.disposedValue)
             {
-                throw new ObjectDisposedException(nameof(IconCacheService));
+                throw new ObjectDisposedException(nameof(ImageCacheService));
             }
 
             var existingValue = this.imageTexCache.Get<IDalamudTextureWrap>(path);
@@ -183,7 +183,7 @@ namespace Sirensong.Cache
         {
             if (this.disposedValue)
             {
-                throw new ObjectDisposedException(nameof(IconCacheService));
+                throw new ObjectDisposedException(nameof(ImageCacheService));
             }
 
             this.imageTexCache.Remove(path);
