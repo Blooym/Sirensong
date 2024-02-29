@@ -1,7 +1,7 @@
 using System;
 using Dalamud;
 using Lumina.Excel;
-using Sirensong.Cache.Collections;
+using Microsoft.Extensions.Caching.Memory;
 using Sirensong.IoC.Internal;
 
 namespace Sirensong.Cache
@@ -13,6 +13,10 @@ namespace Sirensong.Cache
     [SirenServiceClass]
     public sealed class LuminaCacheService<T> : IDisposable where T : ExcelRow
     {
+        private bool disposedValue;
+
+        private static readonly TimeSpan SlidingExpiryTime = TimeSpan.FromMinutes(10);
+
         /// <summary>
         ///     The <see cref="ExcelSheet{T}" /> associated with this cache.
         /// </summary>
@@ -21,19 +25,7 @@ namespace Sirensong.Cache
         /// <summary>
         ///     A timed cache of the rows.
         /// </summary>
-        private readonly CacheCollection<uint, T> cache = new();
-
-        /// <summary>
-        ///     The dictionary of subrow caches.
-        /// </summary>
-        private readonly CacheCollection<Tuple<uint, uint>, T> subRowCache = new(new CacheOptions<Tuple<uint, uint>, T>
-        {
-            SlidingExpiry = TimeSpan.FromMinutes(10),
-            AbsoluteExpiry = null,
-            ExpireInterval = TimeSpan.FromMinutes(10),
-        });
-
-        private bool disposedValue;
+        private readonly MemoryCache cache = new(new MemoryCacheOptions());
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="LuminaCacheService{T}" /> class.
@@ -49,8 +41,6 @@ namespace Sirensong.Cache
             if (!this.disposedValue)
             {
                 this.cache.Dispose();
-                this.subRowCache.Dispose();
-
                 this.disposedValue = true;
             }
         }
@@ -75,7 +65,7 @@ namespace Sirensong.Cache
                 throw new ObjectDisposedException(nameof(LuminaCacheService<T>));
             }
 
-            return this.cache.GetOrAdd(id, value => Sheet.GetRow(id)!);
+            return this.cache.GetOrCreate(id, value => Sheet.GetRow(id));
         }
 
         /// <summary>
@@ -93,7 +83,7 @@ namespace Sirensong.Cache
             }
 
             var targetRow = new Tuple<uint, uint>(row, subRow);
-            return this.subRowCache.GetOrAdd(targetRow, value => Sheet.GetRow(row, subRow)!);
+            return this.cache.GetOrCreate(targetRow, value => Sheet.GetRow(row, subRow)!);
         }
     }
 }

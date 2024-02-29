@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using Dalamud.Interface.Internal;
-using Sirensong.Cache.Collections;
+using Microsoft.Extensions.Caching.Memory;
 using Sirensong.IoC.Internal;
 
 namespace Sirensong.Cache
@@ -14,6 +14,10 @@ namespace Sirensong.Cache
     [SirenServiceClass]
     public sealed class ImageCacheService : IDisposable
     {
+        private bool disposedValue;
+
+        private static readonly TimeSpan SlidingExpiryTime = TimeSpan.FromMinutes(5);
+
         /// <summary>
         ///     HTTP Client instance.
         /// </summary>
@@ -28,15 +32,8 @@ namespace Sirensong.Cache
         /// <summary>
         ///     The dictionary of cached images and their last access time.
         /// </summary>
-        private readonly CacheCollection<string, IDalamudTextureWrap> imageTexCache = new(new CacheOptions<string, IDalamudTextureWrap>
-        {
-            SlidingExpiry = TimeSpan.FromMinutes(10),
-            AbsoluteExpiry = TimeSpan.FromMinutes(60),
-            ExpireInterval = TimeSpan.FromMinutes(5),
-            OnExpiry = (key, value) => value.Dispose(),
-        });
+        private readonly MemoryCache imageTexCache = new(new MemoryCacheOptions());
 
-        private bool disposedValue;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="ImageCacheService" /> class.
@@ -55,7 +52,6 @@ namespace Sirensong.Cache
             {
                 this.imageTexCache.Dispose();
                 this.httpClient.Dispose();
-
                 this.disposedValue = true;
             }
         }
@@ -64,7 +60,13 @@ namespace Sirensong.Cache
         ///     Loads the image at the given path or URL in a Task.
         /// </summary>
         /// <param name="path"></param>
-        private void LoadImage(string path) =>
+        private void LoadImage(string path)
+        {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(ImageCacheService));
+            }
+
             Task.Run(async () =>
             {
                 try
@@ -102,22 +104,35 @@ namespace Sirensong.Cache
                         // If the texture is valid, add it to the cache
                         if (tex != null && tex.ImGuiHandle != nint.Zero)
                         {
-                            this.imageTexCache.AddOrUpdate(path, value => tex);
+                            var entry = this.imageTexCache.CreateEntry(path);
+                            entry.SlidingExpiration = SlidingExpiryTime;
+                            entry.PostEvictionCallbacks.Add(new PostEvictionCallbackRegistration()
+                            {
+                                EvictionCallback = (key, value, reason, state) =>
+                                {
+                                    if (value is not null and IDisposable disposable)
+                                    {
+                                        disposable.Dispose();
+                                    }
+                                },
+                            });
+                            this.imageTexCache.Set(path, entry);
                             SirenLog.Verbose($"Loaded image at {path}");
                         }
                         else
                         {
-                            this.DisposeImage(path);
+                            this.imageTexCache.Remove(path);
                             SirenLog.Warning($"Image at {path} is not a valid image.");
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    this.DisposeImage(path);
+                    this.imageTexCache.Remove(path);
                     SirenLog.Error($"Something went wrong while loading image at {path}: {ex.Message}");
                 }
             });
+        }
 
         /// <summary>
         ///     Loads an image from a HTTP or HTTPS URL.
@@ -131,26 +146,26 @@ namespace Sirensong.Cache
         }
 
         /// <summary>
-        ///     Disposes of the image at the given path.
-        /// </summary>
-        /// <param name="path">The path or URL to the image.</param>
-        private void DisposeImage(string path)
-        {
-            this.imageTexCache[path]?.Dispose();
-            this.imageTexCache.Remove(path);
-        }
-
-        /// <summary>
         ///     Gets the image at the given path.
         /// </summary>
         /// <param name="path">The path or URL to the image.</param>
         /// <returns></returns>
         public IDalamudTextureWrap? GetImage(string path)
-            => this.imageTexCache.GetOrAdd(path, value =>
+        {
+            if (this.disposedValue)
             {
-                this.LoadImage(path);
-                return null!;
-            });
+                throw new ObjectDisposedException(nameof(IconCacheService));
+            }
+
+            var existingValue = this.imageTexCache.Get<IDalamudTextureWrap>(path);
+            if (existingValue is not null)
+            {
+                return existingValue;
+            }
+
+            this.LoadImage(path);
+            return null;
+        }
 
         /// <summary>
         ///     Clears the image at the given path from the cache.
@@ -161,10 +176,12 @@ namespace Sirensong.Cache
         /// <param name="path"></param>
         public void ClearFromCache(string path)
         {
-            if (this.imageTexCache[path] != null)
+            if (this.disposedValue)
             {
-                this.DisposeImage(path);
+                throw new ObjectDisposedException(nameof(IconCacheService));
             }
+
+            this.imageTexCache.Remove(path);
         }
     }
 }

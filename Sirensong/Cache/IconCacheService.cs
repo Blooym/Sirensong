@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Dalamud.Interface.Internal;
 using Dalamud.Utility;
-using Sirensong.Cache.Collections;
+using Microsoft.Extensions.Caching.Memory;
 using Sirensong.IoC.Internal;
 
 namespace Sirensong.Cache
@@ -13,6 +13,10 @@ namespace Sirensong.Cache
     [SirenServiceClass]
     public sealed class IconCacheService : IDisposable
     {
+        private bool disposedValue;
+
+        private static readonly TimeSpan SlidingExpiryTime = TimeSpan.FromMinutes(5);
+
         /// <summary>
         ///     The path to the icon textures.
         /// </summary>
@@ -21,15 +25,7 @@ namespace Sirensong.Cache
         /// <summary>
         ///     The dictionary of icon textures.
         /// </summary>
-        private readonly CacheCollection<uint, IDalamudTextureWrap> iconTexCache = new(new CacheOptions<uint, IDalamudTextureWrap>
-        {
-            SlidingExpiry = TimeSpan.FromMinutes(10),
-            AbsoluteExpiry = null,
-            ExpireInterval = TimeSpan.FromMinutes(5),
-            OnExpiry = (key, value) => value.Dispose(),
-        });
-
-        private bool disposedValue;
+        private readonly MemoryCache iconTexCache = new(new MemoryCacheOptions());
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="IconCacheService" /> class.
@@ -47,7 +43,6 @@ namespace Sirensong.Cache
             if (!this.disposedValue)
             {
                 this.iconTexCache.Dispose();
-
                 this.disposedValue = true;
             }
         }
@@ -72,13 +67,25 @@ namespace Sirensong.Cache
 
                     if (tex is not null && tex.ImGuiHandle != nint.Zero)
                     {
-                        SirenLog.Verbose($"Loaded texture for icon {iconId}");
-                        this.iconTexCache.AddOrUpdate(iconId, value => tex);
+                        var entry = this.iconTexCache.CreateEntry(iconId);
+                        entry.SlidingExpiration = SlidingExpiryTime;
+                        entry.PostEvictionCallbacks.Add(new PostEvictionCallbackRegistration()
+                        {
+                            EvictionCallback = (key, value, reason, state) =>
+                            {
+                                if (value is not null and IDisposable disposable)
+                                {
+                                    disposable.Dispose();
+                                }
+                            },
+                        });
+                        this.iconTexCache.Set(iconId, entry);
+                        SirenLog.Verbose($"Loaded and cached texture for icon {iconId}");
                     }
                     else
                     {
                         tex?.Dispose();
-                        SirenLog.Verbose($"Texture for icon {iconId} does not exist, using placeholder.");
+                        SirenLog.Verbose($"Texture for icon {iconId} does not exist.");
                     }
                 }
                 catch (Exception ex)
@@ -96,28 +103,6 @@ namespace Sirensong.Cache
         private static string GetIconPath(uint iconId) => IconFilePath.Format(iconId / 1000, iconId.ToString());
 
         /// <summary>
-        ///     Disposes of the icon at the given path.
-        /// </summary>
-        /// <param name="iconId">The icon ID to dispose of.</param>
-        /// <param name="remove">If true, the image will be removed from the cache.</param>
-        private void DisposeIcon(uint iconId, bool remove = false)
-        {
-            if (this.disposedValue)
-            {
-                throw new ObjectDisposedException(nameof(IconCacheService));
-            }
-
-            this.iconTexCache[iconId]?.Dispose();
-
-            if (remove)
-            {
-                this.iconTexCache.Remove(iconId);
-            }
-
-            SirenLog.Verbose($"Disposed of texture for icon {iconId}");
-        }
-
-        /// <summary>
         ///     Gets the icon texture for the given icon ID.
         /// </summary>
         /// <param name="iconId">The icon ID to get the texture for.</param>
@@ -129,31 +114,18 @@ namespace Sirensong.Cache
                 throw new ObjectDisposedException(nameof(IconCacheService));
             }
 
-            return this.iconTexCache.GetOrAdd(iconId, key =>
+            var existingValue = this.iconTexCache.Get<IDalamudTextureWrap>(iconId);
+            if (existingValue is not null)
             {
-                this.LoadIconTexture(key);
-                return null!;
-            });
+                return existingValue;
+            }
+
+            this.LoadIconTexture(iconId);
+            return null;
         }
 
         /// <summary>
-        ///     Clears the icon cache.
-        /// </summary>
-        public void ClearCache()
-        {
-            if (this.disposedValue)
-            {
-                throw new ObjectDisposedException(nameof(IconCacheService));
-            }
-
-            foreach (var texture in this.iconTexCache.Keys)
-            {
-                this.DisposeIcon(texture);
-            }
-        }
-
-        /// <summary>
-        ///     Clears the given iconId from the cache.
+        ///     Clears the given iconId from the cache. Will also dispose of the cached icon texture.
         /// </summary>
         /// <param name="iconId">The icon ID to clear from the cache.</param>
         public void ClearFromCache(int iconId)
@@ -163,10 +135,7 @@ namespace Sirensong.Cache
                 throw new ObjectDisposedException(nameof(IconCacheService));
             }
 
-            if (this.iconTexCache[(uint)iconId] is not null)
-            {
-                this.DisposeIcon((uint)iconId, true);
-            }
+            this.iconTexCache.Remove(iconId);
         }
     }
 }
