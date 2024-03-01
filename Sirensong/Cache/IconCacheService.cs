@@ -1,7 +1,8 @@
 using System;
 using System.Threading.Tasks;
+using BitFaster.Caching;
+using BitFaster.Caching.Lru;
 using Dalamud.Interface.Internal;
-using Microsoft.Extensions.Caching.Memory;
 using Sirensong.IoC.Internal;
 
 namespace Sirensong.Cache
@@ -20,8 +21,6 @@ namespace Sirensong.Cache
     {
         private bool disposedValue;
 
-        private static readonly TimeSpan SlidingExpiryTime = TimeSpan.FromMinutes(5);
-
         /// <summary>
         ///     The cache of <see cref="IDalamudTextureWrap" /> obtained from lookups.
         /// </summary>
@@ -29,7 +28,12 @@ namespace Sirensong.Cache
         ///     Does not hold the texture instance itself, just the wrapper that can be used to load
         ///     the texture in on the fly.
         /// </remarks>
-        private readonly MemoryCache iconTexCache = new(new MemoryCacheOptions());
+        private readonly ICache<uint, IDalamudTextureWrap> iconTexCache =
+            new ConcurrentLruBuilder<uint, IDalamudTextureWrap>()
+                .WithAtomicGetOrAdd()
+                .WithCapacity(200)
+                .WithExpireAfterWrite(TimeSpan.FromHours(1))
+                .Build();
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="IconCacheService" /> class.
@@ -46,7 +50,7 @@ namespace Sirensong.Cache
         {
             if (!this.disposedValue)
             {
-                this.iconTexCache.Dispose();
+                this.iconTexCache.Clear();
                 this.disposedValue = true;
             }
         }
@@ -70,23 +74,7 @@ namespace Sirensong.Cache
 
                     if (tex is not null && tex.ImGuiHandle != nint.Zero)
                     {
-                        var options = new MemoryCacheEntryOptions
-                        {
-                            SlidingExpiration = SlidingExpiryTime
-                        };
-
-                        options.PostEvictionCallbacks.Add(new PostEvictionCallbackRegistration()
-                        {
-                            EvictionCallback = (key, value, reason, state) =>
-                            {
-                                if (value is not null and IDisposable disposable)
-                                {
-                                    disposable.Dispose();
-                                }
-                            },
-                        });
-
-                        this.iconTexCache.Set(iconId, tex, options);
+                        this.iconTexCache.AddOrUpdate(iconId, tex);
                         SirenLog.Verbose($"Loaded and cached texture for icon {iconId}");
                     }
                     else
@@ -107,21 +95,39 @@ namespace Sirensong.Cache
         /// </summary>
         /// <param name="iconId">The icon ID to get the texture for.</param>
         /// <returns>The icon texture, or null if it could not be loaded.</returns>
-        public IDalamudTextureWrap? GetIcon(uint iconId)
+        public IDalamudTextureWrap? Get(uint iconId)
         {
             if (this.disposedValue)
             {
                 throw new ObjectDisposedException(nameof(IconCacheService));
             }
 
-            var existingValue = this.iconTexCache.Get<IDalamudTextureWrap>(iconId);
-            if (existingValue is not null)
+            var exists = this.iconTexCache.TryGet(iconId, out var value);
+            if (exists)
             {
-                return existingValue;
+                return value;
             }
 
             this.LoadIconTexture(iconId);
             return null;
+        }
+
+        /// <summary>
+        ///     Removes the icon with the giveen path from the cache.
+        /// </summary>
+        /// <remarks>
+        ///     Should not be called when the icon is in use within ImGui or when the icon is being loaded.
+        /// </remarks>
+        /// <param name="iconId">The icon ID to remove from the cache</param>
+        /// <returns>Whether or not the vlaue was removed</remarks>
+        public bool Remove(uint iconId)
+        {
+            if (this.disposedValue)
+            {
+                throw new ObjectDisposedException(nameof(IconCacheService));
+            }
+
+            return this.iconTexCache.TryRemove(iconId);
         }
     }
 }

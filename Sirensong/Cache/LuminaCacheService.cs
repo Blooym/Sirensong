@@ -1,7 +1,8 @@
 using System;
+using BitFaster.Caching;
+using BitFaster.Caching.Lru;
 using Dalamud;
 using Lumina.Excel;
-using Microsoft.Extensions.Caching.Memory;
 using Sirensong.IoC.Internal;
 
 namespace Sirensong.Cache
@@ -15,8 +16,6 @@ namespace Sirensong.Cache
     {
         private bool disposedValue;
 
-        private static readonly TimeSpan SlidingExpiryTime = TimeSpan.FromMinutes(10);
-
         /// <summary>
         ///     The <see cref="ExcelSheet{T}" /> associated with this cache.
         /// </summary>
@@ -25,7 +24,11 @@ namespace Sirensong.Cache
         /// <summary>
         ///     A cache of the rows and subrows.
         /// </summary>
-        private readonly MemoryCache cache = new(new MemoryCacheOptions());
+        private readonly ICache<Tuple<uint, uint?>, T?> cache = new ConcurrentLruBuilder<Tuple<uint, uint?>, T?>()
+                .WithAtomicGetOrAdd()
+                .WithCapacity(200)
+                .WithExpireAfterWrite(TimeSpan.FromMinutes(5))
+                .Build();
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="LuminaCacheService{T}" /> class.
@@ -40,7 +43,6 @@ namespace Sirensong.Cache
         {
             if (!this.disposedValue)
             {
-                this.cache.Dispose();
                 this.disposedValue = true;
             }
         }
@@ -55,17 +57,18 @@ namespace Sirensong.Cache
         /// <summary>
         ///     Gets a row from the sheet and caches it.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="row"></param>
         /// <returns></returns>
         /// <exception cref="ObjectDisposedException"></exception>
-        public T? GetRow(uint id)
+        public T? GetRow(uint row)
         {
             if (this.disposedValue)
             {
                 throw new ObjectDisposedException(nameof(LuminaCacheService<T>));
             }
 
-            return this.cache.GetOrCreate(id, value => Sheet.GetRow(id));
+            var targetRow = new Tuple<uint, uint?>(row, null);
+            return this.cache.GetOrAdd(targetRow, value => Sheet.GetRow(row));
         }
 
         /// <summary>
@@ -82,8 +85,8 @@ namespace Sirensong.Cache
                 throw new ObjectDisposedException(nameof(LuminaCacheService<T>));
             }
 
-            var targetRow = new Tuple<uint, uint>(row, subRow);
-            return this.cache.GetOrCreate(targetRow, value => Sheet.GetRow(row, subRow)!);
+            var targetRow = new Tuple<uint, uint?>(row, subRow);
+            return this.cache.GetOrAdd(targetRow, value => Sheet.GetRow(row, subRow)!);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Sirensong.UserInterface
         /// <param name="size"></param>
         public static void Image(string uri, ScalingMode scalingMode = ScalingMode.None, Vector2? size = null)
         {
-            var texture = SharedServices.ImageCache.GetImage(uri);
+            var texture = SharedServices.ImageCache.Get(uri);
             if (texture == null)
             {
                 ImGui.Dummy(size ?? Vector2.Zero);
@@ -46,7 +46,7 @@ namespace Sirensong.UserInterface
         /// <param name="size"></param>
         public static void Icon(uint iconId, ScalingMode scalingMode = ScalingMode.None, Vector2? size = null)
         {
-            var texture = SharedServices.IconCache.GetIcon(iconId);
+            var texture = SharedServices.IconCache.Get(iconId);
             if (texture == null)
             {
                 ImGui.Dummy(size ?? Vector2.Zero);
@@ -76,7 +76,7 @@ namespace Sirensong.UserInterface
         /// <returns></returns>
         public static bool ImageButton(string uri, ScalingMode scalingMode = ScalingMode.None, Vector2? size = null)
         {
-            var texture = SharedServices.ImageCache.GetImage(uri);
+            var texture = SharedServices.ImageCache.Get(uri);
             if (texture == null)
             {
                 ImGui.Dummy(size ?? Vector2.Zero);
@@ -97,7 +97,7 @@ namespace Sirensong.UserInterface
         /// <returns></returns>
         public static bool IconButton(uint iconId, ScalingMode scalingMode = ScalingMode.None, Vector2? size = null)
         {
-            var texture = SharedServices.IconCache.GetIcon(iconId);
+            var texture = SharedServices.IconCache.Get(iconId);
             if (texture == null)
             {
                 ImGui.Dummy(size ?? Vector2.Zero);
