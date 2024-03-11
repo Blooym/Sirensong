@@ -67,10 +67,7 @@ namespace Sirensong.IoC.Internal
         /// <returns>The newly created service.</returns>
         internal object CreateService(Type type)
         {
-            if (this.disposedValue)
-            {
-                throw new ObjectDisposedException(nameof(SirenServiceContainer));
-            }
+            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(SirenServiceContainer));
 
             if (!IsValidService(type))
             {
@@ -117,10 +114,7 @@ namespace Sirensong.IoC.Internal
         /// <param name="service">The type of the service to remove.</param>
         internal void RemoveService(Type service)
         {
-            if (this.disposedValue)
-            {
-                throw new ObjectDisposedException(nameof(SirenServiceContainer));
-            }
+            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(SirenServiceContainer));
 
             if (service is IDisposable disposable)
             {
@@ -153,10 +147,7 @@ namespace Sirensong.IoC.Internal
         /// <exception cref="ArgumentNullException">Thrown if the class to inject services into is null.</exception>
         internal void InjectServices<T>() where T : class
         {
-            if (this.disposedValue)
-            {
-                throw new ObjectDisposedException(nameof(SirenServiceContainer));
-            }
+            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(SirenServiceContainer));
 
             var properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
 
@@ -187,10 +178,8 @@ namespace Sirensong.IoC.Internal
         /// <returns>The service, or null if it was not found.</returns>
         public object? GetService(Type type)
         {
-            if (this.disposedValue)
-            {
-                throw new ObjectDisposedException(nameof(SirenServiceContainer));
-            }
+            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(SirenServiceContainer));
+
             SirenLog.Debug($"Getting requested service: {type.FullName}.");
             return this.services.Value.FirstOrDefault(service => service.GetType() == type);
         }

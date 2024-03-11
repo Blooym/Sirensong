@@ -21,7 +21,7 @@ namespace Sirensong.Extensions
         /// </summary>
         /// <param name="str"></param>
         /// <returns>A new string that has been trimmed and squished.</returns>
-        public static string TrimAndSquish(this string str) => string.IsNullOrEmpty(str) ? string.Empty : string.Join(" ", str.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
+        public static string TrimAndSquish(this string str) => string.IsNullOrEmpty(str) ? string.Empty : string.Join(' ', str.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
 
         /// <summary>
         ///     Converts a string to title case using <see cref="CultureInfo.InvariantCulture" />.

@@ -62,10 +62,7 @@ namespace Sirensong.Cache
         /// <exception cref="ObjectDisposedException"></exception>
         public T? GetRow(uint row)
         {
-            if (this.disposedValue)
-            {
-                throw new ObjectDisposedException(nameof(LuminaCacheService<T>));
-            }
+            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(LuminaCacheService<T>));
 
             var targetRow = new Tuple<uint, uint?>(row, null);
             return this.cache.GetOrAdd(targetRow, value => Sheet.GetRow(row));
@@ -80,10 +77,7 @@ namespace Sirensong.Cache
         /// <exception cref="ObjectDisposedException"></exception>
         public T? GetRow(uint row, uint subRow)
         {
-            if (this.disposedValue)
-            {
-                throw new ObjectDisposedException(nameof(LuminaCacheService<T>));
-            }
+            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(LuminaCacheService<T>));
 
             var targetRow = new Tuple<uint, uint?>(row, subRow);
             return this.cache.GetOrAdd(targetRow, value => Sheet.GetRow(row, subRow)!);

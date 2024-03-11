@@ -56,10 +56,7 @@ namespace Sirensong.IoC
         /// <exception cref="ObjectDisposedException"></exception>
         public bool ServiceExists<T>() where T : class
         {
-            if (this.disposedValue)
-            {
-                throw new ObjectDisposedException(nameof(MiniServiceContainer));
-            }
+            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(MiniServiceContainer));
 
             lock (ServiceContainerLock)
             {
@@ -75,10 +72,7 @@ namespace Sirensong.IoC
         /// <exception cref="ObjectDisposedException"></exception>
         public T? GetService<T>() where T : class
         {
-            if (this.disposedValue)
-            {
-                throw new ObjectDisposedException(nameof(MiniServiceContainer));
-            }
+            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(MiniServiceContainer));
 
             lock (ServiceContainerLock)
             {
@@ -97,10 +91,7 @@ namespace Sirensong.IoC
         /// <exception cref="InvalidOperationException"></exception>
         public void CreateService<T>() where T : class
         {
-            if (this.disposedValue)
-            {
-                throw new ObjectDisposedException(nameof(MiniServiceContainer));
-            }
+            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(MiniServiceContainer));
 
             lock (ServiceContainerLock)
             {
@@ -131,10 +122,7 @@ namespace Sirensong.IoC
         /// <exception cref="InvalidOperationException"></exception>
         public T GetOrCreateService<T>() where T : class
         {
-            if (this.disposedValue)
-            {
-                throw new ObjectDisposedException(nameof(MiniServiceContainer));
-            }
+            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(MiniServiceContainer));
 
             lock (ServiceContainerLock)
             {
@@ -160,10 +148,7 @@ namespace Sirensong.IoC
         /// <exception cref="ObjectDisposedException"></exception>
         public bool RemoveService<T>() where T : class
         {
-            if (this.disposedValue)
-            {
-                throw new ObjectDisposedException(nameof(MiniServiceContainer));
-            }
+            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(MiniServiceContainer));
 
             lock (ServiceContainerLock)
             {

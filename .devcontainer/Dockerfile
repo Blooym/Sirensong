@@ -1,4 +1,4 @@
-FROM ghcr.io/blooym/docker-dalamud:stg-alpine
+FROM ghcr.io/blooym/docker-dalamud:net8-alpine
 
 # Optout of telemtry.
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1

@@ -65,10 +65,7 @@ namespace Sirensong.Cache
         /// <param name="path"></param>
         private void LoadImage(string path)
         {
-            if (this.disposedValue)
-            {
-                throw new ObjectDisposedException(nameof(ImageCacheService));
-            }
+            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(ImageCacheService));
 
             Task.Run(async () =>
             {
@@ -143,10 +140,7 @@ namespace Sirensong.Cache
         /// <returns></returns>
         public IDalamudTextureWrap? Get(string path)
         {
-            if (this.disposedValue)
-            {
-                throw new ObjectDisposedException(nameof(ImageCacheService));
-            }
+            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(ImageCacheService));
 
             var exists = this.imageTexCache.TryGet(path, out var value);
             if (exists)
@@ -168,10 +162,8 @@ namespace Sirensong.Cache
         /// <returns>Whether or not the vlaue was removed</remarks>
         public bool Remove(string path)
         {
-            if (this.disposedValue)
-            {
-                throw new ObjectDisposedException(nameof(ImageCacheService));
-            }
+            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(ImageCacheService));
+
 
             return this.imageTexCache.TryRemove(path);
         }

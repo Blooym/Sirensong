@@ -61,10 +61,7 @@ namespace Sirensong.Cache
         /// <param name="iconId">The icon ID to load the texture for.</param>
         private void LoadIconTexture(uint iconId)
         {
-            if (this.disposedValue)
-            {
-                throw new ObjectDisposedException(nameof(IconCacheService));
-            }
+            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(IconCacheService));
 
             Task.Run(() =>
             {
@@ -97,10 +94,7 @@ namespace Sirensong.Cache
         /// <returns>The icon texture, or null if it could not be loaded.</returns>
         public IDalamudTextureWrap? Get(uint iconId)
         {
-            if (this.disposedValue)
-            {
-                throw new ObjectDisposedException(nameof(IconCacheService));
-            }
+            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(IconCacheService));
 
             var exists = this.iconTexCache.TryGet(iconId, out var value);
             if (exists)
@@ -122,10 +116,7 @@ namespace Sirensong.Cache
         /// <returns>Whether or not the vlaue was removed</remarks>
         public bool Remove(uint iconId)
         {
-            if (this.disposedValue)
-            {
-                throw new ObjectDisposedException(nameof(IconCacheService));
-            }
+            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(IconCacheService));
 
             return this.iconTexCache.TryRemove(iconId);
         }
