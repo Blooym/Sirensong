@@ -17,7 +17,7 @@ namespace Sirensong.Extensions
         /// </summary>
         /// <param name="pc"></param>
         /// <returns></returns>
-        public static unsafe FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* ToCsGameObject(this PlayerCharacter pc)
+        public static unsafe FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* ToCsGameObject(this IPlayerCharacter pc)
             => (FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject*)pc.Address;
 
 
@@ -26,7 +26,7 @@ namespace Sirensong.Extensions
         /// </summary>
         /// <param name="pc"></param>
         /// <returns></returns>
-        public static unsafe FFXIVClientStructs.FFXIV.Client.Game.Character.Character* ToCsPlayerCharacter(this PlayerCharacter pc)
+        public static unsafe FFXIVClientStructs.FFXIV.Client.Game.Character.Character* ToCsPlayerCharacter(this IPlayerCharacter pc)
             => (FFXIVClientStructs.FFXIV.Client.Game.Character.Character*)pc.Address;
 
         /// <summary>
@@ -34,51 +34,51 @@ namespace Sirensong.Extensions
         /// </summary>
         /// <param name="pc"></param>
         /// <returns>The Dalamud GameObject or null if unable to create one.</returns>
-        public static GameObject? ToDalamudGameObject(this PlayerCharacter pc) => SharedServices.ObjectTable.CreateObjectReference(pc.Address);
+        public static IGameObject? ToDalamudGameObject(this IPlayerCharacter pc) => SharedServices.ObjectTable.CreateObjectReference(pc.Address);
 
         /// <summary>
         ///     Set the player as the <see cref="IClientState.LocalPlayer" />'s target.
         /// </summary>
         /// <param name="pc"></param>
-        public static void Target(this PlayerCharacter pc) => SharedServices.TargetManager.Target = pc.ToDalamudGameObject();
+        public static void Target(this IPlayerCharacter pc) => SharedServices.TargetManager.Target = pc.ToDalamudGameObject();
 
         /// <summary>
         ///     Set the player as the <see cref="IClientState.LocalPlayer" />'s reticle target.
         /// </summary>
         /// <param name="pc"></param>
-        public static void SoftTarget(this PlayerCharacter pc) => SharedServices.TargetManager.SoftTarget = pc.ToDalamudGameObject();
+        public static void SoftTarget(this IPlayerCharacter pc) => SharedServices.TargetManager.SoftTarget = pc.ToDalamudGameObject();
 
         /// <summary>
         ///     Set the player as the <see cref="IClientState.LocalPlayer" />'s focus target.
         /// </summary>
         /// <param name="pc"></param>
-        public static void FocusTarget(this PlayerCharacter pc) => SharedServices.TargetManager.FocusTarget = pc.ToDalamudGameObject();
+        public static void FocusTarget(this IPlayerCharacter pc) => SharedServices.TargetManager.FocusTarget = pc.ToDalamudGameObject();
 
         /// <summary>
         ///     Set the player as the <see cref="IClientState.LocalPlayer" />'s mouse over target.
         /// </summary>
         /// <param name="pc"></param>
-        public static void MouseOverTarget(this PlayerCharacter pc) => SharedServices.TargetManager.MouseOverTarget = pc.ToDalamudGameObject();
+        public static void MouseOverTarget(this IPlayerCharacter pc) => SharedServices.TargetManager.MouseOverTarget = pc.ToDalamudGameObject();
 
         /// <summary>
         ///     Gets a boolean value indicating whether the player is from the current world.
         /// </summary>
         /// <param name="pc"></param>
         /// <returns>True if the player is from the current world, false otherwise.</returns>
-        public static bool IsFromCurrentWorld(this PlayerCharacter pc) => pc.CurrentWorld == pc.HomeWorld;
+        public static bool IsFromCurrentWorld(this IPlayerCharacter pc) => pc.CurrentWorld == pc.HomeWorld;
 
         /// <summary>
         ///     Gets a boolean value indicating whether the player is from the current datacenter.
         /// </summary>
         /// <param name="pc"></param>
         /// <returns>True if the player is from the current datacenter, false otherwise.</returns>
-        public static bool IsFromCurrentDatacenter(this PlayerCharacter pc) => pc.CurrentWorld.GameData?.DataCenter == pc.HomeWorld.GameData?.DataCenter;
+        public static bool IsFromCurrentDatacenter(this IPlayerCharacter pc) => pc.CurrentWorld.GameData?.DataCenter == pc.HomeWorld.GameData?.DataCenter;
 
         /// <summary>
         ///     Opens the player's adventurer plate or "chara card".
         /// </summary>
         /// <param name="pc"></param>
-        public static unsafe void OpenCharaCard(this PlayerCharacter pc) => AgentCharaCard.Instance()->OpenCharaCard(pc.ToCsGameObject());
+        public static unsafe void OpenCharaCard(this IPlayerCharacter pc) => AgentCharaCard.Instance()->OpenCharaCard(pc.ToCsGameObject());
 
         /// <summary>
         ///     Opens the player's examine window.
@@ -88,7 +88,7 @@ namespace Sirensong.Extensions
         ///     Thrown if unable to create a
         ///     <see cref="GameObject" /> from the <see cref="PlayerCharacter" /> address.
         /// </exception>
-        public static unsafe void OpenExamine(this PlayerCharacter pc) => AgentInspect.Instance()->ExamineCharacter(pc.ObjectId);
+        public static unsafe void OpenExamine(this IPlayerCharacter pc) => AgentInspect.Instance()->ExamineCharacter(pc.EntityId);
 
         /// <summary>
         ///     Gets a boolean value indicating whether the player has the specified online status.
@@ -96,9 +96,9 @@ namespace Sirensong.Extensions
         /// <param name="pc"></param>
         /// <param name="status">The status to check for.</param>
         /// <returns></returns>
-        public static bool HasOnlineStatus(this PlayerCharacter pc, OnlineStatusType status) => pc.OnlineStatus.Id == (uint)status;
+        public static bool HasOnlineStatus(this IPlayerCharacter pc, OnlineStatusType status) => pc.OnlineStatus.Id == (uint)status;
 
         /// <inheritdoc cref="HasOnlineStatus(PlayerCharacter, OnlineStatusType)" />
-        public static bool HasOnlineStatus(this PlayerCharacter pc, uint status) => pc.OnlineStatus.Id == status;
+        public static bool HasOnlineStatus(this IPlayerCharacter pc, uint status) => pc.OnlineStatus.Id == status;
     }
 }

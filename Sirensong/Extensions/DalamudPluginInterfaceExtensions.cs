@@ -14,6 +14,6 @@ namespace Sirensong.Extensions
         ///     Checks to see if the plugin was loaded from the official Dalamud Plugin Repository.
         /// </summary>
         /// <param name="pluginInterface"></param>
-        public static void IsMainRepo(this DalamudPluginInterface pluginInterface) => pluginInterface.SourceRepository.Equals(OfficialSourceRepository, StringComparison.Ordinal);
+        public static void IsMainRepo(this IDalamudPluginInterface pluginInterface) => pluginInterface.SourceRepository.Equals(OfficialSourceRepository, StringComparison.Ordinal);
     }
 }

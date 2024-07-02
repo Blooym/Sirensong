@@ -1,6 +1,6 @@
 using System;
 using System.Numerics;
-using Dalamud.Interface.Internal;
+using Dalamud.Interface.Textures.TextureWraps;
 using ImGuiNET;
 
 namespace Sirensong.UserInterface
@@ -26,13 +26,13 @@ namespace Sirensong.UserInterface
         /// <param name="size"></param>
         public static void Image(string uri, ScalingMode scalingMode = ScalingMode.None, Vector2? size = null)
         {
-            var texture = SharedServices.ImageCache.Get(uri);
-            if (texture == null)
+            var bytes = SharedServices.RemoteBytesCache.Get(uri);
+            if (bytes is null)
             {
                 ImGui.Dummy(size ?? Vector2.Zero);
                 return;
             }
-            Image(texture, scalingMode, size);
+            Image(SharedServices.TextureProvider.CreateFromImageAsync(bytes).Result, scalingMode, size);
         }
 
         /// <summary>
@@ -46,13 +46,13 @@ namespace Sirensong.UserInterface
         /// <param name="size"></param>
         public static void Icon(uint iconId, ScalingMode scalingMode = ScalingMode.None, Vector2? size = null)
         {
-            var texture = SharedServices.IconCache.Get(iconId);
-            if (texture == null)
+            var texture = SharedServices.TextureProvider.GetFromGameIcon(iconId);
+            if (texture is null)
             {
                 ImGui.Dummy(size ?? Vector2.Zero);
                 return;
             }
-            Image(texture, scalingMode, size);
+            Image(texture.GetWrapOrEmpty(), scalingMode, size);
         }
 
         /// <summary>
@@ -76,13 +76,13 @@ namespace Sirensong.UserInterface
         /// <returns></returns>
         public static bool ImageButton(string uri, ScalingMode scalingMode = ScalingMode.None, Vector2? size = null)
         {
-            var texture = SharedServices.ImageCache.Get(uri);
-            if (texture == null)
+            var bytes = SharedServices.RemoteBytesCache.Get(uri);
+            if (bytes is null)
             {
                 ImGui.Dummy(size ?? Vector2.Zero);
                 return false;
             }
-            return ImageButton(texture, scalingMode, size);
+            return ImageButton(SharedServices.TextureProvider.CreateFromImageAsync(bytes).Result, scalingMode, size);
         }
 
         /// <summary>
@@ -97,13 +97,13 @@ namespace Sirensong.UserInterface
         /// <returns></returns>
         public static bool IconButton(uint iconId, ScalingMode scalingMode = ScalingMode.None, Vector2? size = null)
         {
-            var texture = SharedServices.IconCache.Get(iconId);
+            var texture = SharedServices.TextureProvider.GetFromGameIcon(iconId);
             if (texture == null)
             {
                 ImGui.Dummy(size ?? Vector2.Zero);
                 return false;
             }
-            return ImageButton(texture, scalingMode, size);
+            return ImageButton(texture.GetWrapOrEmpty(), scalingMode, size);
         }
     }
 

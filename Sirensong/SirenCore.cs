@@ -38,11 +38,11 @@ namespace Sirensong
         ///         Both a <see cref="SirenServiceContainer" /> and a <see cref="SharedServices" /> instance.
         ///     </para>
         /// </remarks>
-        /// <param name="pluginInterface">Your plugin's <see cref="DalamudPluginInterface" />.</param>
+        /// <param name="pluginInterface">Your plugin's <see cref="IDalamudPluginInterface" />.</param>
         /// <param name="pluginName"></param>
         /// <exception cref="InvalidOperationException">Thrown if Sirensong has already been initialized.</exception>
         /// <exception cref="ObjectDisposedException">Thrown if Sirensong has been disposed.</exception>
-        public static void Initialize(DalamudPluginInterface pluginInterface, string pluginName)
+        public static void Initialize(IDalamudPluginInterface pluginInterface, string pluginName)
         {
             // Set initializer information.
             InitializerAssembly = Assembly.GetCallingAssembly();

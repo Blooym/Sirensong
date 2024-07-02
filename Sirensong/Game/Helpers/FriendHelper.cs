@@ -1,5 +1,4 @@
 using System;
-using FFXIVClientStructs.FFXIV.Client.Game.Character;
 using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using FFXIVClientStructs.FFXIV.Client.UI.Info;
 
@@ -20,20 +19,12 @@ namespace Sirensong.Game.Helpers
             {
                 if (!SharedServices.ClientState.IsLoggedIn)
                 {
-                    return Array.Empty<InfoProxyCommonList.CharacterData>();
+                    return [];
                 }
 
-                var friendAgent = AgentFriendList.Instance();
+                var friendAgent = AgentFriendlist.Instance();
                 return friendAgent->InfoProxy->InfoProxyCommonList.CharDataSpan;
             }
         }
-
-        /// <summary>
-        ///     Checks if a <see cref="Character" /> is a friend.
-        /// </summary>
-        /// <param name="character"></param>
-        /// <returns></returns>
-        [Obsolete("Use FFXIVClientStructs.FFXIV.Client.Game.Character.Character#IsFriend instead")]
-        public static unsafe bool IsFriend(Character* character) => character->IsFriend;
     }
 }

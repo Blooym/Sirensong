@@ -1,7 +1,7 @@
 using System;
 using BitFaster.Caching;
 using BitFaster.Caching.Lru;
-using Dalamud;
+using Dalamud.Game;
 using Lumina.Excel;
 using Sirensong.IoC.Internal;
 

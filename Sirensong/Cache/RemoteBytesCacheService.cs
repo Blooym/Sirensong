@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using BitFaster.Caching;
 using BitFaster.Caching.Lru;
-using Dalamud.Interface.Internal;
 using Sirensong.IoC.Internal;
 
 namespace Sirensong.Cache
@@ -13,7 +12,7 @@ namespace Sirensong.Cache
     ///     Provides a way to load and cache images.
     /// </summary>
     [SirenServiceClass]
-    public sealed class ImageCacheService : IDisposable
+    public sealed class RemoteBytesCacheService : IDisposable
     {
         private bool disposedValue;
 
@@ -31,8 +30,8 @@ namespace Sirensong.Cache
         /// <summary>
         ///     The cache of loaded images.
         /// </summary>
-        private readonly ICache<string, IDalamudTextureWrap> imageTexCache =
-            new ConcurrentLruBuilder<string, IDalamudTextureWrap>()
+        private readonly ICache<string, byte[]> remoteBytesCache =
+            new ConcurrentLruBuilder<string, byte[]>()
                 .WithAtomicGetOrAdd()
                 .WithCapacity(200)
                 .WithExpireAfterWrite(TimeSpan.FromMinutes(5))
@@ -40,15 +39,15 @@ namespace Sirensong.Cache
 
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ImageCacheService" /> class.
+        ///     Initializes a new instance of the <see cref="RemoteBytesCacheService" /> class.
         /// </summary>
-        private ImageCacheService()
+        private RemoteBytesCacheService()
         {
 
         }
 
         /// <summary>
-        ///     Disposes of the image provider.
+        ///     Disposes of the RemoteBytesCacheService provider.
         /// </summary>
         public void Dispose()
         {
@@ -60,12 +59,12 @@ namespace Sirensong.Cache
         }
 
         /// <summary>
-        ///     Loads the image at the given path or URL in a Task.
+        ///     Fetches the bytes for the given URL in a Task.
         /// </summary>
         /// <param name="path"></param>
-        private void LoadImage(string path)
+        private void GetRemoteBytes(string path)
         {
-            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(ImageCacheService));
+            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(RemoteBytesCacheService));
 
             Task.Run(async () =>
             {
@@ -80,8 +79,6 @@ namespace Sirensong.Cache
                         return;
                     }
 
-                    IDalamudTextureWrap? tex = null;
-
                     if (Uri.TryCreate(path, UriKind.Absolute, out var uri))
                     {
                         switch (uri.Scheme)
@@ -91,39 +88,24 @@ namespace Sirensong.Cache
                                 return;
                             case "https":
                                 var bytes = await this.GetBytesFromUrl(path);
-                                tex = await SharedServices.UiBuilder.LoadImageAsync(bytes);
-                                break;
-                            case "file":
-                                tex = await SharedServices.UiBuilder.LoadImageAsync(uri.LocalPath);
+                                this.remoteBytesCache.AddOrUpdate(path, bytes);
                                 break;
                             default:
                                 SirenLog.Warning($"Invalid URI: {path}");
                                 break;
                         }
-
-                        // If the texture is valid, add it to the cache
-                        if (tex != null && tex.ImGuiHandle != nint.Zero)
-                        {
-                            this.imageTexCache.AddOrUpdate(path, tex);
-                            SirenLog.Verbose($"Loaded image at {path}");
-                        }
-                        else
-                        {
-                            this.imageTexCache.TryRemove(path);
-                            SirenLog.Warning($"Image at {path} is not a valid image.");
-                        }
                     }
                 }
                 catch (Exception ex)
                 {
-                    this.imageTexCache.TryRemove(path);
+                    this.remoteBytesCache.TryRemove(path);
                     SirenLog.Error($"Something went wrong while loading image at {path}: {ex.Message}");
                 }
             });
         }
 
         /// <summary>
-        ///     Loads an image from a HTTP or HTTPS URL.
+        ///     Loads bytes from a HTTP or HTTPS URL.
         /// </summary>
         /// <param name="url">The URL to load the image from.</param>
         /// <returns>The image texture.</returns>
@@ -134,38 +116,33 @@ namespace Sirensong.Cache
         }
 
         /// <summary>
-        ///     Gets the image at the given path.
+        ///     Gets the bytes for the given URL.
         /// </summary>
-        /// <param name="path">The path or URL to the image.</param>
+        /// <param name="url">The url to load bytes for.</param>
         /// <returns></returns>
-        public IDalamudTextureWrap? Get(string path)
+        public byte[]? Get(string url)
         {
-            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(ImageCacheService));
+            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(RemoteBytesCacheService));
 
-            var exists = this.imageTexCache.TryGet(path, out var value);
+            var exists = this.remoteBytesCache.TryGet(url, out var value);
             if (exists)
             {
                 return value;
             }
 
-            this.LoadImage(path);
+            this.GetRemoteBytes(url);
             return null;
         }
 
         /// <summary>
-        ///     Removes the image at the given path from the cache.
+        ///     Removes the bytes for the given URL from the cache.
         /// </summary>
-        /// <remarks>
-        ///     Should not be called when the image is in use within ImGui or when the image is being loaded.
-        /// </remarks>
-        /// <param name="path">The image path to remove from the cache</param>
-        /// <returns>Whether or not the vlaue was removed</remarks>
-        public bool Remove(string path)
+        /// <param name="url">The URL to remove from the cache</param>
+        /// <returns>Whether or not the value was removed</remarks>
+        public bool Remove(string url)
         {
-            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(ImageCacheService));
-
-
-            return this.imageTexCache.TryRemove(path);
+            ObjectDisposedException.ThrowIf(this.disposedValue, nameof(RemoteBytesCacheService));
+            return this.remoteBytesCache.TryRemove(url);
         }
     }
 }

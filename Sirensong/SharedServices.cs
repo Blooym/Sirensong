@@ -28,20 +28,19 @@ namespace Sirensong
         [PluginService] internal static IObjectTable ObjectTable { get; private set; } = null!;
         [PluginService] internal static ICondition Condition { get; private set; } = null!;
         [PluginService] internal static IFramework Framework { get; private set; } = null!;
-        [PluginService] internal static DalamudPluginInterface PluginInterface { get; private set; } = null!;
+        [PluginService] internal static IDalamudPluginInterface PluginInterface { get; private set; } = null!;
         [PluginService] internal static ITextureProvider TextureProvider { get; private set; } = null!;
         [PluginService] internal static IPluginLog PluginLog { get; private set; } = null!;
 
         // Dalamud service shortcuts
-        internal static UiBuilder UiBuilder => PluginInterface.UiBuilder;
+        internal static IUiBuilder UiBuilder => PluginInterface.UiBuilder;
 
         // Siren services
-        [SirenService] internal static ImageCacheService ImageCache { get; private set; } = null!;
-        [SirenService] internal static IconCacheService IconCache { get; private set; } = null!;
+        [SirenService] internal static RemoteBytesCacheService RemoteBytesCache { get; private set; } = null!;
         [SirenService] internal static LuminaCacheService<TerritoryType> TerritoryTypeCache { get; private set; } = null!;
         [SirenService] private static LocalizationManager LocalizationManager { get; set; } = null!;
 
-        internal static void Initialize(DalamudPluginInterface pi)
+        internal static void Initialize(IDalamudPluginInterface pi)
         {
             pi.Create<SharedServices>();
             SirenCore.InjectServices<SharedServices>();
