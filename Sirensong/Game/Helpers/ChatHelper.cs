@@ -1,5 +1,4 @@
 using Dalamud.Game.Text.SeStringHandling;
-using Sirensong.Game.Enums;
 
 namespace Sirensong.Game.Helpers
 {
@@ -26,7 +25,7 @@ namespace Sirensong.Game.Helpers
         /// </summary>
         /// <param name="message">The message to print.</param>
         /// <param name="pluginTagColour">The colour of the plugin name tag.</param>
-        public static void Print(string message, ushort pluginTagColour = (ushort)ChatUiColourKey.LightBlue2)
+        public static void Print(string message, ushort pluginTagColour = 707)
             => SharedServices.ChatGui.Print(
                 CreateBaseString(SirenCore.InitializerName, pluginTagColour)
                     .AddText(message)
@@ -34,31 +33,31 @@ namespace Sirensong.Game.Helpers
             );
 
         /// <inheritdoc cref="Print(string,ushort,ushort)" />
-        public static void PrintWarning(string message, ushort pluginTagColour = (ushort)ChatUiColourKey.LightBlue2)
+        public static void PrintWarning(string message, ushort pluginTagColour = 707)
             => SharedServices.ChatGui.Print(
                 CreateBaseString(SirenCore.InitializerName, pluginTagColour)
-                    .AddUiForeground((ushort)ChatUiColourKey.Orange)
+                    .AddUiForeground(706)
                     .AddText(message)
                     .Build()
             );
 
         /// <inheritdoc cref="Print(string,ushort,ushort)" />
-        public static void PrintImportant(string message, ushort pluginTagColour = (ushort)ChatUiColourKey.LightBlue2) => SharedServices.ChatGui.Print(
+        public static void PrintImportant(string message, ushort pluginTagColour = 707) => SharedServices.ChatGui.Print(
                 CreateBaseString(SirenCore.InitializerName, pluginTagColour)
-                    .AddUiForeground((ushort)ChatUiColourKey.LightPurple1)
+                    .AddUiForeground(555)
                     .AddText(message)
                     .Build()
             );
 
         /// <inheritdoc cref="Print(string,ushort,ushort)" />
-        public static void PrintError(string message, ushort pluginTagColour = (ushort)ChatUiColourKey.LightBlue2) => SharedServices.ChatGui.PrintError(
+        public static void PrintError(string message, ushort pluginTagColour = 707) => SharedServices.ChatGui.PrintError(
                 CreateBaseString(SirenCore.InitializerName, pluginTagColour)
                     .AddText(message)
                     .Build()
             );
 
         /// <inheritdoc cref="Print(string,ushort,ushort)" />
-        public static void Print(SeString message, ushort pluginTagColour = (ushort)ChatUiColourKey.LightBlue2)
+        public static void Print(SeString message, ushort pluginTagColour = 707)
             => SharedServices.ChatGui.Print(
                 CreateBaseString(SirenCore.InitializerName, pluginTagColour)
                     .Append(message)
@@ -66,25 +65,25 @@ namespace Sirensong.Game.Helpers
             );
 
         /// <inheritdoc cref="Print(string,ushort,ushort)" />
-        public static void PrintWarning(SeString message, ushort pluginTagColour = (ushort)ChatUiColourKey.LightBlue2)
+        public static void PrintWarning(SeString message, ushort pluginTagColour = 707)
             => SharedServices.ChatGui.Print(
                 CreateBaseString(SirenCore.InitializerName, pluginTagColour)
-                    .AddUiForeground((ushort)ChatUiColourKey.Orange)
+                    .AddUiForeground(706)
                     .Append(message)
                     .Build()
             );
 
         /// <inheritdoc cref="Print(string,ushort,ushort)" />
-        public static void PrintImportant(SeString message, ushort pluginTagColour = (ushort)ChatUiColourKey.LightBlue2)
+        public static void PrintImportant(SeString message, ushort pluginTagColour = 707)
             => SharedServices.ChatGui.Print(
                 CreateBaseString(SirenCore.InitializerName, pluginTagColour)
-                    .AddUiForeground((ushort)ChatUiColourKey.LightPurple1)
+                    .AddUiForeground(555)
                     .Append(message)
                     .Build()
             );
 
         /// <inheritdoc cref="Print(string,ushort,ushort)" />
-        public static void PrintError(SeString message, ushort pluginTagColour = (ushort)ChatUiColourKey.LightBlue2)
+        public static void PrintError(SeString message, ushort pluginTagColour = 706)
             => SharedServices.ChatGui.PrintError(
                 CreateBaseString(SirenCore.InitializerName, pluginTagColour)
                     .Append(message)
