@@ -16,26 +16,6 @@ namespace Sirensong.UserInterface
         public static void Image(IDalamudTextureWrap texture, ScalingMode scalingMode = ScalingMode.None, Vector2? size = null) => ImGui.Image(texture.ImGuiHandle, scalingMode.ApplyTo(texture, size));
 
         /// <summary>
-        ///     Draw an image with the texture from the given uri.
-        /// </summary>
-        /// <remarks>
-        ///     Implements caching with an internal <see cref="ImageCache" /> service.
-        /// </remarks>
-        /// <param name="uri"></param>
-        /// <param name="scalingMode"></param>
-        /// <param name="size"></param>
-        public static void Image(string uri, ScalingMode scalingMode = ScalingMode.None, Vector2? size = null)
-        {
-            var bytes = SharedServices.RemoteBytesCache.Get(uri);
-            if (bytes is null)
-            {
-                ImGui.Dummy(size ?? Vector2.Zero);
-                return;
-            }
-            Image(SharedServices.TextureProvider.CreateFromImageAsync(bytes).Result, scalingMode, size);
-        }
-
-        /// <summary>
         ///     Draw an icon with the texture from the given icon id.
         /// </summary>
         /// <remarks>
@@ -63,27 +43,6 @@ namespace Sirensong.UserInterface
         /// <param name="size"></param>
         /// <returns></returns>
         public static bool ImageButton(IDalamudTextureWrap texture, ScalingMode scalingMode = ScalingMode.None, Vector2? size = null) => ImGui.ImageButton(texture.ImGuiHandle, scalingMode.ApplyTo(texture, size));
-
-        /// <summary>
-        ///     Draw an image button with the texture from the given uri.
-        /// </summary>
-        /// <remarks>
-        ///     Implements caching with an internal <see cref="ImageCache" /> service.
-        /// </remarks>
-        /// <param name="uri"></param>
-        /// <param name="scalingMode"></param>
-        /// <param name="size"></param>
-        /// <returns></returns>
-        public static bool ImageButton(string uri, ScalingMode scalingMode = ScalingMode.None, Vector2? size = null)
-        {
-            var bytes = SharedServices.RemoteBytesCache.Get(uri);
-            if (bytes is null)
-            {
-                ImGui.Dummy(size ?? Vector2.Zero);
-                return false;
-            }
-            return ImageButton(SharedServices.TextureProvider.CreateFromImageAsync(bytes).Result, scalingMode, size);
-        }
 
         /// <summary>
         ///     Draw a button with the texture from the given icon id.

@@ -36,7 +36,6 @@ namespace Sirensong
         internal static IUiBuilder UiBuilder => PluginInterface.UiBuilder;
 
         // Siren services
-        [SirenService] internal static RemoteBytesCacheService RemoteBytesCache { get; private set; } = null!;
         [SirenService] internal static LuminaCacheService<TerritoryType> TerritoryTypeCache { get; private set; } = null!;
         [SirenService] private static LocalizationManager LocalizationManager { get; set; } = null!;
 
