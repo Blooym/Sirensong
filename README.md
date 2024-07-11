@@ -4,6 +4,8 @@
 
 ### Sirensong
 
+**It is not recommended you use this library for now. It is outdated and consistently being tweaked.**
+
 A collection of common utilities, helpers, extensions & UI styles for use in Dalamud plugins.
 
 **[Issues](https://github.com/Blooym/Sirensong/issues) · [Pull Requests](https://github.com/Blooym/Sirensong/pulls)**
