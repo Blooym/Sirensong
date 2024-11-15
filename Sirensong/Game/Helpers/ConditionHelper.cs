@@ -37,12 +37,8 @@ namespace Sirensong.Game.Helpers
         /// <returns>True if in an island sanctuary, false otherwise.</returns>
         public static bool IsInIslandSanctuary()
         {
-            var territoryInfo = SharedServices.TerritoryTypeCache.GetRow(SharedServices.ClientState.TerritoryType);
-            if (territoryInfo is null)
-            {
-                return false;
-            }
-            return territoryInfo.TerritoryIntendedUse == (byte)TerritoryIntendedUseType.IslandSanctuary;
+            var territoryInfo = SharedServices.TerritoryTypeSheet.GetRow(SharedServices.ClientState.TerritoryType);
+            return territoryInfo.TerritoryIntendedUse.RowId == (byte)TerritoryIntendedUseType.IslandSanctuary;
         }
 
         /// <summary>

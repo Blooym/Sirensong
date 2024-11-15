@@ -8,8 +8,8 @@ namespace Sirensong.Game.Helpers
     /// </summary>
     public static class SoundEffectHelper
     {
-        private const long PlaySoundA2Default = 0;
-        private const long PlaySoundA3Default = 0;
+        private const nint PlaySoundA2Default = 0;
+        private const nint PlaySoundA3Default = 0;
         private const byte PlaySoundA4Default = 0;
 
         /// <summary>
@@ -19,10 +19,10 @@ namespace Sirensong.Game.Helpers
         /// <param name="a2"></param>
         /// <param name="a3"></param>
         /// <param name="a4"></param>
-        public static void PlaySound(SoundEffect soundEffect, long a2 = PlaySoundA2Default, long a3 = PlaySoundA3Default, byte a4 = PlaySoundA4Default) => UIModule.PlaySound((uint)soundEffect, a2, a3, a4);
+        public static void PlaySound(SoundEffect soundEffect, nint a2 = PlaySoundA2Default, nint a3 = PlaySoundA3Default, byte a4 = PlaySoundA4Default) => UIGlobals.PlaySoundEffect((uint)soundEffect, a2, a3, a4);
 
-        /// <inheritdoc cref="PlaySound(SoundEffect,long,long,byte)" />
-        public static void PlaySound(uint soundEffect, long a2 = PlaySoundA2Default, long a3 = PlaySoundA3Default, byte a4 = PlaySoundA4Default) => UIModule.PlaySound(soundEffect, a2, a3, a4);
+        /// <inheritdoc cref="PlaySound(SoundEffect,nint,nint,byte)" />
+        public static void PlaySound(uint soundEffect, nint a2 = PlaySoundA2Default, nint a3 = PlaySoundA3Default, byte a4 = PlaySoundA4Default) => UIGlobals.PlaySoundEffect(soundEffect, a2, a3, a4);
 
         /// <summary>
         ///     Plays a chat sound effect.
@@ -31,6 +31,6 @@ namespace Sirensong.Game.Helpers
         /// <param name="a2"></param>
         /// <param name="a3"></param>
         /// <param name="a4"></param>
-        public static void PlayChatSoundEffect(uint effectId) => UIModule.PlayChatSoundEffect(effectId);
+        public static void PlayChatSoundEffect(uint effectId) => UIGlobals.PlayChatSoundEffect(effectId);
     }
 }

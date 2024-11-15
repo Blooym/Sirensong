@@ -65,14 +65,14 @@ namespace Sirensong.Extensions
         /// </summary>
         /// <param name="pc"></param>
         /// <returns>True if the player is from the current world, false otherwise.</returns>
-        public static bool IsFromCurrentWorld(this IPlayerCharacter pc) => pc.CurrentWorld == pc.HomeWorld;
+        public static bool IsFromCurrentWorld(this IPlayerCharacter pc) => pc.CurrentWorld.RowId == pc.HomeWorld.RowId;
 
         /// <summary>
         ///     Gets a boolean value indicating whether the player is from the current datacenter.
         /// </summary>
         /// <param name="pc"></param>
         /// <returns>True if the player is from the current datacenter, false otherwise.</returns>
-        public static bool IsFromCurrentDatacenter(this IPlayerCharacter pc) => pc.CurrentWorld.GameData?.DataCenter == pc.HomeWorld.GameData?.DataCenter;
+        public static bool IsFromCurrentDatacenter(this IPlayerCharacter pc) => pc.CurrentWorld.Value.DataCenter.RowId == pc.HomeWorld.Value.DataCenter.RowId;
 
         /// <summary>
         ///     Opens the player's adventurer plate or "chara card".
@@ -96,9 +96,9 @@ namespace Sirensong.Extensions
         /// <param name="pc"></param>
         /// <param name="status">The status to check for.</param>
         /// <returns></returns>
-        public static bool HasOnlineStatus(this IPlayerCharacter pc, OnlineStatusType status) => pc.OnlineStatus.Id == (uint)status;
+        public static bool HasOnlineStatus(this IPlayerCharacter pc, OnlineStatusType status) => pc.OnlineStatus.RowId == (uint)status;
 
         /// <inheritdoc cref="HasOnlineStatus(PlayerCharacter, OnlineStatusType)" />
-        public static bool HasOnlineStatus(this IPlayerCharacter pc, uint status) => pc.OnlineStatus.Id == status;
+        public static bool HasOnlineStatus(this IPlayerCharacter pc, uint status) => pc.OnlineStatus.RowId == status;
     }
 }

@@ -4,8 +4,8 @@ using Dalamud.Interface;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
-using Lumina.Excel.GeneratedSheets;
-using Sirensong.Cache;
+using Lumina.Excel;
+using Lumina.Excel.Sheets;
 using Sirensong.IoC;
 using Sirensong.Localization;
 
@@ -19,6 +19,8 @@ namespace Sirensong
 #pragma warning disable IDE0051
     internal sealed class SharedServices
     {
+        internal static ExcelSheet<TerritoryType> TerritoryTypeSheet = null!;
+
         // Dalamud services
         [PluginService] internal static IClientState ClientState { get; private set; } = null!;
         [PluginService] internal static IDataManager DataManager { get; private set; } = null!;
@@ -36,13 +38,13 @@ namespace Sirensong
         internal static IUiBuilder UiBuilder => PluginInterface.UiBuilder;
 
         // Siren services
-        [SirenService] internal static LuminaCacheService<TerritoryType> TerritoryTypeCache { get; private set; } = null!;
         [SirenService] private static LocalizationManager LocalizationManager { get; set; } = null!;
 
         internal static void Initialize(IDalamudPluginInterface pi)
         {
             pi.Create<SharedServices>();
             SirenCore.InjectServices<SharedServices>();
+            TerritoryTypeSheet = DataManager.GetExcelSheet<TerritoryType>()!;
         }
     }
 }

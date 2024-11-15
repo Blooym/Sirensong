@@ -1,6 +1,5 @@
 using Dalamud.Interface.Colors;
 using FFXIVClientStructs.FFXIV.Common.Math;
-using Lumina.Excel.GeneratedSheets;
 
 namespace Sirensong.Game.Enums
 {
