@@ -14,7 +14,7 @@
 
   <!-- Build Configuration -->
   <PropertyGroup>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Platforms>x64</Platforms>
     <Deterministic>true</Deterministic>
@@ -85,6 +85,10 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>$(DalamudLibPath)Newtonsoft.Json.dll</HintPath>
       <Private>false</Private>
+    </Reference>
+    <Reference Include="InteropGenerator.Runtime">
+      <Private>false</Private>
+      <HintPath>$(DalamudLibPath)InteropGenerator.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="CheapLoc">
       <Private>false</Private>
