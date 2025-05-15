@@ -1,13 +1,6 @@
 {
   "version": 1,
   "dependencies": {
-    "net9.0-windows7.0": {
-      "BitFaster.Caching": {
-        "type": "Direct",
-        "requested": "[2.5.3, )",
-        "resolved": "2.5.3",
-        "contentHash": "Vo/39qcam5Xe+DbyfH0JZyqPswdOoa7jv4PGtRJ6Wj8AU+aZ+TuJRlJcIe+MQjRTJwliI8k8VSQpN8sEoBIv2g=="
-      }
-    }
+    "net9.0-windows7.0": {}
   }
 }
