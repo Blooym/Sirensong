@@ -68,7 +68,7 @@ namespace Sirensong.Game.Helpers
         /// <returns>True if crafting, false otherwise.</returns>
         public static bool IsCrafting
             => HasFlag(ConditionFlag.Crafting) ||
-                HasFlag(ConditionFlag.Crafting40) ||
+                HasFlag(ConditionFlag.ExecutingCraftingAction) ||
                 HasFlag(ConditionFlag.PreparingToCraft);
     }
 }
