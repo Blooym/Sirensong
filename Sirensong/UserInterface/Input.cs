@@ -1,5 +1,5 @@
 using System.Numerics;
-using ImGuiNET;
+using Dalamud.Bindings.ImGui;
 
 namespace Sirensong.UserInterface
 {
@@ -14,7 +14,7 @@ namespace Sirensong.UserInterface
         /// <param name="debounced">Whether or not the input should be debounced.</param>
         /// <param name="flags">The <see cref="ImGuiInputTextFlags" /> to use.</param>
         /// <returns>True when either the input is typed into or when it is deactivated if debounced.</returns>
-        public static bool InputText(string label, ref string value, uint maxLength, bool debounced = false, ImGuiInputTextFlags flags = default)
+        public static bool InputText(string label, ref string value, int maxLength, bool debounced = false, ImGuiInputTextFlags flags = default)
         {
             var inputBool = ImGui.InputText(label, ref value, maxLength, flags);
             return debounced ? ImGui.IsItemDeactivated() : inputBool;
@@ -30,7 +30,7 @@ namespace Sirensong.UserInterface
         /// <param name="debounced">Whether or not the input should be debounced.</param>
         /// <param name="flags">The <see cref="ImGuiInputTextFlags" /> to use.</param>
         /// <returns>True when either the input is typed into or when it is deactivated if debounced.</returns>
-        public static bool InputTextHint(string label, string hint, ref string value, uint maxLength, bool debounced = false, ImGuiInputTextFlags flags = default)
+        public static bool InputTextHint(string label, string hint, ref string value, int maxLength, bool debounced = false, ImGuiInputTextFlags flags = default)
         {
             var inputBool = ImGui.InputTextWithHint(label, hint, ref value, maxLength, flags);
             return debounced ? ImGui.IsItemDeactivated() : inputBool;
@@ -46,7 +46,7 @@ namespace Sirensong.UserInterface
         /// <param name="debounced">Whether or not the input should be debounced.</param>
         /// <param name="flags">The <see cref="ImGuiInputTextFlags" /> to use.</param>
         /// <returns>True when either the input is typed into or when it is deactivated if debounced.</returns>
-        public static bool InputTextMultiline(string label, ref string value, uint maxLength, Vector2 size, bool debounced = false, ImGuiInputTextFlags flags = default)
+        public static bool InputTextMultiline(string label, ref string value, int maxLength, Vector2 size, bool debounced = false, ImGuiInputTextFlags flags = default)
         {
             var inputBool = ImGui.InputTextMultiline(label, ref value, maxLength, size, flags);
             return debounced ? ImGui.IsItemDeactivated() : inputBool;
@@ -66,7 +66,7 @@ namespace Sirensong.UserInterface
         /// <returns>True when either the input is typed into or when it is deactivated if debounced.</returns>
         public static bool InputInt(string label, ref int value, int step, int stepFast, int? min = null, int? max = null, bool debounced = false, ImGuiInputTextFlags flags = default)
         {
-            var inputBool = ImGui.InputInt(label, ref value, step, stepFast, flags);
+            var inputBool = ImGui.InputInt(label, ref value, step, stepFast, default, flags);
             if (min.HasValue && value < min.Value)
             {
                 value = min.Value;

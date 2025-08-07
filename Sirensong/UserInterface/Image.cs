@@ -1,7 +1,7 @@
 using System;
 using System.Numerics;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Textures.TextureWraps;
-using ImGuiNET;
 
 namespace Sirensong.UserInterface
 {
@@ -13,7 +13,7 @@ namespace Sirensong.UserInterface
         /// <param name="texture"></param>
         /// <param name="scalingMode"></param>
         /// <param name="size"></param>
-        public static void Image(IDalamudTextureWrap texture, ScalingMode scalingMode = ScalingMode.None, Vector2? size = null) => ImGui.Image(texture.ImGuiHandle, scalingMode.ApplyTo(texture, size));
+        public static void Image(IDalamudTextureWrap texture, ScalingMode scalingMode = ScalingMode.None, Vector2? size = null) => ImGui.Image(texture.Handle, scalingMode.ApplyTo(texture, size));
 
         /// <summary>
         ///     Draw an icon with the texture from the given icon id.
@@ -42,7 +42,7 @@ namespace Sirensong.UserInterface
         /// <param name="scalingMode"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        public static bool ImageButton(IDalamudTextureWrap texture, ScalingMode scalingMode = ScalingMode.None, Vector2? size = null) => ImGui.ImageButton(texture.ImGuiHandle, scalingMode.ApplyTo(texture, size));
+        public static bool ImageButton(IDalamudTextureWrap texture, ScalingMode scalingMode = ScalingMode.None, Vector2? size = null) => ImGui.ImageButton(texture.Handle, scalingMode.ApplyTo(texture, size));
 
         /// <summary>
         ///     Draw a button with the texture from the given icon id.

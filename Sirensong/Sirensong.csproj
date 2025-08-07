@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="Current" Sdk="Microsoft.NET.Sdk">
+<Project ToolsVersion="Current" Sdk="Dalamud.NET.Sdk/13.0.0">
   <!-- Project Configuration -->
   <PropertyGroup>
     <Title>Sirensong</Title>
@@ -24,6 +24,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>Nullable</WarningsAsErrors>
+    <Use_DalamudPackager>false</Use_DalamudPackager>
   </PropertyGroup>
 
   <!-- Localization -->
@@ -40,60 +41,5 @@
     <Compile Update="SirenLog.cs">
       <DependentUpon>SirenCore.cs</DependentUpon>
     </Compile>
-  </ItemGroup>
-
-  <!-- Dalamud Path -->
-  <PropertyGroup>
-    <DalamudLibPath Condition="$([MSBuild]::IsOSPlatform('Windows'))">
-      $(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
-    <DalamudLibPath Condition="$([MSBuild]::IsOSPlatform('Linux'))">
-      $(HOME)/.xlcore/dalamud/Hooks/dev/</DalamudLibPath>
-    <DalamudLibPath Condition="$([MSBuild]::IsOSPlatform('OSX'))">$(HOME)/Library/Application
-      Support/XIV on Mac/dalamud/Hooks/dev/</DalamudLibPath>
-    <DalamudLibPath Condition="$(DALAMUD_HOME) != ''">$(DALAMUD_HOME)/</DalamudLibPath>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <!-- Dalamud References -->
-    <Reference Include="FFXIVClientStructs">
-      <HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>$(DalamudLibPath)Newtonsoft.Json.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="Dalamud">
-      <HintPath>$(DalamudLibPath)Dalamud.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="ImGui.NET">
-      <HintPath>$(DalamudLibPath)ImGui.NET.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="ImGuiScene">
-      <HintPath>$(DalamudLibPath)ImGuiScene.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="Lumina">
-      <HintPath>$(DalamudLibPath)Lumina.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="Lumina.Excel">
-      <HintPath>$(DalamudLibPath)Lumina.Excel.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>$(DalamudLibPath)Newtonsoft.Json.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <Reference Include="InteropGenerator.Runtime">
-      <Private>false</Private>
-      <HintPath>$(DalamudLibPath)InteropGenerator.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="CheapLoc">
-      <Private>false</Private>
-      <HintPath>$(DalamudLibPath)CheapLoc.dll</HintPath>
-    </Reference>
   </ItemGroup>
 </Project>
