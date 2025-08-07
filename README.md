@@ -8,7 +8,7 @@
 
 A collection of common utilities, helpers, extensions & UI styles for use in Dalamud plugins.
 
-**[Issues](https://github.com/Blooym/Sirensong/issues) · [Pull Requests](https://github.com/Blooym/Sirensong/pulls)**
+**[Issues](https://github.com/Blooym/Dalamud.Lib.Sirensong/issues) · [Pull Requests](https://github.com/Blooym/Dalamud.Lib.Sirensong/pulls)**
 
 </div>
 

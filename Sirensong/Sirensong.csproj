@@ -5,8 +5,8 @@
     <Title>Sirensong</Title>
     <Authors>Blooym</Authors>
     <Version>0.0.0.1</Version>
-    <RepositoryUrl>https://github.com/Blooym/Sirensong</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/Blooym/Sirensong</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Blooym/Dalamud.Lib.Sirensong</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Blooym/Dalamud.Lib.Sirensong</PackageProjectUrl>
     <Description>A collection of commonly used methods for Dalamud Plugins.</Description>
     <PackageLicenseExpression>AGPL-3.0-only</PackageLicenseExpression>
     <Copyright>AGPL-3.0-only</Copyright>
